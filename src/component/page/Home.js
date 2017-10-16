@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {Link, Redirect} from 'react-router-dom'
 
 import Credentials from '../../Credentials'
+
 import {Navbar, LayoutUser, InputContent} from '../index.js'
 
 class Home extends Component {
@@ -323,4 +324,4 @@ class Home extends Component {
     }
 }
 
-export default Home;
+export default Home
