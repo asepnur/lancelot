@@ -1,11 +1,9 @@
 import React, {Component} from 'react'
-import { Link } from 'react-router-dom'
 
 import {
     Navbar,
     Newsbar,
-    LayoutUser,
-    InputContent
+    LayoutUser
 } from '../index.js'
 
 class Schedule extends Component{
@@ -17,7 +15,7 @@ class Schedule extends Component{
             <div className="_cn">
             <div className="_ro">
                 <div className="_pd5m3n _c5m312 _c5x312">
-                    <h1 className="_he3b">My Courses</h1>
+                    <h1 className="_he3b">Schedule</h1>
                 </div>
             </div>
         </div>
