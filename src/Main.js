@@ -13,6 +13,9 @@ const Main = () => {
                     <Route path='/signup' component={Signup}/>
                     <Route exact={true} path='/' component={Home}/>
                     <Route path='/success-signup' component={SuccessSignup}/>
+                    <Route exact={true} path='/forgot' component={Forgot} />
+                    <Route exact={true} path='/forgot/:email' component={ForgotActivation} />
+                    <Route exact={true} path='/reset/:email/:code' component={Reset} />
                 </Switch>
             </Router>
         </App>
