@@ -19,7 +19,7 @@ class Navbar extends Component{
                         <div className="_n52">
                             <li><a href=""><i className="fa fa-bell-o" aria-hidden="true"></i></a></li>
                             <li><a href=""><i className="fa fa-cog" aria-hidden="true"></i></a></li>
-                            <li><a href=""><i className="fa fa-user" aria-hidden="true"></i></a></li>
+                            <li><a onClick={this.props.handleOut } href="#"><i className="fa fa-power-off" aria-hidden="true"></i></a></li>
                         </div>
                     </ul>
                 </nav>
