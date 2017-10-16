@@ -24,3 +24,6 @@ export {default as Grade} from './page/Grade.js'
 export {default as Information} from './page/Information.js'
 export {default as User} from './page/User.js'
 export {default as Test} from './page/Test.js'
+
+//Animation
+export {default as Animation} from './animation/Animation.js'

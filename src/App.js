@@ -1,6 +1,7 @@
 import React from "react";
 import {Switch, Redirect} from "react-router-dom";
 
+import {Animation} from './component/index.js'
 import Credentials from './Credentials'
 class App extends React.Component {
     constructor() {
@@ -32,7 +33,7 @@ class App extends React.Component {
         return (this.state.is_loading ? (this.renderLoading()):(this.renderCompleted()))
     }
     renderLoading = () =>{
-        return <div>Loading...</div>
+        return <Animation />
     }
     renderCompleted = () =>{
         return this.props.children

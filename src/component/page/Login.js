@@ -14,13 +14,13 @@ class Login extends Component {
     }
   }
   render() {
-    return (!this.state.is_logged_in ? this.renderMain(): <Redirect to="/home" />)
+    return (!this.state.is_logged_in ? this.renderMain(): <Redirect to="/" />)
   }
   renderMain = () => {
     return (
       <LayoutGuest>
         <div className="_bl5b"></div>
-        <form className="_cn" method="POST">
+        <form className="_cn" onSubmit={this.loginAction}>
           <div className="_ro">
             <div className="_c5m38 _c5m3o5 _c5x312">
               <h2 className="_he3m">Sign In</h2>
@@ -55,7 +55,7 @@ class Login extends Component {
               </p>
             </div>
             <div className="_c5m33  _c5x36">
-              <button className="_bt5m3m _pl5r" type="button" onClick={this.loginAction}>Login</button>
+              <button className="_bt5m3m _pl5r" type="submit">Login</button>
             </div>
           </div>
           <div className="_ro">
@@ -72,7 +72,8 @@ class Login extends Component {
       </LayoutGuest>
     )
   }
-  loginAction = () => {
+  loginAction = (e) => {
+    e.preventDefault()
     let formData = new FormData()
     formData.append('email', this.state.email)
     formData.append('password', this.state.password)

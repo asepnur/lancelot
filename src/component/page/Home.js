@@ -2,10 +2,15 @@ import React, {Component} from 'react'
 import {Link, Redirect} from 'react-router-dom'
 
 import Credentials from '../../Credentials'
-
 import {Navbar, LayoutUser, InputContent} from '../index.js'
 
 class Home extends Component {
+    constructor() {
+        super()
+        this.state = {
+            is_logged_in: Credentials.is_logged_in
+        }
+    }
     render() {
         return (Credentials.is_logged_in
             ? this.renderMain()
@@ -22,6 +27,7 @@ class Home extends Component {
         }).then((data) => {
             if (data.code === 200) {
                 Credentials.is_logged_in = false
+                this.setState({is_logged_in: false})
             }
         })
     }
@@ -50,7 +56,7 @@ class Home extends Component {
                                     <div className="_c5x34">
                                         <p className="_se5ct">
                                             <i className="fa fa-circle _i3a" aria-hidden="true"></i>
-                                            YESTERDAY</p>
+                                        YESTERDAY</p>
                                     </div>
                                     <div className="_c5x36">
                                         <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
