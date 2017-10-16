@@ -1,15 +1,15 @@
 import React, {Component} from 'react'
 //import {Switch} from 'react-router'
 
-class LayoutGuest extends Component{
+class LayoutUser extends Component{
     render(){
         return(
-        <div className="_f5a">
-            <div className="_bl _c5m3o3 _c5m36">
+        <div className="_f5m">
+            <div className="_bl">
                 {this.props.children}
             </div>
         </div>
         )   
     }
 }
-export default LayoutGuest
+export default LayoutUser
