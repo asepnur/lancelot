@@ -5,6 +5,7 @@ import { Switch, Route } from 'react-router-dom'
 import {
     EmailActivation,
     Forgot,
+    ForgotActivation,
     Login,
     Signup,
     Reset,
@@ -24,8 +25,9 @@ const Main = ()=>{
         <Switch>
                 <Route path='/login' component={Login} />
                 <Route path='/signup' component={Signup} />
-                <Route path='/forgot' component={Forgot} />
-                <Route path='/reset' component={Reset} />
+                <Route exact={true} path='/forgot' component={Forgot} />
+                <Route exact={true} path='/forgot/:email' component={ForgotActivation} />
+                <Route exact={true} path='/reset/:email/:code' component={Reset} />
                 <Route path='/email-activation' component={EmailActivation} />
                 <Route path='/success-signup' component={SuccessSignup} />
                 <Route path='/home' component={Home} />
