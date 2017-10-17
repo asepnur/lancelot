@@ -185,7 +185,7 @@ class User extends Component {
     }
 }
 
-class Advance extends Component {
+/*class Advance extends Component {
     constructor() {
         super()
 
@@ -272,7 +272,7 @@ class Advance extends Component {
             </LayoutUser>
         )
     }
-}
+}*/
 
 
 

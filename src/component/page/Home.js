@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Link, Redirect} from 'react-router-dom'
+import { Redirect} from 'react-router-dom'
 
 import Credentials from '../../Credentials'
 import {Navbar, LayoutUser, InputContent} from '../index.js'
