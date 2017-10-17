@@ -5,6 +5,7 @@ import {LayoutGuest} from '../index.js'
 
 class SuccessSignup extends Component {
     render() {
+        console.log(this.props)
         return (this.renderMain())
     }
     renderMain = () => {
@@ -14,7 +15,7 @@ class SuccessSignup extends Component {
                 <form className="_cn" action="/" method="POST">
                     <div className="_ro">
                         <div className="_c5m310 _c5m3o1 _c5x312">
-                            <h2 className="_he3cm">Congratulation,{this.props.email!==undefined?this.props.email:""} your account has been activated!</h2>
+                            <h2 className="_he3cm">Congratulation,{this.props.email!==undefined?this.props.location.state.email:""} your account has been activated!</h2>
                         </div>
                     </div>
                     <div className="_ro">
@@ -25,7 +26,7 @@ class SuccessSignup extends Component {
 
                     <div className="_ro">
                         <div className="_c5m3o4 _c5m34 _c5x3o3  _c5x36">
-                            <Link classNam="_bt5m3m" to="/login">Login</Link>
+                            <Link className="_bt5m3m" to="/login">Login</Link>
                         </div>
                     </div>
                     <div className="_ro">

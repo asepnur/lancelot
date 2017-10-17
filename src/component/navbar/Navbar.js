@@ -12,7 +12,7 @@ class Navbar extends Component{
                     <ul className="_n">
                         <div className="_n51">
                             <li><img className="_i3c" src="/img/icon/white/logo copy 4.png" alt="logo"/></li>
-                            <li className="_n3a"><Link to={'/home'}><i className="fa fa-home" aria-hidden="true"></i></Link></li>
+                            <li className="_n3a"><Link to={'/'}><i className="fa fa-home" aria-hidden="true"></i></Link></li>
                             <li><Link to={'/course'}><i className="fa fa-clone" aria-hidden="true"></i></Link></li>
                             <li><Link to={'/schedule'}><i className="fa fa-clock-o" aria-hidden="true"></i></Link></li>
                             <li><Link to={'/myactivity'}><i className="fa fa-tasks" aria-hidden="true"></i></Link></li>

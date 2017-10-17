@@ -29,7 +29,7 @@ class Signup extends Component {
                         email: this.state.email
                     }
                 }}/>)
-            : <Redirect to="/home"/>)
+            : <Redirect to="/"/>)
     }
     handleChange = (e) => {
         const target = e.target

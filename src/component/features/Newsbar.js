@@ -4,7 +4,7 @@ import React, {Component} from 'react'
 class Newsbar extends Component{
     render(){
         return(
-            <div className="_c5m34 _pd3cr">
+            <div className="_c5m34 _c5x312 _pd3cr">
             <div className="_se _se3n">
                 <div className="_se5m"> + VIEW MORE</div>
                 <div className="_ro">

@@ -17,8 +17,14 @@ class EmailActivation extends Component {
         return (!Credentials.is_logged_in
             ? (!this.state.is_success
                 ? this.renderMain()
-                : <Redirect to="/success-signup" email={this.state.email}/>)
-            : <Redirect to="/home"/>)
+                : <Redirect
+                    to={{
+                    pathname: `/success-signup`,
+                    state: {
+                        email: this.state.email
+                    }
+                }}/>)
+            : <Redirect to="/"/>)
     }
     handleChange = (e) => {
         const target = e.target
@@ -29,7 +35,7 @@ class EmailActivation extends Component {
     handleSubmit = (e) => {
         e.preventDefault()
         let formData = new FormData()
-        formData.append('code', this.state.id)
+        formData.append('code', this.state.code)
         formData.append('email', this.state.email)
 
         fetch('https://meikoapp.herokuapp.com/api/v1/user/verify', {

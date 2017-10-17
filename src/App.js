@@ -1,5 +1,4 @@
 import React from "react";
-import {Switch, Redirect} from "react-router-dom";
 
 import {Animation} from './component/index.js'
 import Credentials from './Credentials'
