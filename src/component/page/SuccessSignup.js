@@ -6,10 +6,10 @@ import {LayoutGuest} from '../index.js'
 
 class SuccessSignup extends Component {
     render() {
-        const {is_logged_in, signup_status} = this.props
+        const {is_logged_in, request_status} = this.props
         return (is_logged_in
             ? <Redirect to={`/`}/>
-            : signup_status === 1
+            : request_status === 201
                 ? this.renderMain()
                 : <Redirect to={`/login`}/>)
     }
@@ -53,6 +53,6 @@ class SuccessSignup extends Component {
     }
 }
 const mapStatetoProps = (state) => {
-    return {is_logged_in: state.is_logged_in, is_signup_success: state.is_signup_success, signup_status: state.signup_status}
+    return {is_logged_in: state.is_logged_in, request_status: state.request_status, error_message: state.error_message}
 }
 export default connect(mapStatetoProps)(SuccessSignup)

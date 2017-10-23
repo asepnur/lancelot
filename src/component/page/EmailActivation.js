@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {Link, Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 
-import {actorVerify} from '../../action/action'
+import {actorRequest} from '../../action/action'
 import {LayoutGuest, InputContent} from '../index.js'
 
 class EmailActivation extends Component {
@@ -14,17 +14,18 @@ class EmailActivation extends Component {
         }
     }
     render() {
-        const {is_logged_in, signup_status} = this.props
+        const {is_logged_in, request_status} = this.props
+        
         return (!is_logged_in
-            ? (!signup_status
-                ? this.renderMain()
-                : <Redirect
-                    to={{
-                    pathname: `/success-signup`,
-                    state: {
-                        email: this.state.email
-                    }
-                }}/>)
+            ? (request_status === 201
+                ? <Redirect
+                        to={{
+                        pathname: `/success-signup`,
+                        state: {
+                            email: this.state.email
+                        }
+                    }}/>
+                : this.renderMain())
             : <Redirect to="/"/>)
     }
     handlerChange = (e) => {
@@ -33,7 +34,7 @@ class EmailActivation extends Component {
             [target.name]: target.value
         })
     }
-    handlerSubmit = (dispatcherActivation) => {
+    handlerSubmit = (dispatcherRequest) => {
         let formData = new FormData()
         formData.append('code', this.state.code)
         formData.append('email', this.state.email)
@@ -46,16 +47,20 @@ class EmailActivation extends Component {
         }).then((res) => {
             return res.json()
         }).then((data) => {
-            dispatcherActivation(1)
+            data.code === 200
+                ? dispatcherRequest(false, 201, '')
+                : dispatcherRequest(false, 401, data.error)
         })
     }
     renderMain = () => {
         return (
             <LayoutGuest>
                 <div className="_bl5c"></div>
-                <form className="_cn" onSubmit={ e =>{
+                <form
+                    className="_cn"
+                    onSubmit={e => {
                     e.preventDefault();
-                    this.handlerSubmit(this.props.dispatcherActivation)
+                    this.handlerSubmit(this.props.dispatcherRequest)
                 }}>
                     <div className="_ro">
                         <div className="_c5m310 _c5m3o1 _c5x312">
@@ -97,11 +102,11 @@ class EmailActivation extends Component {
     }
 }
 const mapStatetoProps = (state) => {
-    return {is_logged_in: state.is_logged_in, is_signup_success: state.is_signup_success, signup_status: state.signup_status}
+    return {is_logged_in: state.is_logged_in, request_status: state.request_status, error_message: state.error_message}
 }
 const mapDispatchtoProps = (dispatch) => {
     return {
-        dispatcherActivation: (signup_status) => dispatch(actorVerify(signup_status))
+        dispatcherRequest: (is_logged_in, request_status, error_message) => dispatch(actorRequest(is_logged_in, request_status, error_message))
     }
 }
 export default connect(mapStatetoProps, mapDispatchtoProps)(EmailActivation)

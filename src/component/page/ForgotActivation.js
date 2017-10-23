@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import {Link, Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
-import {actorVerifyForgot} from '../../action/action'
+
+import {actorRequest} from '../../action/action'
 import {LayoutGuest, InputContent} from '../index.js'
 
 class ForgotActivation extends Component {
@@ -23,7 +24,7 @@ class ForgotActivation extends Component {
         })
     }
 
-    handlerSubmit = (dispatcherVerifyForgot) => {
+    handlerSubmit = (dispatcherRequest) => {
         let formData = new FormData()
         formData.append('email', this.state.email)
         formData.append('code', this.state.code)
@@ -36,23 +37,22 @@ class ForgotActivation extends Component {
             return res.json()
         }).then((data) => {
             data.code === 200
-                ? dispatcherVerifyForgot(true)
-                : dispatcherVerifyForgot(false)
+                ? dispatcherRequest(false, 201, '')
+                : dispatcherRequest(false, 401, data.error)
 
         })
     }
 
     render() {
         let url = '/reset/' + this.state.email + '/' + this.state.code
-        const {is_logged_in, is_code_match} = this.props
+        const {is_logged_in, request_status} = this.props
+
         return (is_logged_in
             ? <Redirect to={'/'}/>
-            : is_code_match === undefined
-                ? this.renderMain()
-                : is_code_match
-                    ? <Redirect to={url}/>
-                    : <div>
-                        <p>Wrong Code</p>{this.renderMain()}</div>)
+            : request_status === 201
+                ? <Redirect to={url}/>
+                : this.renderMain()
+            )
     }
 
     renderMain() {
@@ -63,7 +63,7 @@ class ForgotActivation extends Component {
                     className="_cn"
                     onSubmit={ e => {
                         e.preventDefault();
-                        this.handlerSubmit(this.props.dispatcherVerifyForgot)
+                        this.handlerSubmit(this.props.dispatcherRequest)
                 }}>
                     <div className="_ro">
                         <div className="_c5m310 _c5m3o1 _c5x312">
@@ -106,11 +106,11 @@ class ForgotActivation extends Component {
     }
 }
 const mapStatetoProps = (state) => {
-    return {is_logged_in: state.is_logged_in, is_code_match: state.is_code_match}
+    return {is_logged_in: state.is_logged_in, request_status: state.request_status, error_message: state.error_message}
 }
 const mapDispatchtoProps = (dispatch) => {
     return {
-        dispatcherVerifyForgot: (is_code_match) => dispatch(actorVerifyForgot(is_code_match))
+        dispatcherRequest: (is_logged_in, request_status, error_message) => dispatch(actorRequest(is_logged_in, request_status, error_message))
     }
 }
 export default connect(mapStatetoProps,mapDispatchtoProps)(ForgotActivation)

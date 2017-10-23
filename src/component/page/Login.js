@@ -3,7 +3,7 @@ import {Link, Redirect} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 
-import {actorSignIn} from '../../action/action'
+import {actorRequest} from '../../action/action'
 import {LayoutGuest, InputContent} from '../index.js'
 
 class Login extends Component {
@@ -15,15 +15,9 @@ class Login extends Component {
     }
   }
   render() {
-    const is_login_failed = this.props.is_login_failed
-    const is_logged_in = this.props.is_logged_in
+    const {is_logged_in} = this.props
     return (!is_logged_in
-      ? is_login_failed
-        ? (
-          <div>
-            <p>Gagal</p>{this.renderMain()}</div>
-        )
-        : (this.renderMain())
+      ? this.renderMain()
       : <Redirect to={`/`}/>)
   }
   renderMain = () => {
@@ -33,8 +27,8 @@ class Login extends Component {
         <form
           className="_cn"
           onSubmit={(e) => {
-          e.preventDefault()
-          this.handlerSignIn(this.props.dispatcherSignIn)
+          e.preventDefault();
+          this.handlerSignIn(this.props.dispatcherRequest)
         }}>
           <div className="_ro">
             <div className="_c5m38 _c5m3o5 _c5x312">
@@ -88,7 +82,7 @@ class Login extends Component {
       </LayoutGuest>
     )
   }
-  handlerSignIn = (dispatcherSignIn) => {
+  handlerSignIn = (dispatcherRequest) => {
     let formData = new FormData()
     formData.append('email', this.state.email)
     formData.append('password', this.state.password)
@@ -101,8 +95,8 @@ class Login extends Component {
       return res.json()
     }).then((data) => {
       return (data.code === 200
-        ? dispatcherSignIn(true, false)
-        : dispatcherSignIn(false, true))
+        ? dispatcherRequest(true, 200, '')
+        : dispatcherRequest(false, 401, data.error))
     })
   }
   onChangeState = (e) => {
@@ -122,11 +116,11 @@ Login.PropTypes = {
 }
 
 const mapStatetoProps = (state) => {
-  return {is_login_failed: state.is_login_failed, is_logged_in: state.is_logged_in}
+  return {is_logged_in: state.is_logged_in, request_status: state.request_status, error_message: state.error_message}
 }
 const mapDispatchtoProps = (dispatch) => {
   return {
-    dispatcherSignIn: (is_logged_in, is_login_failed) => dispatch(actorSignIn(is_logged_in, is_login_failed))
+    dispatcherRequest: (is_logged_in, request_status, error_message) => dispatch(actorRequest(is_logged_in, request_status, error_message))
   }
 }
 export default connect(mapStatetoProps, mapDispatchtoProps)(Login)

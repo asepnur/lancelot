@@ -27,7 +27,7 @@ class Reset extends Component {
 
     handleSubmit = (dispatcherRequest) => {
         if (this.state.password !== this.state.password_confirmation) {
-            console.log('password is not match')
+            dispatcherRequest(false, 401, 'Password not matched!')
             return
         }
 
@@ -44,8 +44,8 @@ class Reset extends Component {
             return res.json()
         }).then((data) => {
             data.code === 200
-                ? dispatcherRequest(200)
-                : dispatcherRequest(401)
+                ? dispatcherRequest(false, 202, '')
+                : dispatcherRequest(false, 401, data.error)
         })
     }
 
@@ -53,12 +53,10 @@ class Reset extends Component {
         const {is_logged_in, request_status} = this.props
         return (is_logged_in
             ? <Redirect to='/'/>
-            : request_status === undefined
-                ? this.renderMain()
-                : request_status === 200
-                    ? <Redirect to={`/login`}/>
-                    : <div>
-                        <p>Error Reset Password</p>{this.renderMain()}</div>)
+            : request_status === 202
+                ? <Redirect to={`/login`}/>
+                : this.renderMain()
+                    )
     }
 
     renderMain() {
@@ -106,11 +104,11 @@ class Reset extends Component {
     }
 }
 const mapStatetoProps = (state) => {
-    return {is_logged_in: state.is_logged_in, request_status: state.request_status}
+    return {is_logged_in: state.is_logged_in, request_status: state.request_status, error_message: state.error_message}
 }
 const mapDispatchtoProps = (dispatch) => {
     return {
-        dispatcherRequest: (request_status) => dispatch(actorRequest(request_status))
+        dispatcherRequest: (is_logged_in, request_status, error_message) => dispatch(actorRequest(is_logged_in, request_status, error_message))
     }
 }
 export default connect(mapStatetoProps,mapDispatchtoProps)(Reset)

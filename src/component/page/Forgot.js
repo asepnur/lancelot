@@ -3,13 +3,13 @@ import {Link, Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 
 import {LayoutGuest, InputContent} from '../index.js'
-import {actorForgot} from '../../action/action'
+import {actorRequest} from '../../action/action'
+
 class Forgot extends Component {
     constructor() {
         super()
         this.state = {
-            email: '',
-            success: false
+            email: ''
         }
     }
 
@@ -19,7 +19,7 @@ class Forgot extends Component {
         })
     }
 
-    handleSubmit = (dispatcherForgot) => {
+    handleSubmit = (dispatcherRequest) => {
         let formData = new FormData()
         formData.append('email', this.state.email)
         formData.append('resend', 'true')
@@ -32,22 +32,20 @@ class Forgot extends Component {
             return res.json()
         }).then((data) => {
             data.code === 200
-                ? dispatcherForgot(true)
-                : dispatcherForgot(false)
+                ? dispatcherRequest(false, 200, '')
+                : dispatcherRequest(false, 401,data.error)
         })
     }
 
     render() {
-        const {is_logged_in, is_email_registered} = this.props
+        const {is_logged_in, request_status} = this.props
         let url = '/forgot/' + this.state.email
         return (is_logged_in
             ? <Redirect to={`/`}/>
-            : is_email_registered === undefined
-                ? this.renderMain()
-                : is_email_registered
-                    ? <Redirect to={url}/>
-                    : <div>
-                        <p>Email not registered</p>{this.renderMain()}</div>)
+            : request_status === 200
+                ? <Redirect to={url}/>
+                : this.renderMain())
+
     }
 
     renderMain() {
@@ -58,7 +56,7 @@ class Forgot extends Component {
                     className="_cn"
                     onSubmit={e => {
                     e.preventDefault();
-                    this.handleSubmit(this.props.dispatcherForgot)
+                    this.handleSubmit(this.props.dispatcherRequest)
                 }}>
                     <div className="_ro">
                         <div className="_c5m310 _c5m3o3 _c5x3o1 _c5x310">
@@ -99,11 +97,11 @@ class Forgot extends Component {
     }
 }
 const mapStatetoProps = (state) => {
-    return {is_logged_in: state.is_logged_in, is_email_registered: state.is_email_registered}
+    return {is_logged_in: state.is_logged_in, request_status: state.request_status, error_message: state.error_message}
 }
 const mapDispatchtoProps = (dispatch) => {
     return {
-        dispatcherForgot: (is_email_registered) => dispatch(actorForgot(is_email_registered))
+        dispatcherRequest: (is_logged_in, request_status, error_message) => dispatch(actorRequest(is_logged_in, request_status, error_message))
     }
 }
 

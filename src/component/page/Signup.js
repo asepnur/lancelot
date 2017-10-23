@@ -3,7 +3,7 @@ import {Link, Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 
 import {InputContent, LayoutGuest} from '../index.js'
-import {actorSignUp} from '../../action/action'
+import {actorRequest} from '../../action/action'
 class Signup extends Component {
     constructor() {
         super()
@@ -16,20 +16,15 @@ class Signup extends Component {
         }
     }
     render() {
-        const {is_logged_in, is_signup_success} = this.props
+        const {is_logged_in, request_status} = this.props
         return (!is_logged_in
-            ? (is_signup_success === undefined
-                ? this.renderMain()
-                : is_signup_success
-                    ? <Redirect
-                            email={this.state.email}
-                            to={{
-                            pathname: `/email-activation/${this.state.email}`,
-                            state: {
-                                email: this.state.email
-                            }
-                        }}/>
-                    : <div><p>Gagal signup</p>{this.renderMain()}</div>)
+            ? (request_status === 200
+                ? <Redirect 
+                        email={this.state.email}
+                        to={{
+                        pathname: `/email-activation/${this.state.email}`,
+                    }}/>
+                : this.renderMain())
             : <Redirect to={`/`}/>)
     }
     handleChange = (e) => {
@@ -38,7 +33,7 @@ class Signup extends Component {
             [target.name]: target.value
         })
     }
-    handleSubmit = (dispatcherSignUp) => {
+    handleSubmit = (dispatcherRequest) => {
         let formData = new FormData()
         formData.append('id', this.state.id)
         formData.append('name', this.state.fName + " " + this.state.lName)
@@ -54,8 +49,8 @@ class Signup extends Component {
             return res.json()
         }).then((data) => {
             data.code === 200
-                ? dispatcherSignUp(true)
-                : dispatcherSignUp(false)
+                ? dispatcherRequest(false, 200, '')
+                : dispatcherRequest(false, 401, data.error)
         })
     }
     renderMain() {
@@ -66,7 +61,7 @@ class Signup extends Component {
                     className="_cn"
                     onSubmit={(e) => {
                     e.preventDefault();
-                    this.handleSubmit(this.props.dispatcherSignUp)
+                    this.handleSubmit(this.props.dispatcherRequest)
                 }}>
                     <div className="_ro">
                         <div className="_c5m37 _c5m3o5 _c5x312">
@@ -145,11 +140,11 @@ class Signup extends Component {
     }
 }
 const mapStatetoProps = (state) => {
-    return {is_logged_in: state.is_logged_in, is_signup_success: state.is_signup_success}
+    return {is_logged_in: state.is_logged_in, request_status: state.request_status, error_message: state.error_message}
 }
 const mapDispatchtoProps = (dispatch) => {
     return {
-        dispatcherSignUp: (is_signup_success) => dispatch(actorSignUp(is_signup_success))
+        dispatcherRequest: (is_logged_in, request_status, error_message) => dispatch(actorRequest(is_logged_in, request_status, error_message))
     }
 }
 export default connect(mapStatetoProps, mapDispatchtoProps)(Signup)
