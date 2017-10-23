@@ -1,87 +1,89 @@
+import {createStore} from 'redux'
 import React from 'react'
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  withRouter,
-  Redirect
-} from 'react-router-dom'
+import PropTypes from 'prop-types'
+import {Provider, connect} from 'react-redux'
 
-const BasicExample = () =>(
-    <Router>
-        <div>
-            <AuthButton/>
-            <ul>
-                <li><Link to='/public' >Public Page</Link></li>
-                <li><Link to='/protected' >Protected Page</Link></li>
-            </ul>
-            <Route path='/public' component={Public} />
-            <Route path='/login' component={Login} />
-            <PrivateRoute path='/protected' component={Protected}/>
-        </div>
-    </Router>
-)
 
-const fakeAuth = {
-    isAuthenticated: false,
-    autheticate(cb){
-        this.isAuthenticated = true
-        setTimeout(cb,100) // fake async
-    },
-    signout(cb){
-        this.isAuthenticated = false
-        setTimeout(cb,100)
+const increaseAction = {
+    type: 'INCREASE'
+}
+const decreaseAction = {
+    type: 'DECREASE'
+}
+const resetAction = {
+    type: 'RESET'
+}
+const changeAction = {
+    type: 'CHANGE',
+    
+}
+
+const counter = (state = {
+    count: 0,
+    header: '',
+}, action) => {
+    const count = state.count
+    const header = state.header
+    switch (action.type) {
+        case 'INCREASE':
+            return {
+                count: count + 1
+            }
+        case 'DECREASE':
+            return {
+                count: count - 1
+            }
+        case 'RESET':
+            return {count: 0}
+        case 'CHANGE':
+            return {header: header + 'A'}
+        default:
+            return state
     }
 }
 
-const AuthButton = withRouter(({history})=>(
-    fakeAuth.isAuthenticated ? (
-        <p>
-            Welcome! <button onClick={()=>{
-                fakeAuth.signout(()=>history.push('/'))
-                }}>signout </button>
-        </p>
-    ):(<p>You are not logged in.</p>)
-))
-
-const PrivateRoute = ({component:Component, ...rest}) =>{
-    console.log(...rest)
-    return (
-    <Route {...rest} render={props =>(
-        fakeAuth.isAuthenticated?(<Component {...props} />):(<Redirect to={{
-            pathname:'/login',
-            state:{from:props.location}
-        }}/>
-        )
-    )}></Route>
-    )
-}
-const Public = ()=>(<h3>Public</h3>)
-const Protected = ()=> (<h3>Protected</h3>)
-
-class Login extends React.Component{
-    state = {
-        redirecToReferrer:false
-    }
-    login = () =>(
-        fakeAuth.autheticate(()=>{
-            this.setState({redirecToReferrer:true})
-        })
-    )
-    render(){
-        const {from} = this.props.location.state || {from:{pathname:'/'}}
-        const {redirecToReferrer} = this.state
-
-        if (redirecToReferrer){
-            return (
-                <Redirect to={from}/>
-            )
-        }
-        return(
+let store = createStore(counter)
+class Counter extends React.Component {
+    render() {
+        const {header, value, onIncreaseClick, onDecreaseClick, onResetClick} = this.props
+        return (
             <div>
-                <p>You must log in to view the page at {from.pathname}</p>
-                <button onClick={this.login} >Login</button>
+                <h1>{header}</h1>
+                <input />
+                <br />
+                <br />
+                <button onClick={onIncreaseClick}>INCREASE</button>
+                <button onClick={onDecreaseClick}>DECREASE</button>
+                <button onClick={onResetClick}>RESET</button>
+                <h1>{value}</h1>
             </div>
+        )
+    }
+}
+
+Counter.PropTypes = {
+    value: PropTypes.number.isRequired,
+    onIncreaseClick: PropTypes.func.isRequired,
+    onDecreaseClick: PropTypes.func.isRequired
+}
+const mapStatetoProps = (state) => {
+    return {value: state.count}
+}
+const mapDispatchtoProps = (dispatch) => {
+    return {
+        onIncreaseClick: () => dispatch(increaseAction),
+        onDecreaseClick: () => dispatch(decreaseAction),
+        onResetClick: () => dispatch(resetAction)
+    }
+}
+const App = connect(mapStatetoProps, mapDispatchtoProps)(Counter)
+
+class BasicExample extends React.Component {
+    render() {
+        return (
+            <Provider store={store}>
+                <App/>
+            </Provider>
         )
     }
 }

@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {Link, Redirect} from 'react-router-dom'
+import {connect} from 'react-redux'
 
 import {LayoutGuest, InputContent} from '../index.js'
 import Credentials from '../../Credentials'
@@ -95,5 +96,12 @@ class EmailActivation extends Component {
         )
     }
 }
-
-export default EmailActivation
+const mapStatetoProps = (state) => {
+    return {is_logged_in: state.is_logged_in, is_signup_success: state.is_signup_success}
+}
+const mapDispatchtoProps = (dispatch) => {
+    return {
+        dispatcherSignUp: () => dispatch()
+    }
+}
+export default connect(mapStatetoProps, mapDispatchtoProps)(EmailActivation)

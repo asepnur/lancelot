@@ -1,40 +1,20 @@
 import React, {Component} from 'react'
-import { Redirect} from 'react-router-dom'
+import {Redirect} from 'react-router-dom'
+import {connect} from 'react-redux'
 
-import Credentials from '../../Credentials'
 import {Navbar, LayoutUser, InputContent} from '../index.js'
 
 class Home extends Component {
-    constructor() {
-        super()
-        this.state = {
-            is_logged_in: Credentials.is_logged_in
-        }
-    }
     render() {
-        return (Credentials.is_logged_in
+        const {is_logged_in} = this.props
+        return (is_logged_in
             ? this.renderMain()
-            : <Redirect to="/login"/>)
-    }
-    handleLogout = (e) => {
-        e.preventDefault()
-        fetch('https://meikoapp.herokuapp.com/api/v1/user/signout', {
-            method: 'POST',
-            credentials: 'include',
-            crossDomain: true
-        }).then((res) => {
-            return res.json()
-        }).then((data) => {
-            if (data.code === 200) {
-                Credentials.is_logged_in = false
-                this.setState({is_logged_in: false})
-            }
-        })
+            : <Redirect to={`/login`}/>)
     }
     renderMain = () => {
         return (
             <LayoutUser>
-                <Navbar handleOut={this.handleLogout}/>
+                <Navbar />
                 <div className="_cn">
                     <div className="_ro">
                         <div className="_pd3cl _c5m312 _c5x312">
@@ -56,7 +36,7 @@ class Home extends Component {
                                     <div className="_c5x34">
                                         <p className="_se5ct">
                                             <i className="fa fa-circle _i3a" aria-hidden="true"></i>
-                                        YESTERDAY</p>
+                                            YESTERDAY</p>
                                     </div>
                                     <div className="_c5x36">
                                         <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
@@ -325,9 +305,16 @@ class Home extends Component {
                     </div>
                 </div>
             </LayoutUser>
-
         )
     }
 }
 
-export default Home
+const mapStatetoProps = (state) => {
+    return {is_logged_in: state.is_logged_in}
+}
+const mapDispatchtoProps = (dispatch) => {
+    return {
+        dispatcher: () => dispatch()
+    }
+}
+export default connect(mapStatetoProps, mapDispatchtoProps)(Home)

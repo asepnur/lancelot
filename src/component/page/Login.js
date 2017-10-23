@@ -1,7 +1,9 @@
 import React, {Component} from 'react'
 import {Link, Redirect} from 'react-router-dom'
+import PropTypes from 'prop-types'
+import {connect} from 'react-redux'
 
-import Credentials from '../../Credentials'
+import {actorSignIn} from '../../action/action'
 import {LayoutGuest, InputContent} from '../index.js'
 
 class Login extends Component {
@@ -9,21 +11,35 @@ class Login extends Component {
     super()
     this.state = {
       email: '',
-      password: '',
-      is_logged_in: Credentials.is_logged_in
+      password: ''
     }
   }
   render() {
-    return (!this.state.is_logged_in ? this.renderMain(): <Redirect to="/" />)
+    const is_login_failed = this.props.is_login_failed
+    const is_logged_in = this.props.is_logged_in
+    return (!is_logged_in
+      ? is_login_failed
+        ? (
+          <div>
+            <p>Gagal</p>{this.renderMain()}</div>
+        )
+        : (this.renderMain())
+      : <Redirect to={`/`}/>)
   }
   renderMain = () => {
     return (
       <LayoutGuest>
         <div className="_bl5b"></div>
-        <form className="_cn" onSubmit={this.loginAction}>
+        <form
+          className="_cn"
+          onSubmit={(e) => {
+          e.preventDefault()
+          this.handlerSignIn(this.props.dispatcherSignIn)
+        }}>
           <div className="_ro">
             <div className="_c5m38 _c5m3o5 _c5x312">
-              <h2 className="_he3m">Sign In</h2>
+              <h2 className="_he3m">Sign In
+              </h2>
             </div>
           </div>
           <div className="_ro">
@@ -72,8 +88,7 @@ class Login extends Component {
       </LayoutGuest>
     )
   }
-  loginAction = (e) => {
-    e.preventDefault()
+  handlerSignIn = (dispatcherSignIn) => {
     let formData = new FormData()
     formData.append('email', this.state.email)
     formData.append('password', this.state.password)
@@ -85,12 +100,9 @@ class Login extends Component {
     }).then((res) => {
       return res.json()
     }).then((data) => {
-      if(data.code===200){
-        Credentials.is_logged_in = data.data.is_logged_in
-        this.setState({
-          is_logged_in:true
-        })
-      }
+      return (data.code === 200
+        ? dispatcherSignIn(true, false)
+        : dispatcherSignIn(false, true))
     })
   }
   onChangeState = (e) => {
@@ -101,5 +113,20 @@ class Login extends Component {
     })
   }
 }
+Login.PropTypes = {
+  is_logged_in: PropTypes.bool.isRequired,
+  is_login_failed: PropTypes.bool.isRequired,
+  email: PropTypes.string.isRequired,
+  password: PropTypes.string.isRequired,
+  onSubmitAction: PropTypes.func.isRequired
+}
 
-export default Login
+const mapStatetoProps = (state) => {
+  return {is_login_failed: state.is_login_failed, is_logged_in: state.is_logged_in}
+}
+const mapDispatchtoProps = (dispatch) => {
+  return {
+    dispatcherSignIn: (is_logged_in, is_login_failed) => dispatch(actorSignIn(is_logged_in, is_login_failed))
+  }
+}
+export default connect(mapStatetoProps, mapDispatchtoProps)(Login)

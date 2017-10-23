@@ -5,7 +5,6 @@ import {LayoutGuest} from '../index.js'
 
 class SuccessSignup extends Component {
     render() {
-        console.log(this.props)
         return (this.renderMain())
     }
     renderMain = () => {

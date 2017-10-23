@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
 import {Link, Redirect} from 'react-router-dom'
+import {connect} from 'react-redux'
 
 import {InputContent, LayoutGuest} from '../index.js'
-import Credentials from '../../Credentials'
-
+import {actorSignUp} from '../../action/action'
 class Signup extends Component {
     constructor() {
         super()
@@ -12,24 +12,26 @@ class Signup extends Component {
             lName: '',
             id: '',
             email: '',
-            password: '',
-            is_sign_up: false
-
+            password: ''
         }
     }
     render() {
-        return (!Credentials.is_logged_in
-            ? (!this.state.is_sign_up
+        const {is_logged_in, is_signup_success} = this.props
+        console.log(is_signup_success)
+        return (!is_logged_in
+            ? (is_signup_success === undefined
                 ? this.renderMain()
-                : <Redirect
-                    email={this.state.email}
-                    to={{
-                    pathname: `/email-activation/email=${this.state.email}`,
-                    state: {
-                        email: this.state.email
-                    }
-                }}/>)
-            : <Redirect to="/"/>)
+                : is_signup_success
+                    ? <Redirect
+                            email={this.state.email}
+                            to={{
+                            pathname: `/email-activation/email=${this.state.email}`,
+                            state: {
+                                email: this.state.email
+                            }
+                        }}/>
+                    : <div><p>Gagal signup</p>{this.renderMain()}</div>)
+            : <Redirect to={`/`}/>)
     }
     handleChange = (e) => {
         const target = e.target
@@ -37,8 +39,7 @@ class Signup extends Component {
             [target.name]: target.value
         })
     }
-    handleSubmit = (e) => {
-        e.preventDefault()
+    handleSubmit = (dispatcherSignUp) => {
         let formData = new FormData()
         formData.append('id', this.state.id)
         formData.append('name', this.state.fName + " " + this.state.lName)
@@ -53,16 +54,21 @@ class Signup extends Component {
         }).then((res) => {
             return res.json()
         }).then((data) => {
-            if (data.code === 200) {
-                this.setState({is_sign_up: true})
-            }
+            data.code === 200
+                ? dispatcherSignUp(true)
+                : dispatcherSignUp(false)
         })
     }
     renderMain() {
         return (
             <LayoutGuest>
                 <div className="_bl5b"></div>
-                <form className="_cn" onSubmit={this.handleSubmit}>
+                <form
+                    className="_cn"
+                    onSubmit={(e) => {
+                    e.preventDefault();
+                    this.handleSubmit(this.props.dispatcherSignUp)
+                }}>
                     <div className="_ro">
                         <div className="_c5m37 _c5m3o5 _c5x312">
                             <h2 className="_he3m">Sign Up</h2>
@@ -139,4 +145,12 @@ class Signup extends Component {
         )
     }
 }
-export default Signup
+const mapStatetoProps = (state) => {
+    return {is_logged_in: state.is_logged_in, is_signup_success: state.is_signup_success}
+}
+const mapDispatchtoProps = (dispatch) => {
+    return {
+        dispatcherSignUp: (is_signup_success) => dispatch(actorSignUp(is_signup_success))
+    }
+}
+export default connect(mapStatetoProps, mapDispatchtoProps)(Signup)
