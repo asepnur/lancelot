@@ -1,11 +1,17 @@
 import React, {Component} from 'react'
-import { Link } from 'react-router-dom'
+import {Link, Redirect} from 'react-router-dom'
+import {connect} from 'react-redux'
 
 import {LayoutGuest} from '../index.js'
 
 class SuccessSignup extends Component {
     render() {
-        return (this.renderMain())
+        const {is_logged_in, signup_status} = this.props
+        return (is_logged_in
+            ? <Redirect to={`/`}/>
+            : signup_status === 1
+                ? this.renderMain()
+                : <Redirect to={`/login`}/>)
     }
     renderMain = () => {
         return (
@@ -14,7 +20,10 @@ class SuccessSignup extends Component {
                 <form className="_cn" action="/" method="POST">
                     <div className="_ro">
                         <div className="_c5m310 _c5m3o1 _c5x312">
-                            <h2 className="_he3cm">Congratulation,{this.props.email!==undefined?this.props.location.state.email:""} your account has been activated!</h2>
+                            <h2 className="_he3cm">Congratulation,{this.props.email !== undefined
+                                    ? this.props.location.state.email
+                                    : ""}
+                                your account has been activated!</h2>
                         </div>
                     </div>
                     <div className="_ro">
@@ -43,4 +52,7 @@ class SuccessSignup extends Component {
         )
     }
 }
-export default SuccessSignup
+const mapStatetoProps = (state) => {
+    return {is_logged_in: state.is_logged_in, is_signup_success: state.is_signup_success, signup_status: state.signup_status}
+}
+export default connect(mapStatetoProps)(SuccessSignup)

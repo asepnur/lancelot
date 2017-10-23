@@ -17,7 +17,6 @@ class Signup extends Component {
     }
     render() {
         const {is_logged_in, is_signup_success} = this.props
-        console.log(is_signup_success)
         return (!is_logged_in
             ? (is_signup_success === undefined
                 ? this.renderMain()
@@ -25,7 +24,7 @@ class Signup extends Component {
                     ? <Redirect
                             email={this.state.email}
                             to={{
-                            pathname: `/email-activation/email=${this.state.email}`,
+                            pathname: `/email-activation/${this.state.email}`,
                             state: {
                                 email: this.state.email
                             }

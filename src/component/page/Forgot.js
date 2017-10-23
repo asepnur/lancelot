@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
-
 import {Link, Redirect} from 'react-router-dom'
+import {connect} from 'react-redux'
 
 import {LayoutGuest, InputContent} from '../index.js'
-
+import {actorForgot} from '../../action/action'
 class Forgot extends Component {
     constructor() {
         super()
@@ -19,8 +19,7 @@ class Forgot extends Component {
         })
     }
 
-    handleSubmit = (e) => {
-        e.preventDefault()
+    handleSubmit = (dispatcherForgot) => {
         let formData = new FormData()
         formData.append('email', this.state.email)
         formData.append('resend', 'true')
@@ -32,24 +31,35 @@ class Forgot extends Component {
         }).then((res) => {
             return res.json()
         }).then((data) => {
-            if (data.code === 200) {
-                this.setState({success: true})
-            }
+            data.code === 200
+                ? dispatcherForgot(true)
+                : dispatcherForgot(false)
         })
     }
 
     render() {
+        const {is_logged_in, is_email_registered} = this.props
         let url = '/forgot/' + this.state.email
-        return (this.state.success
-            ? <Redirect to={url}/>
-            : this.renderMain())
+        return (is_logged_in
+            ? <Redirect to={`/`}/>
+            : is_email_registered === undefined
+                ? this.renderMain()
+                : is_email_registered
+                    ? <Redirect to={url}/>
+                    : <div>
+                        <p>Email not registered</p>{this.renderMain()}</div>)
     }
 
     renderMain() {
         return (
             <LayoutGuest>
                 <div className="_bl5c"></div>
-                <form className="_cn" onSubmit={this.handleSubmit}>
+                <form
+                    className="_cn"
+                    onSubmit={e => {
+                    e.preventDefault();
+                    this.handleSubmit(this.props.dispatcherForgot)
+                }}>
                     <div className="_ro">
                         <div className="_c5m310 _c5m3o3 _c5x3o1 _c5x310">
                             <h2 className="_he3m">Forgot Password</h2>
@@ -88,4 +98,13 @@ class Forgot extends Component {
         )
     }
 }
-export default Forgot
+const mapStatetoProps = (state) => {
+    return {is_logged_in: state.is_logged_in, is_email_registered: state.is_email_registered}
+}
+const mapDispatchtoProps = (dispatch) => {
+    return {
+        dispatcherForgot: (is_email_registered) => dispatch(actorForgot(is_email_registered))
+    }
+}
+
+export default connect(mapStatetoProps, mapDispatchtoProps)(Forgot)

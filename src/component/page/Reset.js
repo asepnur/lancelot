@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {Link, Redirect} from 'react-router-dom'
-
+import {connect} from 'react-redux'
+import {actorRequest} from '../../action/action'
 import {LayoutGuest, InputContent} from '../index.js'
 
 class Reset extends Component {
@@ -10,8 +11,7 @@ class Reset extends Component {
             email: '',
             code: '',
             password: '',
-            password_confirmation: '',
-            success: false
+            password_confirmation: ''
         }
     }
 
@@ -25,8 +25,7 @@ class Reset extends Component {
         })
     }
 
-    handleSubmit = (e) => {
-        e.preventDefault()
+    handleSubmit = (dispatcherRequest) => {
         if (this.state.password !== this.state.password_confirmation) {
             console.log('password is not match')
             return
@@ -44,23 +43,32 @@ class Reset extends Component {
         }).then((res) => {
             return res.json()
         }).then((data) => {
-            if (data.code === 200) {
-                this.setState({success: true})
-            }
+            data.code === 200
+                ? dispatcherRequest(200)
+                : dispatcherRequest(401)
         })
     }
 
     render() {
-        return (this.state.success
-            ? <Redirect to='/login'/>
-            : this.renderMain())
+        const {is_logged_in, request_status} = this.props
+        return (is_logged_in
+            ? <Redirect to='/'/>
+            : request_status === undefined
+                ? this.renderMain()
+                : request_status === 200
+                    ? <Redirect to={`/login`}/>
+                    : <div>
+                        <p>Error Reset Password</p>{this.renderMain()}</div>)
     }
 
     renderMain() {
         return (
             <LayoutGuest>
                 <div className="_bl5c"></div>
-                <form className="_cn" onSubmit={this.handleSubmit}>
+                <form className="_cn" onSubmit={ e => {
+                    e.preventDefault();
+                    this.handleSubmit(this.props.dispatcherRequest)
+                }}>
                     <div className="_ro">
                         <div className="_c5m310 _c5m3o3 _c5x3o1 _c5x310">
                             <h2 className="_he3m">Reset Password</h2>
@@ -97,4 +105,12 @@ class Reset extends Component {
         )
     }
 }
-export default Reset
+const mapStatetoProps = (state) => {
+    return {is_logged_in: state.is_logged_in, request_status: state.request_status}
+}
+const mapDispatchtoProps = (dispatch) => {
+    return {
+        dispatcherRequest: (request_status) => dispatch(actorRequest(request_status))
+    }
+}
+export default connect(mapStatetoProps,mapDispatchtoProps)(Reset)

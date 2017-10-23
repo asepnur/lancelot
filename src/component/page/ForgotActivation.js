@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {Link, Redirect} from 'react-router-dom'
-
+import {connect} from 'react-redux'
+import {actorVerifyForgot} from '../../action/action'
 import {LayoutGuest, InputContent} from '../index.js'
 
 class ForgotActivation extends Component {
@@ -22,8 +23,7 @@ class ForgotActivation extends Component {
         })
     }
 
-    handleSubmit = (e) => {
-        e.preventDefault()
+    handlerSubmit = (dispatcherVerifyForgot) => {
         let formData = new FormData()
         formData.append('email', this.state.email)
         formData.append('code', this.state.code)
@@ -35,25 +35,39 @@ class ForgotActivation extends Component {
         }).then((res) => {
             return res.json()
         }).then((data) => {
-            if (data.code === 200) {
-                this.setState({success: true})
-            }
+            data.code === 200
+                ? dispatcherVerifyForgot(true)
+                : dispatcherVerifyForgot(false)
+
         })
     }
 
     render() {
         let url = '/reset/' + this.state.email + '/' + this.state.code
-        return (this.state.success ? <Redirect to={url}/> : this.renderMain())
+        const {is_logged_in, is_code_match} = this.props
+        return (is_logged_in
+            ? <Redirect to={'/'}/>
+            : is_code_match === undefined
+                ? this.renderMain()
+                : is_code_match
+                    ? <Redirect to={url}/>
+                    : <div>
+                        <p>Wrong Code</p>{this.renderMain()}</div>)
     }
 
     renderMain() {
         return (
             <LayoutGuest>
                 <div className="_bl5c"></div>
-                <form className="_cn" onSubmit={this.handleSubmit}>
+                <form
+                    className="_cn"
+                    onSubmit={ e => {
+                        e.preventDefault();
+                        this.handlerSubmit(this.props.dispatcherVerifyForgot)
+                }}>
                     <div className="_ro">
                         <div className="_c5m310 _c5m3o1 _c5x312">
-                            <h2 className="_he3cm">Thank you for your registration!</h2>
+                            <h2 className="_he3cm">Forgot Password Verification</h2>
                         </div>
                     </div>
                     <div className="_ro">
@@ -91,5 +105,12 @@ class ForgotActivation extends Component {
         )
     }
 }
-
-export default ForgotActivation
+const mapStatetoProps = (state) => {
+    return {is_logged_in: state.is_logged_in, is_code_match: state.is_code_match}
+}
+const mapDispatchtoProps = (dispatch) => {
+    return {
+        dispatcherVerifyForgot: (is_code_match) => dispatch(actorVerifyForgot(is_code_match))
+    }
+}
+export default connect(mapStatetoProps,mapDispatchtoProps)(ForgotActivation)
