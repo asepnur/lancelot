@@ -18,7 +18,16 @@ import {
     MyActivity,
     Grade,
     Information,
-    User
+    User,
+    AdminCrtUser,
+    AdminUser,
+    AdminCrtRole,
+    AdminCrtInfo,
+    AdminCourse,
+    AdminCrtAssign,
+    AdminCrtAssis,
+    AdminCrtAttand,
+    Test
 } from './component/index.js'
 
 const Main = () => {
@@ -42,6 +51,15 @@ const Main = () => {
                         <Route path='/grade' component={Grade}/>
                         <Route path='/information' component={Information}/>
                         <Route path='/user' component={User}/>
+                        <Route path='/admin/users/create' component={AdminCrtUser} />
+                        <Route path='/admin/users/role' component={AdminCrtRole} />
+                        <Route path='/admin/users' component={AdminUser} />
+                        <Route path='/admin/information/create' component={AdminCrtInfo} />
+                        <Route path='/admin/course/assistant/create' component={AdminCrtAssis} />
+                        <Route path='/admin/course/assignment/create' component={AdminCrtAssign} />
+                        <Route path='/admin/course/attandance/create' component={AdminCrtAttand} />
+                        <Route path='/admin/course' component={AdminCourse} />
+                        <Route path='/test' component={Test}/>
                     </Switch>
                 </Router>
             </Initialize>

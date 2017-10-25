@@ -53,7 +53,7 @@ class ForgotActivation extends Component {
                 <form className="_cn" onSubmit={this.handleSubmit}>
                     <div className="_ro">
                         <div className="_c5m310 _c5m3o1 _c5x312">
-                            <h2 className="_he3cm">Thank you for your registration!</h2>
+                            <h2 className="_he3cm">Activation Your New Password</h2>
                         </div>
                     </div>
                     <div className="_ro">

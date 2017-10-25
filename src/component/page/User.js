@@ -29,8 +29,8 @@ class User extends Component {
                 <Navbar/>
                 <div className="_cn">
                     <div className="_ro">
-                        <div className="_pd3cl _c5m312 _c5x312">
-                            <h1 className="_he3m3b _ma3xl3t">Account Setting</h1>
+                        <div className="_pd5m3n _c5m312 _c5x312">
+                            <h1 className="_he3b">Account Setting</h1>
                         </div>
                     </div>
                 </div>
@@ -273,7 +273,5 @@ class User extends Component {
         )
     }
 }*/
-
-
 
 export default User
