@@ -41,10 +41,6 @@ export {default as AdminCrtAttand} from './page/AdminCrtAttand.js'
 
 //Animation
 export {default as Animation}from './animation/Animation.js'
-//Features
-export {default as Newsbar}         from './features/Newsbar.js'
 
-// Content
-export {default as InputContent}    from './section/InputContent.js'
 //Error Message
 export {default as ErrorMessage}    from './message/ErrorMessage'
