@@ -2,39 +2,39 @@ import React, {Component} from 'react'
 import {Link, Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 
+import {actorRequest} from '../../action/action'
 import {LayoutGuest, InputContent} from '../index.js'
-import Credentials from '../../Credentials'
 
 class EmailActivation extends Component {
     constructor(props) {
         super(props)
         this.state = {
             code: '',
-            email: this.props.location.state.email,
-            is_success: false
+            email: this.props.match.params.id
         }
     }
     render() {
-        return (!Credentials.is_logged_in
-            ? (!this.state.is_success
-                ? this.renderMain()
-                : <Redirect
-                    to={{
-                    pathname: `/success-signup`,
-                    state: {
-                        email: this.state.email
-                    }
-                }}/>)
+        const {is_logged_in, request_status} = this.props
+        
+        return (!is_logged_in
+            ? (request_status === 201
+                ? <Redirect
+                        to={{
+                        pathname: `/success-signup`,
+                        state: {
+                            email: this.state.email
+                        }
+                    }}/>
+                : this.renderMain())
             : <Redirect to="/"/>)
     }
-    handleChange = (e) => {
+    handlerChange = (e) => {
         const target = e.target
         this.setState({
             [target.name]: target.value
         })
     }
-    handleSubmit = (e) => {
-        e.preventDefault()
+    handlerSubmit = (dispatcherRequest) => {
         let formData = new FormData()
         formData.append('code', this.state.code)
         formData.append('email', this.state.email)
@@ -47,16 +47,21 @@ class EmailActivation extends Component {
         }).then((res) => {
             return res.json()
         }).then((data) => {
-            if (data.code === 200) {
-                this.setState({is_success: true})
-            }
+            data.code === 200
+                ? dispatcherRequest(false, 201, '')
+                : dispatcherRequest(false, 401, data.error)
         })
     }
     renderMain = () => {
         return (
             <LayoutGuest>
                 <div className="_bl5c"></div>
-                <form className="_cn" onSubmit={this.handleSubmit}>
+                <form
+                    className="_cn"
+                    onSubmit={e => {
+                    e.preventDefault();
+                    this.handlerSubmit(this.props.dispatcherRequest)
+                }}>
                     <div className="_ro">
                         <div className="_c5m310 _c5m3o1 _c5x312">
                             <h2 className="_he3cm">Thank you for your registration!</h2>
@@ -74,7 +79,7 @@ class EmailActivation extends Component {
                             type="text"
                             name="code"
                             placeholder="Activation Code"
-                            onChangeState={this.handleChange}/>
+                            onChangeState={this.handlerChange}/>
                     </div>
                     <div className="_ro">
                         <div className="_c5m3o3 _c5m33 _c5x3o3  _c5x36">
@@ -97,11 +102,11 @@ class EmailActivation extends Component {
     }
 }
 const mapStatetoProps = (state) => {
-    return {is_logged_in: state.is_logged_in, is_signup_success: state.is_signup_success}
+    return {is_logged_in: state.is_logged_in, request_status: state.request_status, error_message: state.error_message}
 }
 const mapDispatchtoProps = (dispatch) => {
     return {
-        dispatcherSignUp: () => dispatch()
+        dispatcherRequest: (is_logged_in, request_status, error_message) => dispatch(actorRequest(is_logged_in, request_status, error_message))
     }
 }
 export default connect(mapStatetoProps, mapDispatchtoProps)(EmailActivation)

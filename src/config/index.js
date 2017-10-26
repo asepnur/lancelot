@@ -1,3 +1,6 @@
+//--------------------------------------------;
+//                  INIT and STORE;
+//--------------------------------------------;
 import React from 'react'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
@@ -5,7 +8,9 @@ import {createStore} from 'redux'
 import {initAction} from '../action/action'
 import Reducers from '../reducer/index'
 import {Animation} from '../component/index.js'
+
 class Init extends React.Component {
+
     componentWillMount() {
         fetch("https://meikoapp.herokuapp.com/api/v1/role", {
             method: "GET",
@@ -22,6 +27,7 @@ class Init extends React.Component {
         })
         
     }
+
     render() {
         const {is_loading} = this.props
         return (is_loading
@@ -37,8 +43,10 @@ Init.PropTypes = {
 }
 
 const mapStatetoProps = (state) => {
-
-    return {is_loading: state.is_loading, is_logged_in: state.is_logged_in}
+    return {
+        is_loading: state.is_loading, 
+        is_logged_in: state.is_logged_in
+    }
 }
 const mapDispatchtoProps = (dispatch) => {
     return {

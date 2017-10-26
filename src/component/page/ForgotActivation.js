@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
 import {Link, Redirect} from 'react-router-dom'
+import {connect} from 'react-redux'
 
+import {actorRequest} from '../../action/action'
 import {LayoutGuest, InputContent} from '../index.js'
 
 class ForgotActivation extends Component {
@@ -22,8 +24,7 @@ class ForgotActivation extends Component {
         })
     }
 
-    handleSubmit = (e) => {
-        e.preventDefault()
+    handlerSubmit = (dispatcherRequest) => {
         let formData = new FormData()
         formData.append('email', this.state.email)
         formData.append('code', this.state.code)
@@ -35,22 +36,35 @@ class ForgotActivation extends Component {
         }).then((res) => {
             return res.json()
         }).then((data) => {
-            if (data.code === 200) {
-                this.setState({success: true})
-            }
+            data.code === 200
+                ? dispatcherRequest(false, 201, '')
+                : dispatcherRequest(false, 401, data.error)
+
         })
     }
 
     render() {
         let url = '/reset/' + this.state.email + '/' + this.state.code
-        return (this.state.success ? <Redirect to={url}/> : this.renderMain())
+        const {is_logged_in, request_status} = this.props
+
+        return (is_logged_in
+            ? <Redirect to={'/'}/>
+            : request_status === 201
+                ? <Redirect to={url}/>
+                : this.renderMain()
+            )
     }
 
     renderMain() {
         return (
             <LayoutGuest>
                 <div className="_bl5c"></div>
-                <form className="_cn" onSubmit={this.handleSubmit}>
+                <form
+                    className="_cn"
+                    onSubmit={ e => {
+                        e.preventDefault();
+                        this.handlerSubmit(this.props.dispatcherRequest)
+                }}>
                     <div className="_ro">
                         <div className="_c5m310 _c5m3o1 _c5x312">
                             <h2 className="_he3cm">Activation Your New Password</h2>
@@ -91,5 +105,12 @@ class ForgotActivation extends Component {
         )
     }
 }
-
-export default ForgotActivation
+const mapStatetoProps = (state) => {
+    return {is_logged_in: state.is_logged_in, request_status: state.request_status, error_message: state.error_message}
+}
+const mapDispatchtoProps = (dispatch) => {
+    return {
+        dispatcherRequest: (is_logged_in, request_status, error_message) => dispatch(actorRequest(is_logged_in, request_status, error_message))
+    }
+}
+export default connect(mapStatetoProps,mapDispatchtoProps)(ForgotActivation)

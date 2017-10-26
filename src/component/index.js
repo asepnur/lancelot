@@ -1,3 +1,7 @@
+//--------------------------------------------;
+//         CONTENT TABLE of COMPONENTS;
+//--------------------------------------------;
+
 // Layout
 export {default as LayoutGuest}from './layout/LayoutGuest.js'
 export {default as LayoutUser}from './layout/LayoutUser.js'
@@ -37,3 +41,10 @@ export {default as AdminCrtAttand} from './page/AdminCrtAttand.js'
 
 //Animation
 export {default as Animation}from './animation/Animation.js'
+//Features
+export {default as Newsbar}         from './features/Newsbar.js'
+
+// Content
+export {default as InputContent}    from './section/InputContent.js'
+//Error Message
+export {default as ErrorMessage}    from './message/ErrorMessage'
