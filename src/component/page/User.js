@@ -88,7 +88,7 @@ class User extends Component {
         }).then((res) => {
             return res.json()
         }).then((data) => {
-            data.code === 200
+            return data.code === 200
                 ? this.setState({
                     id: data.data.id,
                     name: data.data.name,
