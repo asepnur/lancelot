@@ -13,7 +13,16 @@ import {
     MyActivity,
     Grade,
     Information,
-    User
+    User,
+    AdminCrtUser,
+    AdminUser,
+    AdminCrtRole,
+    AdminCrtInfo,
+    AdminCourse,
+    AdminCrtAssign,
+    AdminCrtAssis,
+    AdminCrtAttand,
+    Test
 } from '../component/index.js'
 export const routes = [
     {
@@ -75,6 +84,42 @@ export const routes = [
     }, {
         path: '/user',
         component: User,
+        exact: false
+    }, {
+        path: '/admin/users/create',
+        component: AdminCrtUser,
+        exact: false
+    }, {
+        path: '/admin/users/role',
+        component: AdminCrtRole,
+        exact: false
+    }, {
+        path: '/admin/users',
+        component: AdminUser,
+        exact: false
+    }, {
+        path: '/admin/information/create',
+        component: AdminCrtInfo,
+        exact: false
+    }, {
+        path: '/admin/course/assistant/create',
+        component: AdminCrtAssis,
+        exact: false
+    }, {
+        path: '/admin/course/assignment/create',
+        component: AdminCrtAssign,
+        exact: false
+    }, {
+        path: '/admin/course/attandance/create',
+        component: AdminCrtAttand,
+        exact: false
+    }, {
+        path: '/admin/course',
+        component: AdminCourse,
+        exact: false
+    }, {
+        path: '/test',
+        component:Test,
         exact: false
     }
 ]

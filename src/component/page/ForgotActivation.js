@@ -67,7 +67,7 @@ class ForgotActivation extends Component {
                 }}>
                     <div className="_ro">
                         <div className="_c5m310 _c5m3o1 _c5x312">
-                            <h2 className="_he3cm">Forgot Password Verification</h2>
+                            <h2 className="_he3cm">Activation Your New Password</h2>
                         </div>
                     </div>
                     <div className="_ro">
