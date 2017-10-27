@@ -5,7 +5,7 @@ import {actorRequest} from '../../action/action'
 
 class ErrorMessage extends Component {
     render() {
-        const {request_status, error_message, dispatcherRequest} = this.props
+        const {is_logged_in, request_status, error_message, dispatcherRequest} = this.props
         return (
             <div
                 className="_erm _c5m3o3 _c5m36 _c5x312"
@@ -20,7 +20,9 @@ class ErrorMessage extends Component {
                          {error_message}
                         <i className="fa fa-times _erm5c" aria-hidden="true" onClick={e =>{
                             e.preventDefault();
-                            dispatcherRequest(false, 0, '')
+                            is_logged_in
+                                ?dispatcherRequest(true, 0, '')
+                                :dispatcherRequest(false, 0, '')
                         }}></i>
                     </p>
                 </div>
