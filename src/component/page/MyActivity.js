@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
-
+import {connect} from 'react-redux'
+import {Redirect} from 'react-router-dom'
+import {actorRequest} from '../../action/action'
 import {
     Navbar,
     Newsbar,
@@ -8,7 +10,10 @@ import {
 
 class MyActivity extends Component{
     render(){
+        const {is_logged_in} = this.props
+        
         return(
+            is_logged_in?
             <LayoutUser>
             <Navbar/>
             <div className="_cn">
@@ -202,9 +207,17 @@ class MyActivity extends Component{
                 <Newsbar/>
             </div>
         </div>
-            </LayoutUser>
+            </LayoutUser>:<Redirect to={`/login`} />
             )
     }
 }
+const mapStatetoProps = (state) => {
+    return {is_logged_in: state.is_logged_in, request_status: state.request_status, error_message: state.error_message}
+}
+const mapDispatchtoProps = (dispatch) => {
+    return {
+        dispatcherRequest: (is_logged_in, request_status, error_message) => dispatch(actorRequest(is_logged_in, request_status, error_message))
+    }
+}
 
-export default MyActivity
+export default connect(mapStatetoProps, mapDispatchtoProps)(MyActivity)

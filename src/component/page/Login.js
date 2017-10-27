@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {Link, Redirect} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
+import ReactDOM from 'react-dom'
 
 import {actorRequest} from '../../action/action'
 import {LayoutGuest, InputContent} from '../index.js'
@@ -11,7 +12,8 @@ class Login extends Component {
     super()
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      is_show_password: false
     }
   }
   render() {
@@ -48,11 +50,12 @@ class Login extends Component {
             <div className="_c5m36 _c5m3o5 _c5x312">
               <div className="_cn5g">
                 <input
+                  id="password"
                   type="password"
                   name="password"
                   placeholder="Password"
                   onChange={this.onChangeState}/>
-                <i className="fa fa-eye"></i>
+                <i onClick={this.onChangeDisplayPassword} className="fa fa-eye"></i>
               </div>
             </div>
           </div>
@@ -104,6 +107,17 @@ class Login extends Component {
 
     this.setState({
       [target.name]: target.value
+    })
+  }
+  onChangeDisplayPassword = () => {
+    let password = document.getElementB('password')
+    
+    this.state.is_show_password 
+      ?ReactDOM.findDOMNode(password).setAttribute('type', 'password')
+      :ReactDOM.findDOMNode(password).setAttribute('type', 'text')
+
+    this.setState({
+      is_show_password: !this.state.is_show_password
     })
   }
 }

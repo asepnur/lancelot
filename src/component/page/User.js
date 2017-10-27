@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom'
 import {connect} from 'react-redux'
 import LoadingBar from 'react-redux-loading-bar'
 
-
 import {Navbar, Newsbar, LayoutUser, InputContent} from '../index.js'
 import {actorRequest} from '../../action/action'
 
@@ -20,6 +19,7 @@ class User extends Component {
             phone: '',
             line_id: '',
             about_me: '',
+            img:'',
             password: '',
             old_password: '',
             password_confirmation: ''
@@ -33,6 +33,7 @@ class User extends Component {
             phone: this.state.phone,
             line_id: this.state.line_id,
             about_me: this.state.about_me,
+            img: this.state.img,
             handleChange: this.handleChange,
             handleChangePassword: this.handleChangePassword,
             handleUpdate: this.handleUpdate,
@@ -40,42 +41,44 @@ class User extends Component {
         }
         const {is_logged_in} = this.props
         return (is_logged_in
-            ? <div><LoadingBar /><LayoutUser>
-                    <Navbar/>
-                    <div className="_cn">
-                        <div className="_ro">
-                            <div className="_pd3cl _c5m312 _c5x312">
-                                <h1 className="_he3m3b _ma3xl3t">Account Setting</h1>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="_cn">
-                        <div className="_ro">
-                            <div className="_c5m38 _pd5n _pd3cl _pd5m3n">
-                                <div className="_ta">
-                                    <ul className="_ta5l">
-                                        <li>
-                                            <Link id="basic" onClick={this.handleBasic} className="_ta5l3a" to="#">Basic</Link>
-                                        </li>
-                                        <li>
-                                            <Link id="advance" onClick={this.handleAdvance} className="" to="#">Advance</Link>
-                                        </li>
-                                        <div id="basic-content">
-                                            <Basic data={data}/></div>
-                                        <div
-                                            id="advance-content"
-                                            style={{
-                                            display: 'none'
-                                        }}>
-                                            <Advance data={data}/></div>
-
-                                    </ul>
+            ? <div><LoadingBar/>
+                    <LayoutUser>
+                        <Navbar/>
+                        <div className="_cn">
+                            <div className="_ro">
+                                <div className="_pd3cl _c5m312 _c5x312">
+                                    <h1 className="_he3m3b _ma3xl3t">Account Setting</h1>
                                 </div>
                             </div>
-                            <Newsbar/>
                         </div>
-                    </div>
-                </LayoutUser></div>
+                        <div className="_cn">
+                            <div className="_ro">
+                                <div className="_c5m38 _pd5n _pd3cl _pd5m3n">
+                                    <div className="_ta">
+                                        <ul className="_ta5l">
+                                            <li>
+                                                <Link id="basic" onClick={this.handleBasic} className="_ta5l3a" to="#">Basic</Link>
+                                            </li>
+                                            <li>
+                                                <Link id="advance" onClick={this.handleAdvance} className="" to="#">Advance</Link>
+                                            </li>
+                                            <div id="basic-content">
+                                                <Basic data={data}/></div>
+                                            <div
+                                                id="advance-content"
+                                                style={{
+                                                display: 'none'
+                                            }}>
+                                                <Advance data={data}/></div>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                                <Newsbar/>
+                            </div>
+                        </div>
+                    </LayoutUser>
+                </div>
             : <Redirect to={`/login`}/>)
     }
     componentDidMount() {
@@ -95,7 +98,8 @@ class User extends Component {
                     email: data.data.email,
                     phone: data.data.phone,
                     line_id: data.data.line_id,
-                    about_me: data.data.about_me
+                    about_me: data.data.about_me,
+                    img: data.data.img
                 })
                 : null
         })
@@ -247,6 +251,10 @@ class Advance extends Component {
     }
 }
 class Basic extends Component {
+    handleImage = () =>{
+        let update_file = document.getElementById('update_file')
+        update_file.click()
+    }
     render() {
         return (
             <div className="_ta5c">
@@ -255,6 +263,17 @@ class Basic extends Component {
                         <div className="_c5x312 _c5m312 ">
                             <h1 className="_he3m3b">Account Basic</h1>
                         </div>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <div className="_c5x33 _c5m31">
+                            <input id="update_file" type="file" style={{display:'none'}} />
+                            <div className="_cn3ep" onClick={this.handleImage}>
+                                <img className="_i3pr _i3ci" src={"/img/icon/blue/logo copy 4.png"} alt="profil"/>
+                                <i className="fa fa-camera _icx _i3ep" aria-hidden="true"></i>
+                            </div>
+                        </div>
+
                         <InputContent
                             classWraper="_c5x312 _c5m312"
                             type="text"
@@ -304,7 +323,11 @@ class Basic extends Component {
                     </div>
                     <div className="_ro">
                         <div className="_c5x312 _c5m312 ">
-                            <textarea name="about" id="" value={this.props.data.about_me} placeholder="About me"></textarea>
+                            <textarea
+                                name="about"
+                                id=""
+                                value={this.props.data.about_me}
+                                placeholder="About me"></textarea>
                         </div>
                     </div>
                     <div className="_ro">
@@ -317,7 +340,8 @@ class Basic extends Component {
                                     .data
                                     .handleUpdate(this.props.data.dispatcherRequest)
                             }}
-                                className="_bt5m3b"type="submit" >Save</button>
+                                className="_bt5m3b"
+                                type="submit">Save</button>
                         </div>
                     </div>
                 </div>

@@ -2402,3 +2402,14 @@ html {
           right: 15px;
           top: 2px;
           cursor: pointer; }
+          ._cn3ep {
+            position: relative; 
+            display: inline-block;}
+            ._i3ep {
+              position: absolute;
+              bottom: 0;
+              right: -10px;
+              color: silver;
+              background-color: white;
+              padding: 4px;
+              border-radius: 50%; }
