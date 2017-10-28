@@ -1,133 +1,145 @@
 import React, {Component} from 'react'
-import {Link} from 'react-router-dom'
+import {Link, Redirect} from 'react-router-dom'
+import {connect} from 'react-redux'
 
+import {actorRequest} from '../../action/action'
 import {Navbar, LayoutUser, InputContent} from '../index.js'
 
 class AdminCrtUser extends Component {
-    constructor() {
-        super()
+   constructor() {
+      super()
 
-        this.state = {
-            uname: '',
-            npm: '',
-            pass: '',
-            passConf: '',
-            status: '',
-            role: ''
-        }
-    }
+      this.state = {
+         id: '',
+         name: '',
+         email: ''
+      }
+   }
 
-    handleChange = (e) => {
-        this.setState({
-            [e.target.name]: e.target.value
-        })
-    }
+   handleChange = (e) => {
+      this.setState({
+         [e.target.name]: e.target.value
+      })
+   }
+   handleCreate = (dispatcherRequest) => {
+      let formData = new FormData()
+      formData.append('id', this.state.id)
+      formData.append('email', this.state.email)
+      formData.append('name', this.state.name)
 
-    render() {
-        return (
-            <LayoutUser>
-                <Navbar match={this.props.match}/>
-                <div className="_cn">
-                    <div className="_ro">
-                        <div className="_pd5m3n _c5m312 _c5x312">
-                            <h1 className="_he3b">Create User</h1>
-                        </div>
-                    </div>
-                </div>
-                <div className="_cn">
-                    <div className="_ro">
-                        <div className="_c5m312 _pd5m3n _ta">
-                            <ul className="_ta5l">
-                                <li>
-                                    <Link to={'/'}>
-                                        <i className="" id="btn_attend">Users</i>
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link to={'/'}>
-                                        <i className="_ta5l3a" id="btn_attend">Create User</i>
-                                    </Link>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div className="_ro">
+      const host = `meikoapp.herokuapp.com`;
+      const base_url = `https://` + host;
+      fetch(base_url + '/api/admin/v1/user', {
+          method: 'POST',
+          credentials: 'include',
+          crossDomain: true,
+          body: formData
+      }).then((res) => {
+          return res.json()
+      }).then((data) => {
+          data.code === 200
+              ? window.location = '/admin/users'
+              : dispatcherRequest(true, 401, data.error)
+      })
+   }
 
-                        <div className="_c5x312 _c5m312 _pd5m3n">
-                            <div className="_se _se3a">
-                                <div className="_ro _pd3n3b">
-                                    <div className="_c5m312 _c5x312">
-                                        <form className="_cn" action="/" method="POST">
-                                            <div className="_ro _pd3l3t">
-                                                <InputContent
-                                                    classWraper="_c5m312 _c5x312 _pd3l3t"
-                                                    type="text"
-                                                    name="uname"
-                                                    placeholder="User Name*"
-                                                    value={this.state.uname}
-                                                    disabled="false"/>
-                                                <InputContent
-                                                    classWraper="_c5m312 _c5x312"
-                                                    type="text"
-                                                    name="npm"
-                                                    placeholder="NPM*"
-                                                    value={this.state.npm}
-                                                    disabled="false"/>
-                                                <InputContent
-                                                    classWraper="_c5m36 _c5x312"
-                                                    type="text"
-                                                    name="pass"
-                                                    placeholder="Password*"
-                                                    value={this.state.pass}
-                                                    disabled="false"/>
-                                                <InputContent
-                                                    classWraper="_c5m36 _c5x312"
-                                                    type="text"
-                                                    name="passConf"
-                                                    placeholder="Password Confirm*"
-                                                    value={this.state.passConf}
-                                                    disabled="false"/>
-                                                <div className="_c5m36 _c5x312">
-                                                    <select>
-                                                        <option value="active">Active</option>
-                                                        <option value="deactive">Deactive</option>
-                                                    </select>
-                                                </div>
-                                                <div className="_c5m36 _c5x312">
-                                                    <select>
-                                                        <option value="lorem1">Lorem1</option>
-                                                        <option value="lorem2">lorem2</option>
-                                                        <option value="lorem3">Lorem3</option>
-                                                        <option value="lorem4">lorem4</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </form>
+   render() {
+      const {is_logged_in} = this.props
+      return (is_logged_in
+         ? <LayoutUser>
+               <Navbar match={this.props.match}/>
+               <div className="_cn">
+                  <div className="_ro">
+                     <div className="_pd5m3n _c5m312 _c5x312">
+                        <h1 className="_he3b">User Management</h1>
+                     </div>
+                  </div>
+               </div>
+               <div className="_cn">
+                  <div className="_ro">
+                     <div className="_c5m312 _pd5m3n _ta">
+
+                        <ul className="_ta5l">
+                           <li>
+                              <Link id="users" to={'/admin/users'}>Users</Link>
+                           </li>
+                           <li>
+                              <Link
+                                 onClick={this.handleRolesMenu}
+                                 className="_ta5l3a"
+                                 id="create-user"
+                                 to={'#'}>Create Users</Link>
+                           </li>
+                        </ul>
+                     </div>
+                  </div>
+                  <div className="_ro">
+                     <div className="_c5x312 _c5m312 _pd5m3n">
+                        <div className="_se _se3a">
+                           <div className="_ro">
+                              <div className="_c5x310 _c5m311 ">
+                                 <h1 className="_he3m3b">Create User</h1>
+                              </div>
+                           </div>
+                           <div className="_ro _pd3n3b">
+                              <div className="_c5m312 _c5x312">
+                                 <form className="_cn" action="/" method="POST">
+                                    <div className="_ro _pd3l3t _pd3n3t">
+                                       <InputContent
+                                          classWraper="_c5m312 _c5x312 _pd3l3t"
+                                          type="text"
+                                          name="id"
+                                          placeholder="*Input ID"
+                                          onChangeState={this.handleChange}
+                                          value={this.state.id}/>
+                                       <InputContent
+                                          classWraper="_c5m312 _c5x312"
+                                          type="text"
+                                          name="email"
+                                          placeholder="*Input Email"
+                                          onChangeState={this.handleChange}
+                                          value={this.state.email}/>
+                                       <InputContent
+                                          classWraper="_c5m36 _c5x312"
+                                          type="text"
+                                          name="name"
+                                          placeholder="*Input Name"
+                                          onChangeState={this.handleChange}
+                                          value={this.state.name}/>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="_c5x312 _c5m312 _pd5m3n _pd3n3lr">
-                            <div>
-                                <div className="_ro _pd3n3b _pd3n3lr">
-                                    <div className="_c5m312 _c5x312">
-                                        <div className="_ro _c5m34 _pl5r">
-                                            <div className="_c5m34 _c5x34 _pd3n3lr">
-                                                <button className="_bt5m" type="">Cencel</button>
-                                            </div>
-                                            <div className="_c5m38 _c5x38">
-                                                <button className="_bt5m3b" type="submit">Save User</button>
-                                            </div>
-                                        </div>
+                                    <div className="_ro">
+                                    <div className="_c5x3o8 _c5m33 _c5x34 _pd3l">
+                                       <button
+                                          onClick={e => {
+                                          e.preventDefault();
+                                          this.handleCreate(this.props.dispatcherRequest)
+                                       }}
+                                                className="_bt5m3b">Save</button>
+                                          </div>
                                     </div>
-                                </div>
-                            </div>
+                                 </form>
+                              </div>
+                           </div>
                         </div>
-                    </div>
-                </div>
+                     </div>
+                  </div>
+               </div>
             </LayoutUser>
-        )
-    }
+         : <Redirect to={`/login`}/>)
+   }
+}
+// -----------------------------------------------------------------------------
+// -------------------;                                   state and dispatch to
+//                                  state and dispatcher to props
+// -----------------------------------------------------------------------------
+// - ------------------;
+const mapStatetoProps = (state) => {
+   return {is_logged_in: state.is_logged_in, request_status: state.request_status, error_message: state.error_message}
+}
+const mapDispatchtoProps = (dispatch) => {
+   return {
+      dispatcherRequest: (is_logged_in, request_status, error_message) => dispatch(actorRequest(is_logged_in, request_status, error_message))
+   }
 }
 
-export default AdminCrtUser
+export default connect(mapStatetoProps, mapDispatchtoProps)(AdminCrtUser)

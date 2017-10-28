@@ -26,10 +26,17 @@ class Navbar extends Component {
       })
    }
    handleActiveMenu = (id_param) => {
+      let patt = /\badmin/
+      let result = id_param.match(patt)
+      
       if (id_param === '') {
          id_param = 'home'
       }
-      if(id_param === undefined){
+
+      if(result !== null){
+         id_param = result[0]
+      }
+      if(id_param !== undefined){
          let id = document.getElementById(id_param)
          let li = document.getElementsByTagName('li')
          let length = li.length
@@ -74,8 +81,8 @@ class Navbar extends Component {
                                  <i className="fa fa-folder" aria-hidden="true"></i>
                               </Link>
                            </li>
-                           <li className="_n3a">
-                              <Link id="adminusers" to={'/admin/users'}>
+                           <li id="admin" className="_n3a">
+                              <Link  to={'/admin/users'}>
                                  <i className="fa fa-users" aria-hidden="true"></i>
                               </Link>
                            </li>

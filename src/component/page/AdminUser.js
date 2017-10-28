@@ -33,12 +33,15 @@ class AdminUser extends Component {
     }).then((res) => {
       return res.json()
     }).then((data) => {
-      const value = data
+      if(data.code === 200){
+        const value = data
         .data
         .map(data => ({id: data.id, name: data.name, email: data.email, status: data.status}))
       this.setState({data: value})
+      }
     })
   }
+
   handleUsersMenu = (e) => {
     e.preventDefault()
 
@@ -73,6 +76,9 @@ class AdminUser extends Component {
       [e.target.name]: e.target.value
     })
   }
+  handleToCreateUser = () =>{
+    window.location = '/admin/users/create';
+  }
 //------------------------------------------------------------------------------------------------;
 //                                          Render Element
 // -----------------------------------------------------------------------------------------------;
@@ -85,7 +91,7 @@ class AdminUser extends Component {
           <div className="_cn">
             <div className="_ro">
               <div className="_pd5m3n _c5m312 _c5x312">
-                <h1 className="_he3b">Create User</h1>
+                <h1 className="_he3b">User Management</h1>
               </div>
             </div>
           </div>
@@ -103,7 +109,7 @@ class AdminUser extends Component {
               </div>
             </div>
             <div id="users-content">
-              <Users  data={data} />
+              <Users  data={data} handleToCreateUser={this.handleToCreateUser}/>
             </div>
             <div id="roles-content" style={{display:'none'}}>
               <Roles  data={data} />
@@ -121,26 +127,20 @@ const Users = (props) => {
     <div className="_ro __tab1">
       <div className="_c5x312 _c5m312 _pd5m3n">
         <div className="_se _se3a">
-          <div className="_ro _pd3n3b">
-            <div className="_c5m36 _c5x312">
-              <div className="_c5m33 _c5x33 _pd3m3t">
-                <a className="_he3b _pl3l">Users</a>
+            <div className="_ro">
+              <div className="_c5x310 _c5m311 ">
+                  <h1 className="_he3m3b">List Users</h1>
               </div>
-              <div className="_c5m36 _c5x36">
-                <button className="_bt5m3b" type="">Add user</button>
+              <div className="_c5x32 _c5m31 ">
+                  <button onClick={ props.handleToCreateUser} className="_bt5m3b"><i className="fa fa-plus" aria-hidden="true"></i></button>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-      <div className="_c5x312 _c5m312 _pd5m3n">
-        <div className="_se _se3a">
           <div className="_ro _pd3n3b _ma3l3lr">
             <table className="_tb3g">
               <thead>
                 <tr>
                   <th>User ID</th>
-                  <th>Account Status</th>
+                  <th>Status</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -152,21 +152,25 @@ const Users = (props) => {
                   {props
                     .data
                     .map((data, i) => (
-                      <tr key={i}>
+                      <tr key={data.id}>
                         <td>{data.email}</td>
                         <td>
-                          <label className="switch">
-                            <input type="checkbox"/>
-                            <span className="slider round"></span>
-                          </label>
+                          <div>
+                            <label className="switch">
+                                <input type="checkbox" value={'checked'}/>
+                                <span className="slider round"></span>
+                            </label>
+                          </div>
                         </td>
                         <td>
-                          <Link to={'/'}>
-                            <i className="fa fa-pencil-square-o _ic3xs" aria-hidden="true"></i>
-                          </Link>
-                          <Link to={'/'}>
-                            <i className="fa fa-times _ic3xs" aria-hidden="true"></i>
-                          </Link>
+                          <div align="center">
+                            <Link to={'/'}>
+                              <i className="fa fa-pencil-square _ic3mb _ma3lr" aria-hidden="true"></i> 
+                            </Link>
+                            <Link to={'/'}>
+                               <i className="fa fa-window-close _ic3mr _ma3lr" aria-hidden="true"></i>
+                            </Link>
+                          </div>
                         </td>
                       </tr>
                     ))}
@@ -187,20 +191,14 @@ const Roles = (props) => {
     <div className="_ro __tab2">
       <div className="_c5x312 _c5m312 _pd5m3n">
         <div className="_se _se3a">
-          <div className="_ro _pd3n3b">
-            <div className="_c5m36 _c5x312">
-              <div className="_c5m33 _c5x33 _pd3m3t">
-                <a className="_he3b _pl3l">Roles</a>
-              </div>
-              <div className="_c5m36 _c5x36">
-                <button className="_bt5m3b" type="">Add role</button>
-              </div>
+          <div className="_ro">
+            <div className="_c5x310 _c5m311 ">
+                <h1 className="_he3m3b">Roles</h1>
+            </div>
+            <div className="_c5x32 _c5m31 ">
+                <button className="_bt5m3b"><i className="fa fa-plus" aria-hidden="true"></i></button>
             </div>
           </div>
-        </div>
-      </div>
-      <div className="_c5x312 _c5m312 _pd5m3n">
-        <div className="_se _se3a">
           <div className="_ro _pd3n3b _ma3l3lr">
             <table className="_tb3g">
               <thead>
@@ -223,12 +221,14 @@ const Roles = (props) => {
                         {data.status}
                       </td>
                       <td>
+                      <div align="center">
                         <Link to={'/'}>
-                          <i className="fa fa-pencil-square-o _ic3xs" aria-hidden="true"></i>
+                          <i className="fa fa-pencil-square _ic3mb _ma3lr" aria-hidden="true"></i> 
                         </Link>
                         <Link to={'/'}>
-                          <i className="fa fa-times _ic3xs" aria-hidden="true"></i>
+                          <i className="fa fa-window-close _ic3mr _ma3lr" aria-hidden="true"></i>
                         </Link>
+                      </div>
                       </td>
                     </tr>
                   ))}
