@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 
-import {NavbarAdmin, LayoutUser, InputContent} from '../index.js'
+import {Navbar, LayoutUser, InputContent} from '../index.js'
 
 class AdminCrtUser extends Component {
     constructor() {
@@ -26,7 +26,7 @@ class AdminCrtUser extends Component {
     render() {
         return (
             <LayoutUser>
-                <NavbarAdmin/>
+                <Navbar match={this.props.match}/>
                 <div className="_cn">
                     <div className="_ro">
                         <div className="_pd5m3n _c5m312 _c5x312">

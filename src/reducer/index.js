@@ -10,7 +10,8 @@ const initialState = {
     is_email_registered:    false,
     is_code_match:          false,
     request_status:         0,
-    error_message:          ''
+    error_message:          '',
+    modules_access: ''
 }
 const Reducers = (
 state = {    
@@ -21,7 +22,8 @@ action) => {
         case "INIT":
             return {
                 is_loading: false, 
-                is_logged_in: action.is_logged_in
+                is_logged_in: action.is_logged_in,
+                modules_access: action.modules_access
             }
         case "REQUEST":
             return {

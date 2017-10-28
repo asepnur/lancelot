@@ -177,18 +177,22 @@ class Schedule extends Component{
                                 <div className="_ro">
                                     <div className="_c5m312 _c5x312">
                                         <table className="_tb">
+                                            <thead>
                                             <tr>
                                                 <th>Status</th>
                                                 <th>Grade</th>
                                                 <th>Time</th>
                                                 <th>File</th>
                                             </tr>
+                                            </thead>
+                                            <tbody>
                                             <tr>
                                                 <td>No Attempt</td>
                                                 <td>No Grade</td>
                                                 <td>4 Hours</td>
                                                 <td>No Attempt</td>
                                             </tr>
+                                            </tbody>
                                         </table>
                                     </div>
                                 </div>

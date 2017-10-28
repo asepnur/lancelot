@@ -25,6 +25,7 @@ class Grade extends Component{
                         <div className="_ro _pd3n3b">
                             <div className="_c5m312 _c5x312 _pd3n3lr _pdx3n">
                                 <table className="_tb">
+                                    <thead>
                                     <tr>
                                         <th>No</th>
                                         <th>Mata Kuliah</th>
@@ -34,6 +35,8 @@ class Grade extends Component{
                                         <th>UAS</th>
                                         <th>Final Score</th>
                                     </tr>
+                                    </thead>
+                                    <tbody>
                                     <tr>
                                         <td>1</td>
                                         <td>Algoritma Pemrograman</td>
@@ -79,6 +82,7 @@ class Grade extends Component{
                                         <td>80</td>
                                         <td>85</td>
                                     </tr>
+                                    </tbody>
                                 </table>
                             </div>
                         </div>

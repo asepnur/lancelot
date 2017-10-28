@@ -2,10 +2,11 @@
 //                  ACTION;
 //--------------------------------------------;
 
-export const initAction = (is_logged_in) => {
+export const initAction = (is_logged_in, modules_access) => {
     return {
         type: 'INIT', 
-        is_logged_in
+        is_logged_in,
+        modules_access
     }
 }
 export const actorRequest = (is_logged_in, request_status, error_message)  => {
