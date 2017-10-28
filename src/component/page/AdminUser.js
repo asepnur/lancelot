@@ -79,6 +79,21 @@ class AdminUser extends Component {
   handleToCreateUser = () =>{
     window.location = '/admin/users/create';
   }
+  handleDelete = (dispatcherRequest, id) => {
+    const host = `meikoapp.herokuapp.com`;
+    const base_url = `https://` + host;
+    fetch(base_url + '/api/admin/v1/user/' + id, {
+      method: 'DELETE',
+      credentials: 'include',
+      crossDomain: true
+    }).then((res) => {
+      return res.json()
+    }).then((data) => {
+      data.code === 200
+        ? dispatcherRequest(true,200,'')
+        : dispatcherRequest(true,401,data.error)
+    })
+  }
 //------------------------------------------------------------------------------------------------;
 //                                          Render Element
 // -----------------------------------------------------------------------------------------------;
@@ -109,7 +124,7 @@ class AdminUser extends Component {
               </div>
             </div>
             <div id="users-content">
-              <Users  data={data} handleToCreateUser={this.handleToCreateUser}/>
+              <Users  data={data} handleToCreateUser={this.handleToCreateUser} handleDelete={this.handleDelete}/>
             </div>
             <div id="roles-content" style={{display:'none'}}>
               <Roles  data={data} />
@@ -164,10 +179,15 @@ const Users = (props) => {
                         </td>
                         <td>
                           <div align="center">
-                            <Link to={'/'}>
+                            <Link to={'/admin/users/update/' + data.id}>
                               <i className="fa fa-pencil-square _ic3mb _ma3lr" aria-hidden="true"></i> 
                             </Link>
-                            <Link to={'/'}>
+                            <Link to={'#'} onClick={
+                              e => {
+                                e.preventDefault();
+                                props.handleDelete(props.dispatcherRequest, data.id)
+                              }
+                            }>
                                <i className="fa fa-window-close _ic3mr _ma3lr" aria-hidden="true"></i>
                             </Link>
                           </div>

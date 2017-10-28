@@ -15,6 +15,7 @@ import {
     Information,
     User,
     AdminCrtUser,
+    AdminUpdateUser,
     AdminUser,
     AdminCrtRole,
     AdminCrtInfo,
@@ -89,6 +90,11 @@ export const routes = [
         path: '/admin/users/create',
         component: AdminCrtUser,
         exact: false
+    }, 
+    {
+        path: '/admin/users/update/:id',
+        component: AdminUpdateUser,
+        exact: true
     }, {
         path: '/admin/users/role',
         component: AdminCrtRole,
