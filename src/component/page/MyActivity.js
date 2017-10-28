@@ -15,7 +15,7 @@ class MyActivity extends Component{
         return(
             is_logged_in?
             <LayoutUser>
-            <Navbar/>
+            <Navbar match={this.props.match}/>
             <div className="_cn">
             <div className="_ro">
                 <div className="_pd3cl _c5m312 _c5x312 _pd5m3n">

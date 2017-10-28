@@ -1,101 +1,116 @@
 import React, {Component} from 'react'
-import {Link} from 'react-router-dom'
+import {Link, Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
+import ReactDOM from 'react-dom'
 
-import {actorSignOut} from '../../action/action'
+import {actorRequest} from '../../action/action'
 class Navbar extends Component {
-    handlerSignOut = (dispatcherSignOut) => {
-        fetch('https://meikoapp.herokuapp.com/api/v1/user/signout', {
-            method: 'POST',
-            credentials: 'include',
-            crossDomain: true
-        }).then((res) => {
-            return res.json()
-        }).then((data) => {
-            if (data.code === 200) {
-                dispatcherSignOut(false)
-            } else {
-                dispatcherSignOut(true)
-            }
-        })
+  
+  componentDidMount() {
+    let path = this.props.match.path
+    let id = path.replace('/', '')
+    this.handleActiveMenu(id)
+  }
+  handlerSignOut = (dispatcherRequest) => {
+    fetch('https://meikoapp.herokuapp.com/api/v1/user/signout', {
+      method: 'POST',
+      credentials: 'include',
+      crossDomain: true
+    }).then((res) => {
+      return res.json()
+    }).then((data) => {
+      data.code === 200
+        ? dispatcherRequest(false, 0, '')
+        : dispatcherRequest(true, 401, 'Error')
+
+    })
+  }
+  handleActiveMenu = (id_param) => {
+    id_param === ''
+      ? id_param = 'home'
+      : id_param = id_param
+    let id = document.getElementById(id_param)
+    let li = document.getElementsByTagName('li')
+    let length = li.length
+    for (let i = 0; i < length; i++) {
+      li[i].className = ''
     }
-    render() {
-        return (
-            <div className="_cn">
-                <div className="_c5x32">
-                    <nav className="_cn5n">
-                        <i className="fa fa-bars _i5h" aria-hidden="true"></i>
-                        <ul className="_n">
-                            <div className="_n51">
-                                <li><img className="_i3c" src="/img/icon/white/logo copy 4.png" alt="logo"/></li>
-                                <li className="_n3a">
-                                    <Link to={'/'}>
-                                        <i className="fa fa-home" aria-hidden="true"></i>
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link to={'/course'}>
-                                        <i className="fa fa-clone" aria-hidden="true"></i>
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link to={'/schedule'}>
-                                        <i className="fa fa-clock-o" aria-hidden="true"></i>
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link to={'/myactivity'}>
-                                        <i className="fa fa-tasks" aria-hidden="true"></i>
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link to={'/grade'}>
-                                        <i className="fa fa-folder" aria-hidden="true"></i>
-                                    </Link>
-                                </li>
-                            </div>
-                            <div className="_n52">
-                                <li>
-                                    <Link to={'/information'}>
-                                        <i className="fa fa-bell-o" aria-hidden="true"></i>
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link to={'/user'}>
-                                        <i className="fa fa-cog" aria-hidden="true"></i>
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link to={'#'}>
-                                        <i
-                                            onClick={(e) => {
-                                            e.preventDefault();
-                                            this
-                                                .handlerSignOut(this.props.dispatcherSignOut)
-                                        }}
-                                            className="fa fa-power-off"
-                                            aria-hidden="true"></i>
-                                    </Link>
-                                </li>
-                            </div>
-                        </ul>
-                    </nav>
+    ReactDOM
+      .findDOMNode(id)
+      .className = '_n3a'
+  }
+  render() {
+    const {is_logged_in} = this.props
+    return (is_logged_in
+      ? <div className="_cn">
+          <div className="_c5x32">
+            <nav className="_cn5n">
+              <i className="fa fa-bars _i5h" aria-hidden="true"></i>
+              <ul className="_n">
+                <div className="_n51">
+                  <li id="home" className="_n3a">
+                    <Link to={`/`}><img className="_i3c" src="/img/icon/white/logo copy 4.png" alt="logo"/></Link>
+                  </li>
+                  <li id="course">
+                    <Link to={'/course'}>
+                      <i className="fa fa-clone" aria-hidden="true"></i>
+                    </Link>
+                  </li>
+                  <li id="schedule">
+                    <Link to={'/schedule'}>
+                      <i className="fa fa-clock-o" aria-hidden="true"></i>
+                    </Link>
+                  </li>
+                  <li id="myactivity">
+                    <Link to={'/myactivity'}>
+                      <i className="fa fa-tasks" aria-hidden="true"></i>
+                    </Link>
+                  </li>
+                  <li id="grade">
+                    <Link to={'/grade'}>
+                      <i className="fa fa-folder" aria-hidden="true"></i>
+                    </Link>
+                  </li>
                 </div>
-                <div className="_c5x3o1 _c5x39">
-                    <p className="_me5ts _pd3cr">11.59 PM | Monday, September 11, 2017</p>
+                <div className="_n52">
+                  <li id="information">
+                    <Link to={'/information'}>
+                      <i className="fa fa-bell-o" aria-hidden="true"></i>
+                    </Link>
+                  </li>
+                  <li id="user">
+                    <Link to={'/user'}>
+                      <i className="fa fa-cog" aria-hidden="true"></i>
+                    </Link>
+                  </li>
+                  <li
+                    id="signout"
+                    onClick={(e) => {
+                    e.preventDefault();
+                    this.handlerSignOut(this.props.dispatcherRequest)
+                  }}>
+                    <Link to={'#'}>
+                      <i className="fa fa-power-off" aria-hidden="true"></i>
+                    </Link>
+                  </li>
                 </div>
-            </div>
-        )
-    }
+              </ul>
+            </nav>
+          </div>
+          <div className="_c5x3o1 _c5x39">
+            <p className="_me5ts _pd3cr">11.59 PM | Monday, September 11, 2017</p>
+          </div>
+        </div>
+      : <Redirect to={'/login'}/>)
+  }
 }
 const mapStatetoProps = (state) => {
 
-    return {is_logged_in: state.is_logged_in}
+  return {is_logged_in: state.is_logged_in}
 }
 const mapDispatchtoProps = (dispatch) => {
-    return {
-        dispatcherSignOut: (is_logged_in) => dispatch(actorSignOut(is_logged_in))
-    }
+  return {
+    dispatcherRequest: (is_logged_in, request_status, error_message) => dispatch(actorRequest(is_logged_in, request_status, error_message))
+  }
 }
 export default connect(mapStatetoProps, mapDispatchtoProps)(Navbar)
-

@@ -1,9 +1,7 @@
 //--------------------------------------------;
 //                  REDUCER;
 //--------------------------------------------;
-
-const Reducers = (
-state = {    
+const initialState = {
     is_logged_in:           false,
     is_loading:             true,
     is_login_failed:        false,
@@ -13,6 +11,10 @@ state = {
     is_code_match:          false,
     request_status:         0,
     error_message:          ''
+}
+const Reducers = (
+state = {    
+    ...initialState
 }, 
 action) => {
     switch (action.type) {

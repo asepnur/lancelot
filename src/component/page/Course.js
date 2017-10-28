@@ -49,10 +49,9 @@ class Course extends Component {
     }
     render() {
         const {is_logged_in} = this.props
-
         return (is_logged_in
             ? <LayoutUser>
-                    <Navbar/>
+                    <Navbar match={this.props.match}/>
                     <div className="_cn">
                         <div className="_ro">
                             <div className="_pd5m3n _c5m312 _c5x312">

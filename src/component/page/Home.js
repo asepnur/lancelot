@@ -14,7 +14,7 @@ class Home extends Component {
     renderMain = () => {
         return (
             <LayoutUser>
-                <Navbar />
+                <Navbar match={this.props.match}/>
                 <div className="_cn">
                     <div className="_ro">
                         <div className="_pd3cl _c5m312 _c5x312">

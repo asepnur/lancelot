@@ -10,7 +10,7 @@ class Schedule extends Component{
     render(){
         return(
             <LayoutUser>
-            <Navbar/>
+            <Navbar match={this.props.match}/>
             
             <div className="_cn">
             <div className="_ro">

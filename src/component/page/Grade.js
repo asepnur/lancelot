@@ -10,7 +10,7 @@ class Grade extends Component{
     render(){
         return(
             <LayoutUser>
-            <Navbar/>
+            <Navbar match={this.props.match}/>
             <div className="_cn">
             <div className="_ro">
                 <div className="_pd5m3n _c5m312 _c5x312">
