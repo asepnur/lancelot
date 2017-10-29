@@ -16,7 +16,12 @@ const ListCourse = (props) => {
                         <h1 className="_he3m3b">List Users</h1>
                      </div>
                      <div className="_c5x32 _c5m31 ">
-                        <button className="_bt5m3b">
+                        <button
+                           className="_bt5m3b"
+                           onClick={e => {
+                           e.preventDefault();
+                           props.handleRedirect()
+                        }}>
                            <i className="fa fa-plus" aria-hidden="true"></i>
                         </button>
                      </div>
@@ -38,20 +43,20 @@ const ListCourse = (props) => {
                               {props
                                  .data
                                  .map((data, i) => (
-                                    <tr key={i+1}>
+                                    <tr key={i + 1}>
                                        <td>{i}</td>
                                        <td>{data.name}</td>
                                        <td>{data.class}</td>
                                        <td>
                                           <div align="center">
-                                             <Link to={'/admin/users/update/' + data.id}>
+                                             <Link to={'/admin/course/manage/' + data.id}>
                                                 <i className="fa fa-pencil-square _ic3mb _ma3lr" aria-hidden="true"></i>
                                              </Link>
                                              <Link
                                                 to={'#'}
                                                 onClick={e => {
                                                 e.preventDefault();
-                                                props.handleDelete(props.dispatcherRequest, data.id)
+                                                props.handleDelete(props.dispatcherRequest, data.schedule_id)
                                              }}>
                                                 <i className="fa fa-window-close _ic3mr _ma3lr" aria-hidden="true"></i>
                                              </Link>
@@ -82,7 +87,8 @@ class AdminCourse extends Component {
                start_time: '',
                end_time: '',
                day: '',
-               status: ''
+               status: '',
+               schedule_id:''
             }
          ]
       }
@@ -102,10 +108,44 @@ class AdminCourse extends Component {
          }
       })
    }
-
+   handleRedirect = () => {
+      window.location = '/admin/create/course'
+   }
    handleChange = (e) => {
       this.setState({
          [e.target.name]: e.target.value
+      })
+   }
+   handleRedirectUpdate = (id) => {
+      window.location = '/admin/course/manage/' + id
+   }
+
+   handleDelete = (dispatcherRequest, id) => {
+      const host = `meikoapp.herokuapp.com`;
+      const base_url = `https://` + host;
+      fetch(base_url + '/api/admin/v1/course/'+ id +'/delete', {
+         method: 'POST',
+         credentials: 'include',
+         crossDomain: true
+      }).then((res) => {
+         return res.json()
+      }).then((data) => {
+         if(data.code === 200){
+            dispatcherRequest(true, 200, '')
+            let val = this.state.data.filter((data,i)=> data.schedule_id !== id? {
+               id: data.id,
+               name: data.name,
+               class: data.class,
+               start_time: data.start_time,
+               end_time: data.end_time,
+               day: data.day,
+               status: data.status,
+               schedule_id: data.schedule_id
+            } : null )
+            this.setState({data: val})
+         }else{
+            dispatcherRequest(true, 401, data.error)
+         }
       })
    }
 
@@ -118,12 +158,17 @@ class AdminCourse extends Component {
                <div className="_cn">
                   <div className="_ro">
                      <div className="_pd5m3n _c5m312 _c5x312">
-                        <h1 className="_he3b">Course Management</h1>
+                        <h1 className="_he3b">Courses Management</h1>
                      </div>
                   </div>
                </div>
                <div className="_cn">
-                  <ListCourse data={data}/>
+                  <ListCourse
+                     data={data}
+                     handleRedirect={this.handleRedirect}
+                     handleRedirectUpdate={this.handleRedirectUpdate}
+                     handleDelete={this.handleDelete}
+                     dispatcherRequest={this.props.dispatcherRequest}/>
                </div>
             </LayoutUser>
          : <Redirect to="/login"/>)

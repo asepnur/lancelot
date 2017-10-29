@@ -80,14 +80,14 @@ class AdminCrtCourse extends Component {
 
                                 <ul className="_ta5l">
                                     <li>
-                                        <Link id="users" to={'/admin/users'}>Users</Link>
+                                        <Link id="users" to={'/admin/course'}>List Course</Link>
                                     </li>
                                     <li>
                                         <Link
                                             onClick={this.handleRolesMenu}
                                             className="_ta5l3a"
                                             id="create-user"
-                                            to={'#'}>Create Users</Link>
+                                            to={'#'}>Add Course</Link>
                                     </li>
                                 </ul>
                             </div>
@@ -97,7 +97,7 @@ class AdminCrtCourse extends Component {
                                 <div className="_se _se3a">
                                     <div className="_ro">
                                         <div className="_c5x310 _c5m311 ">
-                                            <h1 className="_he3m3b">Create User</h1>
+                                            <h1 className="_he3m3b">Add Course</h1>
                                         </div>
                                     </div>
                                     <div className="_ro _pd3n3b">

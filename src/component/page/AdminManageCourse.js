@@ -302,8 +302,33 @@ class AdminManageCourse extends React.Component {
       const {is_logged_in} = this.props
 
       return (is_logged_in
-         ? <div></div>
-         : <div></div>)
+         ? <LayoutUser>
+               <Navbar match={this.props.match}/>
+               <div className="_cn">
+                  <div className="_ro">
+                     <div className="_pd5m3n _c5m312 _c5x312">
+                        <h1 className="_he3b">Courses Management</h1>
+                     </div>
+                  </div>
+               </div>
+               <div className="_cn">
+                  <div className="_ro">
+                     <div className="_c5m312 _pd5m3n _ta">
+                        <ul className="_ta5l">
+                           <li>
+                              <Link to={'/admin/course'} id="users" >List Courses</Link>
+                           </li>
+                           <li>
+                              <Link id="roles" to={'#'} className="_ta5l3a">Update Course</Link>
+                           </li>
+                        </ul>
+                     </div>
+                  </div>
+                  <SideBar/>
+                  <SettingCourse/>
+               </div>
+            </LayoutUser>
+         : <Redirect to={'/login'}/>)
    }
 
 }

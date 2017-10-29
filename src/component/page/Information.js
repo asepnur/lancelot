@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import ReactDOM from 'react-dom'
-import {Redirect, Link} from 'react-router-dom'
+import {Redirect} from 'react-router-dom'
 
 import {actorRequest} from '../../action/action'
 import {
