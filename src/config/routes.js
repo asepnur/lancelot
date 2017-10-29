@@ -24,6 +24,7 @@ import {
     AdminCrtAssis,
     AdminCrtAttand,
     AdminCrtCourse,
+    AdminManageCourse,
     Test
 } from '../component/index.js'
 export const routes = [
@@ -125,9 +126,13 @@ export const routes = [
         component: AdminCourse,
         exact: false
     }, {
-        path: '/admin/manage/course',
+        path: '/admin/manage/course/:id',
+        component: AdminManageCourse,
+        exact: true
+    }, {
+        path: '/admin/create/course',
         component: AdminCrtCourse,
-        exact: false
+        exact: true
     }, {
         path: '/test',
         component:Test,

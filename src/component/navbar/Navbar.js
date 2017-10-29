@@ -49,7 +49,7 @@ class Navbar extends Component {
       }
    }
    render() {
-      const {is_logged_in, modules_access} = this.props
+      const {is_logged_in} = this.props
    
       return (is_logged_in
          ? <div className="_cn">
