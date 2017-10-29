@@ -39,6 +39,7 @@ export {default as AdminCourse} from './page/AdminCourse.js'
 export {default as AdminCrtAssign} from './page/AdminCrtAssign.js'
 export {default as AdminCrtAssis} from './page/AdminCrtAssis.js'
 export {default as AdminCrtAttand} from './page/AdminCrtAttand.js'
+export {default as AdminCrtCourse} from './page/AdminCrtCourse.js'
 
 //Animation
 export {default as Animation}from './animation/Animation.js'

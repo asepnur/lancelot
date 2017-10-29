@@ -34,10 +34,7 @@ class AdminUser extends Component {
       return res.json()
     }).then((data) => {
       if(data.code === 200){
-        const value = data
-        .data
-        .map(data => ({id: data.id, name: data.name, email: data.email, status: data.status}))
-      this.setState({data: value})
+      this.setState({data: data.data})
       }
     })
   }
@@ -83,7 +80,7 @@ class AdminUser extends Component {
     const host = `meikoapp.herokuapp.com`;
     const base_url = `https://` + host;
     fetch(base_url + '/api/admin/v1/user/' + id, {
-      method: 'DELETE',
+      method: 'POST',
       credentials: 'include',
       crossDomain: true
     }).then((res) => {
@@ -92,6 +89,26 @@ class AdminUser extends Component {
       data.code === 200
         ? dispatcherRequest(true,200,'')
         : dispatcherRequest(true,401,data.error)
+    })
+  }
+  handleChangeStatus = (dispatcherRequest, id, status)=>{
+    const value = status === 'active'? 'inactive': 'active'
+    let formData = new FormData()
+    formData.append('status', value )
+
+    const host = `meikoapp.herokuapp.com`;
+    const base_url = `https://` + host;
+    fetch(base_url + '/api/admin/v1/user/' + id + '/activate', {
+        method: 'POST',
+        credentials: 'include',
+        crossDomain: true,
+        body: formData
+    }).then((res) => {
+        return res.json()
+    }).then((data) => {
+        data.code === 200
+            ? window.location = '/admin/users'
+            : dispatcherRequest(true, 401, data.error)
     })
   }
 //------------------------------------------------------------------------------------------------;
@@ -124,7 +141,7 @@ class AdminUser extends Component {
               </div>
             </div>
             <div id="users-content">
-              <Users  data={data} handleToCreateUser={this.handleToCreateUser} handleDelete={this.handleDelete}/>
+              <Users  data={data} handleToCreateUser={this.handleToCreateUser} handleDelete={this.handleDelete} handleChangeStatus={this.handleChangeStatus}/>
             </div>
             <div id="roles-content" style={{display:'none'}}>
               <Roles  data={data} />
@@ -137,6 +154,7 @@ class AdminUser extends Component {
 //------------------------------------------------------------------------------------------------;
 //                                          Users Menu;
 // -----------------------------------------------------------------------------------------------;
+
 const Users = (props) => {
   return (
     <div className="_ro __tab1">
@@ -166,13 +184,13 @@ const Users = (props) => {
                 <tbody>
                   {props
                     .data
-                    .map((data, i) => (
+                    .map((data) => (
                       <tr key={data.id}>
                         <td>{data.email}</td>
                         <td>
                           <div>
                             <label className="switch">
-                                <input type="checkbox" value={'checked'}/>
+                                <input type="checkbox" defaultChecked={data.status ==='active' ? true:false} onClick={ e => { e.preventDefault(); props.handleChangeStatus(props.dispatcherRequest, data.id, data.status)}} />
                                 <span className="slider round"></span>
                             </label>
                           </div>
