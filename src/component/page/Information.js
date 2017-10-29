@@ -1,5 +1,9 @@
 import React, {Component} from 'react'
+import {connect} from 'react-redux'
+import ReactDOM from 'react-dom'
+import {Redirect, Link} from 'react-router-dom'
 
+import {actorRequest} from '../../action/action'
 import {
     Navbar,
     Newsbar,
@@ -7,8 +11,48 @@ import {
 } from '../index.js'
 
 class Information extends Component{
+    constructor(){
+        super()
+        this.state = {
+            recent: [
+                {
+                    title: '',
+                    date: '',
+                    description: ''
+                }
+            ],
+            last: [
+                {
+                    title: '',
+                    date: '',
+                    description: ''
+                }
+            ]
+        }
+    }
+    componentDidMount () {
+        const host = `meikoapp.herokuapp.com`;
+        const base_url = `https://` + host;
+        fetch(base_url + '/api/v1/information', {
+          method: 'GET',
+          credentials: 'include',
+          crossDomain: true
+        }).then((res) => {
+          return res.json()
+        }).then((data) => {
+          if(data.code === 200){
+              this.setState({recent: data.data.recent})
+              this.setState({last: data.data.last})
+          }
+        })
+        
+      }
     render(){
-        return(
+        const {is_logged_in} = this.props
+        const recent=this.state.recent
+        const last = this.state.last
+        return(is_logged_in
+            ?
             <LayoutUser>
             <Navbar match={this.props.match}/>
             <div className="_cn">
@@ -22,44 +66,8 @@ class Information extends Component{
             <div className="_ro">
                 <div className="_c5m36 _pd5m3n">
                     <div className="_se _se3a">
-                        <div className="_ro">
-                            <div className="_c5x312">
-                                <h1 className="_he3x3bk _pd3m3b">Last News</h1>
-                            </div>
-                        </div>
-                        <div className="_se _se3b">
-                            <div className="_ro">
-                                <div className="_c5x312 _pd3l3t">
-                                    <p className="_ct">15 min ago</p>
-                                    <p className="_ct _bo">Lorem ipsum dolor sit amet, consectetur adipiscing elit,</p>
-                                    <p className="_ct _pd3m3t">Lorem Ipsum</p>
-                                    <p className="_ct3xs  _ma3n3lr ">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="_ro">
-                            <div className="_c5x34">
-                                <p className="_ct">25 min ago</p>
-                            </div>
-                            <div className="_c5x37">
-                                <p className="_ct _bo">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
-                            </div>
-                            <div className="_c5x31 _pd _pl5l">
-                                <i className="fa fa-angle-right _ic" aria-hidden="true"></i>
-                            </div>
-                            <hr/>
-                        </div>
-                        <div className="_ro">
-                            <div className="_c5x34">
-                                <p className="_ct">1 hour ago</p>
-                            </div>
-                            <div className="_c5x37">
-                                <p className="_ct _bo">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
-                            </div>
-                            <div className="_c5x31 _pd _pl5l">
-                                <i className="fa fa-angle-right _ic" aria-hidden="true"></i>
-                            </div>
-                        </div>
+                        <Recent data={recent}/>
+                        <Last data={last}/>
                     </div>
                 </div>
                 <div className="_c5m32 _pd3n3lr">
@@ -175,8 +183,71 @@ class Information extends Component{
             </div>
         </div>
             </LayoutUser>
-        )
+        : <Redirect to={`/login`}/>);
     }
 }
 
-export default Information
+const Recent = (props) => {
+    return (
+        <div>
+            <div className="_ro">
+                <div className="_c5x312">
+                    <h1 className="_he3x3bk _pd3m3b">Last News</h1>
+                </div>
+            </div>
+            {props
+            .data
+            .map((data, i) => (
+                <div className="_se _se3b" key={i}>
+                    <div className="_ro">
+                        <div className="_c5x312 _pd3l3t">
+                            <p className="_ct">{data.date}</p>
+                            <p className="_ct _bo">{data.title}</p>
+                            {/* <p className="_ct _pd3m3t">Lorem Ipsum</p> */}
+                            <p className="_ct3xs  _ma3n3lr ">{data.description}</p>
+                        </div>
+                    </div>
+                </div> 
+            )
+            )}       
+        </div>
+    )
+}
+
+const Last = (props) => {
+    return (
+        <div>
+            {
+                props
+                .data
+                .map((data, i) => (
+                    <div className="_ro" key={i}>
+                            <div className="_c5x34">
+                                <p className="_ct">{data.date}</p>
+                            </div>
+                            <div className="_c5x37">
+                                <p className="_ct _bo">{data.title}</p>
+                            </div>
+                            <div className="_c5x31 _pd _pl5l">
+                                <i className="fa fa-angle-right _ic" aria-hidden="true"></i>
+                            </div>
+                            <hr/>
+                        </div>
+                    )
+                )
+            }
+        </div>
+    )
+}
+
+const mapStatetoProps = (state) => {
+    return {is_logged_in: state.is_logged_in, request_status: state.request_status, error_message: state.error_message}
+}
+const mapDispatchtoProps = (dispatch) => {
+    return {
+        dispatcherRequest: (is_logged_in, request_status, error_message) => dispatch(actorRequest(is_logged_in, request_status, error_message))
+    }
+}
+
+export default connect(mapStatetoProps, mapDispatchtoProps)(Information)
+//export default Information
