@@ -13,7 +13,7 @@ const ListCourse = (props) => {
                <div className="_se _se3a">
                   <div className="_ro">
                      <div className="_c5x310 _c5m311 ">
-                        <h1 className="_he3m3b">List Users</h1>
+                        <h1 className="_he3m3b">List Courses</h1>
                      </div>
                      <div className="_c5x32 _c5m31 ">
                         <button
@@ -49,7 +49,7 @@ const ListCourse = (props) => {
                                        <td>{data.class}</td>
                                        <td>
                                           <div align="center">
-                                             <Link to={'/admin/course/manage/' + data.id}>
+                                             <Link to={'/admin/course/manage/' + data.schedule_id}>
                                                 <i className="fa fa-pencil-square _ic3mb _ma3lr" aria-hidden="true"></i>
                                              </Link>
                                              <Link

@@ -110,7 +110,7 @@ class Login extends Component {
     })
   }
   onChangeDisplayPassword = () => {
-    let password = document.getElementB('password')
+    let password = document.getElementById('password')
     
     this.state.is_show_password 
       ?ReactDOM.findDOMNode(password).setAttribute('type', 'password')

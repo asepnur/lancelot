@@ -57,7 +57,7 @@ class AdminCrtCourse extends Component {
             return res.json()
         }).then((data) => {
             data.code === 200
-                ? window.location = '/'
+                ? window.location = '/admin/course'
                 : dispatcherRequest(true, 401, data.error)
         })
       }
