@@ -15,7 +15,7 @@ class Newsbar extends Component{
                 </div>
                 <div className="_ro">
                     <div className="_c5x312 _c5m312">
-                        <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                        <p className="_se5c">Pada minggu ini tidak ada pertemuan praktikum Basis Data</p>
                     </div>
                     <div className="_c5x312 _c5m312">
                         <p className="_de3n"><img className="_i3tb" src="/img/icon/white/logo copy 4.png" alt="profil thumb" /> - September 2017</p>
@@ -28,7 +28,7 @@ class Newsbar extends Component{
                 </div>
                 <div className="_ro">
                     <div className="_c5x312 _c5m312">
-                        <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                        <p className="_se5c">Pada minggu ini pertemuan praktikum Kriptografi di undur 1 jam</p>
                     </div>
                     <div className="_c5x312 _c5m312">
                         <p className="_de3n"><img className="_i3tb" src="/img/icon/white/logo copy 4.png" alt="profil thumb" /> - September 2017</p>
@@ -41,7 +41,7 @@ class Newsbar extends Component{
                 </div>
                 <div className="_ro">
                     <div className="_c5x312 _c5m312">
-                        <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                        <p className="_se5c">Pada minggu ini pertemuan praktikum AI di majukan 1 jam</p>
                     </div>
                     <div className="_c5x312 _c5m312">
                         <p className="_de3n"><img className="_i3tb" src="/img/icon/white/logo copy 4.png" alt="profil thumb" /> - September 2017</p>
@@ -54,7 +54,7 @@ class Newsbar extends Component{
                 </div>
                 <div className="_ro">
                     <div className="_c5x312 _c5m312">
-                        <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                        <p className="_se5c">Pada minggu ini tidak ada pertemuan praktikum Pemrograman</p>
                     </div>
                     <div className="_c5x312 _c5m312">
                         <p className="_de3n"><img className="_i3tb" src="/img/icon/white/logo copy 4.png" alt="profil thumb" /> - September 2017</p>

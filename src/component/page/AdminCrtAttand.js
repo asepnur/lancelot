@@ -43,7 +43,7 @@ class AdminCrtAttand extends Component {
                                     <Link to={'/'}>Manage Courses</Link>
                                 </li>
                                 <li>
-                                    <Link to={'/'}>Lorem Ipsum</Link>
+                                    <Link to={'/'}>Last Course</Link>
                                 </li>
                                 <li>
                                     <Link className="_ta5l3a" to={'/'}>
@@ -107,8 +107,8 @@ class AdminCrtAttand extends Component {
                                         <table className="_tb3g343l">
                                             <tr>
                                                 <td>1</td>
-                                                <td>140810******</td>
-                                                <td>Lorem Ipsum</td>
+                                                <td>140810140060</td>
+                                                <td>Khairil Azmi Ashari</td>
                                                 <td>
                                                     <div>
                                                         <label className="switch">
@@ -120,8 +120,8 @@ class AdminCrtAttand extends Component {
                                             </tr>
                                             <tr>
                                                 <td>2</td>
-                                                <td>140810******</td>
-                                                <td>Lorem Ipsum</td>
+                                                <td>140810140070</td>
+                                                <td>AsepNur Hidayat</td>
                                                 <td>
                                                     <div>
                                                         <label className="switch">
@@ -133,8 +133,8 @@ class AdminCrtAttand extends Component {
                                             </tr>
                                             <tr>
                                                 <td>3</td>
-                                                <td>140810******</td>
-                                                <td>Lorem Ipsum</td>
+                                                <td>140810140013</td>
+                                                <td>Risal Falah</td>
                                                 <td>
                                                     <div>
                                                         <label className="switch">
@@ -146,8 +146,8 @@ class AdminCrtAttand extends Component {
                                             </tr>
                                             <tr>
                                                 <td>4</td>
-                                                <td>140810******</td>
-                                                <td>Lorem Ipsum</td>
+                                                <td>140810140073</td>
+                                                <td>Juniar Arif</td>
                                                 <td>
                                                     <div>
                                                         <label className="switch">
@@ -159,8 +159,8 @@ class AdminCrtAttand extends Component {
                                             </tr>
                                             <tr>
                                                 <td>5</td>
-                                                <td>140810******</td>
-                                                <td>Lorem Ipsum</td>
+                                                <td>140810140074</td>
+                                                <td>Muh Risno Aji</td>
                                                 <td>
                                                     <div>
                                                         <label className="switch">
@@ -172,8 +172,8 @@ class AdminCrtAttand extends Component {
                                             </tr>
                                             <tr>
                                                 <td>6</td>
-                                                <td>140810******</td>
-                                                <td>Lorem Ipsum</td>
+                                                <td>140810140075</td>
+                                                <td>Nindya Larasati</td>
                                                 <td>
                                                     <div>
                                                         <label className="switch">
@@ -185,8 +185,8 @@ class AdminCrtAttand extends Component {
                                             </tr>
                                             <tr>
                                                 <td>7</td>
-                                                <td>140810******</td>
-                                                <td>Lorem Ipsum</td>
+                                                <td>140810140099</td>
+                                                <td>Nanda Sasongko</td>
                                                 <td>
                                                     <div>
                                                         <label className="switch">

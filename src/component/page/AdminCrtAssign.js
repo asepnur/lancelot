@@ -38,7 +38,7 @@ class AdminCrtAssign extends Component {
                     <ul className="_ta5l">
                         <li><Link to={'/'}>My Courses</Link></li>
                         <li><Link to={'/'}>Manage Courses</Link></li>
-                        <li><Link to={'/'}>Lorem Ipsum</Link></li>
+                        <li><Link to={'/'}>Last Course</Link></li>
                         <li><Link className="_ta5l3a" to={'/'}> Create Assignment</Link></li>
                     </ul>
                 </div>

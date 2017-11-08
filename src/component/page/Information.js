@@ -79,7 +79,7 @@ class Information extends Component{
                         </div>
                         <div className="_ro">
                             <div className="_c5x311">
-                                <p className="_ct _bo _el3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                                <p className="_ct _bo _el3">Praktikum Matematik Diskrit ditiadakan</p>
                                 <p className="_ct3xs">3 hour ago</p>
                             </div>
                         </div>
@@ -90,7 +90,7 @@ class Information extends Component{
                         </div>
                         <div className="_ro">
                             <div className="_c5x311">
-                                <p className="_ct _bo _el3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                                <p className="_ct _bo _el3">Kamu belum mengupload tugas Pemrograman web 11</p>
                                 <p className="_ct3xs">5 hour ago</p>
                             </div>
                         </div>
@@ -101,7 +101,7 @@ class Information extends Component{
                         </div>
                         <div className="_ro">
                             <div className="_c5x311">
-                                <p className="_ct _bo _el3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                                <p className="_ct _bo _el3">Praktikum Kriptografi pertemuan 11 diunudr 30 menit</p>
                                 <p className="_ct3xs">7 hour ago</p>
                             </div>
                         </div>
@@ -112,7 +112,7 @@ class Information extends Component{
                         </div>
                         <div className="_ro">
                             <div className="_c5x311">
-                                <p className="_ct _bo _el3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                                <p className="_ct _bo _el3">Praktikum Basis Data minggu ini diundur</p>
                                 <p className="_ct3xs">12 hour ago</p>
                             </div>
                         </div>
@@ -123,7 +123,7 @@ class Information extends Component{
                         </div>
                         <div className="_ro">
                             <div className="_c5x311">
-                                <p className="_ct _bo _el3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                                <p className="_ct _bo _el3">Semua Praktikan diharapkan membersihkan lab praktikum setelah praktikum usai</p>
                                 <p className="_ct3xs">19 hour ago</p>
                             </div>
                         </div>
@@ -138,7 +138,7 @@ class Information extends Component{
                 <div className="_c5m312 _pd5m3n _ta">
                     <ul className="_ta5l">
                         <li><a className="" id="btn_attend">Information</a></li>
-                        <li><a className="_ta5l3a" id="btn_assign">Lorem ipsum dolorsit amet, consecturetur adipiscing elit</a></li>
+                        <li><a className="_ta5l3a" id="btn_assign">Informasi mengenai tugas, perkuliah dan lain lain </a></li>
                     </ul>
                 </div>
             </div>
@@ -150,8 +150,8 @@ class Information extends Component{
                                 <img className="_i3tb3b _pl5r" src="/img/course.png" alt=""/>
                             </div>
                             <div className="_c5x37 _c5m37">
-                                <h6 className="_he3x3bk _pd3m3b _ma3l3t">LOREM IPSUM</h6>
-                                <p className="_ct3s">Lorem ipsum dolor sit amet</p>
+                                <h6 className="_he3x3bk _pd3m3b _ma3l3t">Praktikum Pemrogrman Web</h6>
+                                <p className="_ct3s">Praktikum yang mempelajari tentang dasar-dasar pemrograman web</p>
                             </div>
                         </div>
                         <div className="_ro _pd3n3b">
@@ -163,15 +163,11 @@ class Information extends Component{
                     <div className="_se _se3a">
                         <div className="_ro">
                             <div className="_c5x312">
-                                <h3 className="_he3cbk">Lorem ipsum dolor sit amet, consectetur adipiscing elit</h3>
+                                <h3 className="_he3cbk">Praktikum Basis Data Minggu ini di tiadakan</h3>
                                 <p className="_ct3xs _al3tc">September 11, 2017 09:20 PM</p>
-                                <p className="_ct3ms _ma3l3t">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
-                                    laborum."
+                                <p className="_ct3ms _ma3l3t">"Praktikum Basis Data pada minggu ini ditiadakan karena ada konflik internal di Teknik Informatika UNPAD."
                                 </p>
-                                <p className="_ct3ms _ma3l3t">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
-                                    laborum."
+                                <p className="_ct3ms _ma3l3t">"Konflik yang terjadi diharapkan tidak mengganggu jurusan segedung. Harapa sabar ini ujian"
                                 </p>
 
                             </div>

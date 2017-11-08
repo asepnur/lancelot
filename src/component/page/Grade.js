@@ -48,7 +48,7 @@ class Grade extends Component{
                                     </tr>
                                     <tr>
                                         <td>2</td>
-                                        <td>Lorem Ipsum</td>
+                                        <td>Pemrograman Web</td>
                                         <td>90</td>
                                         <td>90</td>
                                         <td>80</td>
@@ -57,7 +57,7 @@ class Grade extends Component{
                                     </tr>
                                     <tr>
                                         <td>3</td>
-                                        <td>Lorem Ipsum</td>
+                                        <td>Fisika Dasar</td>
                                         <td>90</td>
                                         <td>90</td>
                                         <td>80</td>
@@ -66,7 +66,7 @@ class Grade extends Component{
                                     </tr>
                                     <tr>
                                         <td>4</td>
-                                        <td>Lorem Ipsum</td>
+                                        <td>Matematika Diskrit</td>
                                         <td>90</td>
                                         <td>90</td>
                                         <td>80</td>
@@ -75,7 +75,7 @@ class Grade extends Component{
                                     </tr>
                                     <tr>
                                         <td>5</td>
-                                        <td>Lorem Ipsum</td>
+                                        <td>Kriptografi</td>
                                         <td>90</td>
                                         <td>90</td>
                                         <td>80</td>

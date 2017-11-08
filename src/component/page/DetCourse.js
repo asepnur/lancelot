@@ -25,7 +25,7 @@ class DetCourse extends Component{
                         <div className="_c5x312 _c5m312 _pd3n3lr _ta">
                             <ul className="_ta5l">
                                 <li><a href="">Current</a></li>
-                                <li><a className="_ta5l3a" href="">Algortma Pemrograman</a></li>
+                                <li><a className="_ta5l3a" href="">Algoritma Pemrograman</a></li>
                             </ul>
                         </div>
                     </div>
@@ -41,7 +41,7 @@ class DetCourse extends Component{
                                 </div>
                                 <div className="_c5x312 _c5m312">
                                     <p className="_d5ab _ma3n3lr">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                        Praktikum Algoritma Pemrograman Dialkuan di Lab Pemrogramamn UDJT 3-12 Lantai 3 dengan asistem praktikum Asepnur Muhammad dan Joko Anwar.
                                     </p>
                                 </div>
                             </div>
@@ -74,7 +74,7 @@ class DetCourse extends Component{
                                 <p className="_pd3t"><i className="fa fa-circle _i3a" aria-hidden="true"></i> YESTERDAY</p>
                             </div>
                             <div className="_c5x36">
-                                <p className="_ct _bo">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                                <p className="_ct _bo">Tugas Membuat program contoh looping dengan menggunakan bahasa C++ </p>
                             </div>
                             <div className="_c5x31 _pd">
                                 <i className="fa fa-check-square-o _ic" aria-hidden="true"></i>
@@ -93,7 +93,7 @@ class DetCourse extends Component{
                                 <p className="_pd3t"><i className="fa fa-circle _i3a" aria-hidden="true"></i> TODAY</p>
                             </div>
                             <div className="_c5x36">
-                                <p className="_ct _bo">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                                <p className="_ct _bo">Membuat Program penjumlahan bilangan prima sebanyak N angka dengan bahasa C#</p>
                             </div>
                             <div className="_c5x31 _pd">
                                 <i className="fa fa-check-square-o _ic" aria-hidden="true"></i>
@@ -112,7 +112,7 @@ class DetCourse extends Component{
                                 <p className="_pd3t"><i className="fa fa-circle _i3a" aria-hidden="true"></i> SEPT 12</p>
                             </div>
                             <div className="_c5x36">
-                                <p className="_ct _bo">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                                <p className="_ct _bo">Baca PPT pada pertemuan minggu ini dan kerjakan tugasnya di selembar di kumpulkan saat praktikum selanjutnya</p>
                             </div>
                             <div className="_c5x31 _pd">
                                 <i className="fa fa-check-square-o _ic" aria-hidden="true"></i>
@@ -127,19 +127,19 @@ class DetCourse extends Component{
                     <div className="_se _se3a">
                         <div className="_ro _pd3n3b">
                             <div className="_c5x33 _c5m33">
-                                <p className="_he3x3cbk _ma3l3t">Lorem Ipsum</p>
+                                <p className="_he3x3cbk _ma3l3t">Basis Data</p>
                                 <h1 className="_ma3l3b _ma3n3t _he3cb">15</h1>
                             </div>
                             <div className="_c5x33 _c5m33">
-                                <p className="_he3x3cbk _ma3l3t">Lorem Ipsum</p>
+                                <p className="_he3x3cbk _ma3l3t">Pemrograman Dasar</p>
                                 <h1 className="_ma3l3b _ma3n3t _he3cb">1</h1>
                             </div>
                             <div className="_c5x33 _c5m33">
-                                <p className="_he3x3cbk _ma3l3t">Lorem Ipsum</p>
+                                <p className="_he3x3cbk _ma3l3t">Kriptografi</p>
                                 <h1 className="_ma3l3b _ma3n3t _he3cb">0</h1>
                             </div>
                             <div className="_c5x33 _c5m33">
-                                <p className="_he3x3cbk _ma3l3t">Lorem Ipsum</p>
+                                <p className="_he3x3cbk _ma3l3t">DUI</p>
                                 <h1 className=" _ma3l3b _ma3n3t _he3cb">98%</h1>
                             </div>
                         </div>
@@ -206,13 +206,13 @@ class DetCourse extends Component{
                                         </div>
                                     </div>
                                     <div className="_c5x312 _c5m312">
-                                        <h5 className="_ct3m _pd3m3t _bo _ma3l3t">lorem ipsum</h5>
+                                        <h5 className="_ct3m _pd3m3t _bo _ma3l3t">Joko Anwar</h5>
                                         <p className="_ct3xs _ma3l3t _ma3n3t">Assistant</p>
                                     </div>
                                     <div className="_c5x312 _c5m312">
-                                        <p className="_ct3xs _el3 _ma3l3t _ma3n3t"><i className="fa fa-phone _ic" aria-hidden="true"></i> Lorem Ipsum</p>
-                                        <p className="_ct3xs _el3 _ma3l3t _ma3n3t"><i className="fa fa-envelope-o _ic" aria-hidden="true"></i> Loremipsum@gmail.com</p>
-                                        <p className="_ct3xs _el3 _ma3n3t"><i className="fa fa-map-marker _ic" aria-hidden="true"></i> lorem ipsum dolor sit amet.</p>
+                                        <p className="_ct3xs _el3 _ma3l3t _ma3n3t"><i className="fa fa-phone _ic" aria-hidden="true"></i>082214467300</p>
+                                        <p className="_ct3xs _el3 _ma3l3t _ma3n3t"><i className="fa fa-envelope-o _ic" aria-hidden="true"></i> JokoAnwar@gmail.com</p>
+                                        <p className="_ct3xs _el3 _ma3n3t"><i className="fa fa-map-marker _ic" aria-hidden="true"></i> Mahasiswa semester 3</p>
                                     </div>
                                 </div>
                             </div>
@@ -226,13 +226,13 @@ class DetCourse extends Component{
                                         </div>
                                     </div>
                                     <div className="_c5x312 _c5m312">
-                                        <h5 className="_ct3m _pd3m3t _bo _ma3l3t">lorem ipsum</h5>
+                                        <h5 className="_ct3m _pd3m3t _bo _ma3l3t">Putri Ranati</h5>
                                         <p className="_ct3xs _ma3l3t _ma3n3t">Assistant</p>
                                     </div>
                                     <div className="_c5x312 _c5m312">
-                                        <p className="_ct3xs _el3 _ma3l3t _ma3n3t"><i className="fa fa-phone _ic" aria-hidden="true"></i> Lorem Ipsum</p>
-                                        <p className="_ct3xs _el3 _ma3l3t _ma3n3t"><i className="fa fa-envelope-o _ic" aria-hidden="true"></i> Loremipsum@gmail.com</p>
-                                        <p className="_ct3xs _el3 _ma3n3t"><i className="fa fa-map-marker _ic" aria-hidden="true"></i> lorem ipsum dolor sit amet.</p>
+                                        <p className="_ct3xs _el3 _ma3l3t _ma3n3t"><i className="fa fa-phone _ic" aria-hidden="true"></i>082214467301</p>
+                                        <p className="_ct3xs _el3 _ma3l3t _ma3n3t"><i className="fa fa-envelope-o _ic" aria-hidden="true"></i> Putri.Ranati@gmail.com</p>
+                                        <p className="_ct3xs _el3 _ma3n3t"><i className="fa fa-map-marker _ic" aria-hidden="true"></i> Mahasiswa semester 7</p>
                                     </div>
                                 </div>
                             </div>
@@ -248,13 +248,13 @@ class DetCourse extends Component{
                                         </div>
                                     </div>
                                     <div className="_c5x312 _c5m312">
-                                        <h5 className="_ct3m _pd3m3t _bo _ma3l3t">lorem ipsum</h5>
+                                        <h5 className="_ct3m _pd3m3t _bo _ma3l3t">Juki Prasetyo</h5>
                                         <p className="_ct3xs _ma3l3t _ma3n3t">Assistant</p>
                                     </div>
                                     <div className="_c5x312 _c5m312">
-                                        <p className="_ct3xs _el3 _ma3l3t _ma3n3t"><i className="fa fa-phone _ic" aria-hidden="true"></i> Lorem Ipsum</p>
-                                        <p className="_ct3xs _el3 _ma3l3t _ma3n3t"><i className="fa fa-envelope-o _ic" aria-hidden="true"></i> Loremipsum@gmail.com</p>
-                                        <p className="_ct3xs _el3 _ma3n3t"><i className="fa fa-map-marker _ic" aria-hidden="true"></i> lorem ipsum dolor sit amet.</p>
+                                        <p className="_ct3xs _el3 _ma3l3t _ma3n3t"><i className="fa fa-phone _ic" aria-hidden="true"></i>083412678554</p>
+                                        <p className="_ct3xs _el3 _ma3l3t _ma3n3t"><i className="fa fa-envelope-o _ic" aria-hidden="true"></i> Juki_Ganteng@gmail.com</p>
+                                        <p className="_ct3xs _el3 _ma3n3t"><i className="fa fa-map-marker _ic" aria-hidden="true"></i> Juki Mahasiswa Super.</p>
                                     </div>
                                 </div>
                             </div>
@@ -268,13 +268,13 @@ class DetCourse extends Component{
                                         </div>
                                     </div>
                                     <div className="_c5x312 _c5m312">
-                                        <h5 className="_ct3m _pd3m3t _bo _ma3l3t">lorem ipsum</h5>
+                                        <h5 className="_ct3m _pd3m3t _bo _ma3l3t">Anandya Nur Rohman</h5>
                                         <p className="_ct3xs _ma3l3t _ma3n3t">Assistant</p>
                                     </div>
                                     <div className="_c5x312 _c5m312">
-                                        <p className="_ct3xs _el3 _ma3l3t _ma3n3t"><i className="fa fa-phone _ic" aria-hidden="true"></i> Lorem Ipsum</p>
-                                        <p className="_ct3xs _el3 _ma3l3t _ma3n3t"><i className="fa fa-envelope-o _ic" aria-hidden="true"></i> Loremipsum@gmail.com</p>
-                                        <p className="_ct3xs _el3 _ma3n3t"><i className="fa fa-map-marker _ic" aria-hidden="true"></i> lorem ipsum dolor sit amet.</p>
+                                        <p className="_ct3xs _el3 _ma3l3t _ma3n3t"><i className="fa fa-phone _ic" aria-hidden="true"></i> 089912345678</p>
+                                        <p className="_ct3xs _el3 _ma3l3t _ma3n3t"><i className="fa fa-envelope-o _ic" aria-hidden="true"></i>Anindya.Nur@gmail.com</p>
+                                        <p className="_ct3xs _el3 _ma3n3t"><i className="fa fa-map-marker _ic" aria-hidden="true"></i> Mahasiswa semester 5.</p>
                                     </div>
                                 </div>
                             </div>

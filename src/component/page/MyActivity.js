@@ -37,7 +37,7 @@ class MyActivity extends Component {
                                                     <p className="_se5ct">YESTERDAY</p>
                                                 </div>
                                                 <div className="_c5x35 _c5m38 _pd">
-                                                    <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                                                    <p className="_se5c">Praktikum Pemrograman Web pertemuan 11, buat Aplikasi web simple dengan menggunakan HTML</p>
                                                 </div>
                                                 <div className="_c5x34 _c5m32">
                                                     <button className="_bt3g">submited</button>
@@ -53,7 +53,7 @@ class MyActivity extends Component {
                                                     <p className="_se5ct">YESTERDAY</p>
                                                 </div>
                                                 <div className="_c5x35 _pd _c5m38">
-                                                    <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                                                    <p className="_se5c">Praktikum Pemrograman Web pertemuan 11, buat Aplikasi web simple dengan menggunakan HTML</p>
                                                 </div>
                                                 <div className="_c5x34 _c5m32">
                                                     <button className="_bt3g">submited</button>
@@ -69,7 +69,7 @@ class MyActivity extends Component {
                                                     <p className="_se5ct">YESTERDAY</p>
                                                 </div>
                                                 <div className="_c5x35 _pd _c5m38">
-                                                    <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                                                    <p className="_se5c">Praktikum Pemrograman Web pertemuan 11, buat Aplikasi web simple dengan menggunakan HTML</p>
                                                 </div>
                                                 <div className="_c5x34 _c5m32">
                                                     <button className="_bt3g">submited</button>
@@ -85,7 +85,7 @@ class MyActivity extends Component {
                                                     <p className="_se5ct">YESTERDAY</p>
                                                 </div>
                                                 <div className="_c5x35 _pd _c5m38">
-                                                    <p className="_se5c ">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                                                    <p className="_se5c ">Praktikum Pemrograman Web pertemuan 11, buat Aplikasi web simple dengan menggunakan HTML</p>
                                                 </div>
                                                 <div className="_c5x34 _c5m32">
                                                     <button className="_bt3r">not submited</button>
@@ -105,7 +105,7 @@ class MyActivity extends Component {
                                                     <p className="_se5ct">YESTERDAY</p>
                                                 </div>
                                                 <div className="_c5x35 _c5m38 _pd">
-                                                    <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                                                    <p className="_se5c">Praktikum Pemrograman Web pertemuan 11, buat Aplikasi web simple dengan menggunakan HTML</p>
                                                 </div>
                                                 <div className="_c5x34 _c5m32">
                                                     <button className="_bt3b">add</button>
@@ -121,7 +121,7 @@ class MyActivity extends Component {
                                                     <p className="_se5ct">YESTERDAY</p>
                                                 </div>
                                                 <div className="_c5x35 _pd _c5m38">
-                                                    <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                                                    <p className="_se5c">Praktikum Pemrograman Web pertemuan 11, buat Aplikasi web simple dengan menggunakan HTML</p>
                                                 </div>
                                                 <div className="_c5x34 _c5m32">
                                                     <button className="_bt3b">add</button>
@@ -137,7 +137,7 @@ class MyActivity extends Component {
                                                     <p className="_se5ct">YESTERDAY</p>
                                                 </div>
                                                 <div className="_c5x35 _pd _c5m38">
-                                                    <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                                                    <p className="_se5c">Praktikum Pemrograman Web pertemuan 11, buat Aplikasi web simple dengan menggunakan HTML</p>
                                                 </div>
                                                 <div className="_c5x34 _c5m32">
                                                     <button className="_bt3b">add</button>
@@ -153,7 +153,7 @@ class MyActivity extends Component {
                                                     <p className="_se5ct">YESTERDAY</p>
                                                 </div>
                                                 <div className="_c5x35 _pd _c5m38">
-                                                    <p className="_se5c ">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                                                    <p className="_se5c ">Praktikum Pemrograman Web pertemuan 11, buat Aplikasi web simple dengan menggunakan HTML</p>
                                                 </div>
                                                 <div className="_c5x34 _c5m32">
                                                     <button className="_bt3b">add</button>
@@ -170,14 +170,8 @@ class MyActivity extends Component {
                                         <div className="_se _se3a">
                                             <div className="_ro">
                                                 <div className="_c5x312 _c5m312">
-                                                    <h1 className="_he3m3bk">Lorem Ipsum</h1>
-                                                    <p className="_ct">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                                        Etiam non sagittis tortor. Mauris mattis sem vitae tellus fringilla lacinia.
-                                                        Etiam suscipit leo ac ligula pretium, nec aliquet purus dapibus. Ut consectetur
-                                                        libero metus, sit amet interdum justo egestas in. Suspendisse velit leo,
-                                                        venenatis at elementum eu, venenatis non mi. Aliquam dignissim dignissim erat,
-                                                        at tincidunt nisi commodo nec. Pellentesque nec elit interdum, accumsan ligula
-                                                        nec, vehicula ex. Nam et ultricies sus, quis varius elit.</p>
+                                                    <h1 className="_he3m3bk">Pemrograman Web 11</h1>
+                                                    <p className="_ct">Praktikum Pemrograman Web pertemuan 11, buat Aplikasi web simple dengan menggunakan HTML.</p>
                                                 </div>
                                             </div>
                                             <div className="_ro">
