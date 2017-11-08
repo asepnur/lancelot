@@ -18,7 +18,7 @@ class Home extends Component {
                 <div className="_cn">
                     <div className="_ro">
                         <div className="_pd3cl _c5m312 _c5x312">
-                            <h1 className="_he3m3m _pd3l3l">WELCOME BACK LOREM IPSUM</h1>
+                            <h1 className="_he3m3m _pd3l3l">WELCOME BACK Risal!</h1>
                         </div>
                     </div>
                 </div>
@@ -39,7 +39,7 @@ class Home extends Component {
                                             YESTERDAY</p>
                                     </div>
                                     <div className="_c5x36">
-                                        <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                                        <p className="_se5c">Tugas Basis Data Pertemuan 8 mengerjakan tugas pada ppt</p>
                                     </div>
                                     <div className="_c5x31 _pd">
                                         <i className="fa fa-check-square-o _ic " aria-hidden="true"></i>
@@ -60,7 +60,7 @@ class Home extends Component {
                                             TODAY</p>
                                     </div>
                                     <div className="_c5x36">
-                                        <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                                        <p className="_se5c">Tidak Ada tugas Minggu ini</p>
                                     </div>
                                     <div className="_c5x31 _pd">
                                         <i className="fa fa-check-square-o _ic" aria-hidden="true"></i>
@@ -81,7 +81,7 @@ class Home extends Component {
                                             SEPT 12</p>
                                     </div>
                                     <div className="_c5x36">
-                                        <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                                        <p className="_se5c">Tugas Kriptografi mempelajari dan membuat resume mengenai  fungsi hashing</p>
                                     </div>
                                     <div className="_c5x31 _pd">
                                         <i className="fa fa-check-square-o _ic" aria-hidden="true"></i>
@@ -102,7 +102,7 @@ class Home extends Component {
                                             SEPT 12</p>
                                     </div>
                                     <div className="_c5x36">
-                                        <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                                        <p className="_se5c">Tugas Pemrograman Web membuat program pada Git</p>
                                     </div>
                                     <div className="_c5x31 _pd">
                                         <i className="fa fa-check-square-o _ic" aria-hidden="true"></i>
@@ -133,7 +133,7 @@ class Home extends Component {
                                         </p>
                                     </div>
                                     <div className="_c5x36">
-                                        <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                                        <p className="_se5c">Praktikum Pemrorgraman Web</p>
                                     </div>
                                 </div>
                                 <div className="_ro">
@@ -150,7 +150,7 @@ class Home extends Component {
                                         </p>
                                     </div>
                                     <div className="_c5x36">
-                                        <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                                        <p className="_se5c">Praktikum Basis Data</p>
                                     </div>
                                 </div>
                                 <div className="_ro">
@@ -172,7 +172,7 @@ class Home extends Component {
                                 </div>
                                 <div className="_ro">
                                     <div className="_c5x312 _c5m312">
-                                        <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                                        <p className="_se5c">Praktikum Pemrograman Web minggu ini ditiadakan</p>
                                     </div>
                                     <div className="_c5x312 _c5m312">
                                         <p className="_de3n"><img
@@ -189,7 +189,7 @@ class Home extends Component {
                                 </div>
                                 <div className="_ro">
                                     <div className="_c5x312 _c5m312">
-                                        <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                                        <p className="_se5c">Praktikum Basis Data diundur 30 menit</p>
                                     </div>
                                     <div className="_c5x312 _c5m312">
                                         <p className="_de3n"><img
@@ -206,7 +206,7 @@ class Home extends Component {
                                 </div>
                                 <div className="_ro">
                                     <div className="_c5x312 _c5m312">
-                                        <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                                        <p className="_se5c">Praktikum Kriptografi akan melakuka UTS minggu depan</p>
                                     </div>
                                     <div className="_c5x312 _c5m312">
                                         <p className="_de3n"><img
@@ -223,7 +223,7 @@ class Home extends Component {
                                 </div>
                                 <div className="_ro">
                                     <div className="_c5x312 _c5m312">
-                                        <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                                        <p className="_se5c">Praktikum Pemrograman Web tidak jadi ditiadakan</p>
                                     </div>
                                     <div className="_c5x312 _c5m312">
                                         <p className="_de3n"><img
@@ -249,8 +249,8 @@ class Home extends Component {
                             <div className="_cn _md5cu">
                                 <div className="_ro">
                                     <div className="_c5x312">
-                                        <h1 className="_he3nb">Lorem Ipsum</h1>
-                                        <p className="_me3c">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                                        <h1 className="_he3nb">Tugas 1</h1>
+                                        <p className="_me3c">Upload Tugas 1 di sini,
                                         </p>
                                     </div>
                                 </div>
@@ -259,7 +259,7 @@ class Home extends Component {
                                         <div className="_md5i">
                                             <input type="file" name="file"/>
                                             <img className="_i3ce" src="/img/icon/blue/upload.png" alt="upload logo"/>
-                                            <p className="_me3c">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                                            <p className="_me3c">Anda akan mengupload suatu file di sini
                                             </p>
                                         </div>
                                     </div>
@@ -296,7 +296,7 @@ class Home extends Component {
                                 <div className="_ro">
                                     <div className="_c5x312">
                                         <h1 className="_he3nb">Congratulation</h1>
-                                        <p className="_me3c">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                                        <p className="_me3c">Selaamt, memuaskan,
                                         </p>
                                     </div>
                                 </div>
