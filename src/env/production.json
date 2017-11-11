@@ -1,0 +1,7 @@
+{
+    "webserver": {
+        "host": "meikoapp.herokuapp.com",
+        "port": "",
+        "base_url": "https://"
+    }
+}

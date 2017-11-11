@@ -1,11 +1,11 @@
-import React, {Component} from 'react'
-import {Link, Redirect} from 'react-router-dom'
+import React from 'react'
+//import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 
 import {actorRequest} from '../../action/action'
-import {Navbar, LayoutUser} from '../index'
+// import {Navbar, LayoutUser} from '../index'
 
-const SideBar = () => {
+/* const SideBar = () => {
    return (
       <div className="_ro _c5m33 _c5x33 _pd5m3n _pd3n3r">
          <div className="_c5x312 _c5m312 _pd3n3lr">
@@ -35,8 +35,8 @@ const SideBar = () => {
          </div>
       </div>
    )
-}
-const SettingCourse = () => {
+} */
+/* const SettingCourse = () => {
    return (
       <div className="_ro _c5m39 _c5x39 __menu1">
          <div className="_c5x312 _c5m312 _pd3n3lr">
@@ -74,8 +74,8 @@ const SettingCourse = () => {
          </div>
       </div>
    )
-}
-const Assistant = () => {
+} */
+/* const Assistant = () => {
    return (
       <div className="_ro _c5m39 _c5x39 __menu2 ">
          <div className="_c5x312 _c5m312 _pd3n3lr">
@@ -125,8 +125,8 @@ const Assistant = () => {
          </div>
       </div>
    )
-}
-const TutorialFile = () => {
+} */
+/* const TutorialFile = () => {
    return (
       <div className="_ro _c5m39 _c5x39 __menu3 ">
          <div className="_c5x312 _c5m312 _pd3n3lr">
@@ -178,8 +178,8 @@ const TutorialFile = () => {
          </div>
       </div>
    )
-}
-const Attendance = () => {
+} */
+/* const Attendance = () => {
    return (
       <div className="_ro _c5m39 _c5x39 __menu4 ">
          <div className="_c5x312 _c5m312 _pd3n3lr">
@@ -235,8 +235,8 @@ const Attendance = () => {
          </div>
       </div>
    )
-}
-const Assignment = () => {
+} */
+/* const Assignment = () => {
    return (
       <div className="_ro _c5m39 _c5x39 __menu5 ">
          <div className="_c5x312 _c5m312 _pd3n3lr">
@@ -291,13 +291,9 @@ const Assignment = () => {
          </div>
       </div>
    )
-}
+} */
 
 class AdminManageCourse extends React.Component {
-   constructor() {
-      super()
-
-   }
    render() {
       const {is_logged_in} = this.props
 

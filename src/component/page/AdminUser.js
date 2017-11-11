@@ -9,6 +9,8 @@ import ReactDOM from 'react-dom'
 import {actorRequest} from '../../action/action'
 import {Navbar, LayoutUser} from '../index.js'
 
+import {Pro as base_url} from '../../env/Environment'
+
 class AdminUser extends Component {
   constructor() {
     super()
@@ -24,8 +26,6 @@ class AdminUser extends Component {
     }
   }
   componentDidMount() {
-    const host = `meikoapp.herokuapp.com`;
-    const base_url = `https://` + host;
     fetch(base_url + '/api/admin/v1/user?pg=1&ttl=10', {
       method: 'GET',
       credentials: 'include',
@@ -77,8 +77,6 @@ class AdminUser extends Component {
     window.location = '/admin/users/create';
   }
   handleDelete = (dispatcherRequest, id) => {
-    const host = `meikoapp.herokuapp.com`;
-    const base_url = `https://` + host;
     fetch(base_url + '/api/admin/v1/user/' + id, {
       method: 'POST',
       credentials: 'include',
@@ -96,8 +94,6 @@ class AdminUser extends Component {
     let formData = new FormData()
     formData.append('status', value )
 
-    const host = `meikoapp.herokuapp.com`;
-    const base_url = `https://` + host;
     fetch(base_url + '/api/admin/v1/user/' + id + '/activate', {
         method: 'POST',
         credentials: 'include',

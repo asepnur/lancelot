@@ -6,6 +6,8 @@ import {Redirect, Link} from 'react-router-dom'
 import {actorRequest} from '../../action/action'
 import {Navbar, Newsbar, LayoutUser} from '../index.js'
 
+import {Pro as base_url} from '../../env/Environment'
+
 class Course extends Component {
     constructor(){
         super()
@@ -22,8 +24,6 @@ class Course extends Component {
         }
     }
     componentDidMount () {
-      const host = `meikoapp.herokuapp.com`;
-      const base_url = `https://` + host;
       fetch(base_url + '/api/v1/course?payload=current', {
         method: 'GET',
         credentials: 'include',
@@ -47,8 +47,6 @@ class Course extends Component {
         dom(current).className = ""
         dom(all).className = ""
 
-        const host = `meikoapp.herokuapp.com`;
-        const base_url = `https://` + host;
         fetch(base_url + '/api/v1/course?payload=last', {
           method: 'GET',
           credentials: 'include',
@@ -71,8 +69,6 @@ class Course extends Component {
         dom(current).className = "_ta5l3a"
         dom(all).className = ""
 
-        const host = `meikoapp.herokuapp.com`;
-        const base_url = `https://` + host;
         fetch(base_url + '/api/v1/course?payload=current', {
           method: 'GET',
           credentials: 'include',
@@ -95,8 +91,6 @@ class Course extends Component {
         dom(current).className = ""
         dom(all).className = "_ta5l3a"
 
-        const host = `meikoapp.herokuapp.com`;
-        const base_url = `https://` + host;
         fetch(base_url + '/api/v1/course?payload=all', {
           method: 'GET',
           credentials: 'include',

@@ -8,6 +8,8 @@ import {connect} from 'react-redux'
 import {actorRequest} from '../../action/action'
 import {Navbar, LayoutUser, InputContent} from '../index.js'
 
+import {Pro as base_url} from '../../env/Environment'
+
 class AdminUpdateUser extends Component {
    constructor() {
       super()
@@ -24,8 +26,6 @@ class AdminUpdateUser extends Component {
    componentDidMount(){
     const id = this.props.match.params.id
     
-    const host = `meikoapp.herokuapp.com`;
-    const base_url = `https://` + host;
     fetch(base_url + '/api/admin/v1/user/' + id, {
       method: 'GET',
       credentials: 'include',
@@ -62,8 +62,6 @@ class AdminUpdateUser extends Component {
       formData.append('about', this.state.about)
       formData.append('status', 'active')
 
-      const host = `meikoapp.herokuapp.com`;
-      const base_url = `https://` + host;
       fetch(base_url + '/api/admin/v1/user/' + this.state.id, {
           method: 'POST',
           credentials: 'include',
