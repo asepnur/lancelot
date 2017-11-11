@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 
-import {Navbar, LayoutUser, InputContent} from '../index.js'
+import {Navbar, Newsbar, LayoutUser, InputContent} from '../index.js'
 
 class Home extends Component {
     render() {
@@ -41,10 +41,8 @@ class Home extends Component {
                                     <div className="_c5x36">
                                         <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
                                     </div>
-                                    <div className="_c5x31 _pd">
+                                    <div className="_c5x32 _pd">
                                         <i className="fa fa-check-square-o _ic " aria-hidden="true"></i>
-                                    </div>
-                                    <div className="_c5x31 _pd">
                                         <i className="fa fa-pencil-square-o _ic __wr" aria-hidden="true"></i>
                                     </div>
                                 </div>
@@ -62,10 +60,8 @@ class Home extends Component {
                                     <div className="_c5x36">
                                         <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
                                     </div>
-                                    <div className="_c5x31 _pd">
-                                        <i className="fa fa-check-square-o _ic" aria-hidden="true"></i>
-                                    </div>
-                                    <div className="_c5x31 _pd">
+                                    <div className="_c5x32 _pd">
+                                        <i className="fa fa-check-square-o _ic " aria-hidden="true"></i>
                                         <i className="fa fa-pencil-square-o _ic __wr" aria-hidden="true"></i>
                                     </div>
                                 </div>
@@ -83,10 +79,8 @@ class Home extends Component {
                                     <div className="_c5x36">
                                         <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
                                     </div>
-                                    <div className="_c5x31 _pd">
-                                        <i className="fa fa-check-square-o _ic" aria-hidden="true"></i>
-                                    </div>
-                                    <div className="_c5x31 _pd">
+                                    <div className="_c5x32 _pd">
+                                        <i className="fa fa-check-square-o _ic " aria-hidden="true"></i>
                                         <i className="fa fa-pencil-square-o _ic __wr" aria-hidden="true"></i>
                                     </div>
                                 </div>
@@ -104,10 +98,8 @@ class Home extends Component {
                                     <div className="_c5x36">
                                         <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
                                     </div>
-                                    <div className="_c5x31 _pd">
-                                        <i className="fa fa-check-square-o _ic" aria-hidden="true"></i>
-                                    </div>
-                                    <div className="_c5x31 _pd">
+                                    <div className="_c5x32 _pd">
+                                        <i className="fa fa-check-square-o _ic " aria-hidden="true"></i>
                                         <i className="fa fa-pencil-square-o _ic __wr" aria-hidden="true"></i>
                                     </div>
                                 </div>
@@ -160,86 +152,8 @@ class Home extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="_c5m34 _pd3cr">
-                            <div className="_se _se3n">
-                                <div className="_se5m">
-                                    + VIEW MORE</div>
-                                <div className="_ro">
-                                    <div className="_c5x312">
-                                        <h1 className="_se5t">News Board</h1>
-                                        <hr/>
-                                    </div>
-                                </div>
-                                <div className="_ro">
-                                    <div className="_c5x312 _c5m312">
-                                        <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
-                                    </div>
-                                    <div className="_c5x312 _c5m312">
-                                        <p className="_de3n"><img
-                                            className="_i3tb"
-                                            src="/img/icon/white/logo copy 4.png"
-                                            alt="profil thumb"/>
-                                            - September 2017</p>
-                                    </div>
-                                </div>
-                                <div className="_ro">
-                                    <div className="_c5x312">
-                                        <hr/>
-                                    </div>
-                                </div>
-                                <div className="_ro">
-                                    <div className="_c5x312 _c5m312">
-                                        <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
-                                    </div>
-                                    <div className="_c5x312 _c5m312">
-                                        <p className="_de3n"><img
-                                            className="_i3tb"
-                                            src="/img/icon/white/logo copy 4.png"
-                                            alt="profil thumb"/>
-                                            - September 2017</p>
-                                    </div>
-                                </div>
-                                <div className="_ro">
-                                    <div className="_c5x312">
-                                        <hr/>
-                                    </div>
-                                </div>
-                                <div className="_ro">
-                                    <div className="_c5x312 _c5m312">
-                                        <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
-                                    </div>
-                                    <div className="_c5x312 _c5m312">
-                                        <p className="_de3n"><img
-                                            className="_i3tb"
-                                            src="/img/icon/white/logo copy 4.png"
-                                            alt="profil thumb"/>
-                                            - September 2017</p>
-                                    </div>
-                                </div>
-                                <div className="_ro">
-                                    <div className="_c5x312">
-                                        <hr/>
-                                    </div>
-                                </div>
-                                <div className="_ro">
-                                    <div className="_c5x312 _c5m312">
-                                        <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
-                                    </div>
-                                    <div className="_c5x312 _c5m312">
-                                        <p className="_de3n"><img
-                                            className="_i3tb"
-                                            src="/img/icon/white/logo copy 4.png"
-                                            alt="profil thumb"/>
-                                            - September 2017</p>
-                                    </div>
-                                </div>
-                                <div className="_ro">
-                                    <div className="_c5x312">
-                                        <hr/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
+                        <Newsbar/>
                     </div>
                 </div>
                 <div className="_md _dn">
