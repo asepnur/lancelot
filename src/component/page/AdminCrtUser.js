@@ -5,6 +5,8 @@ import {connect} from 'react-redux'
 import {actorRequest} from '../../action/action'
 import {Navbar, LayoutUser, InputContent} from '../index.js'
 
+import {Pro as base_url} from '../../env/Environment'
+
 class AdminCrtUser extends Component {
     constructor() {
         super()
@@ -26,22 +28,19 @@ class AdminCrtUser extends Component {
         formData.append('id', this.state.id)
         formData.append('email', this.state.email)
         formData.append('name', this.state.name)
-
-        const host = `meikoapp.herokuapp.com`;
-        const base_url = `https://` + host;
-        fetch(base_url + '/api/admin/v1/user', {
-            method: 'POST',
-            credentials: 'include',
-            crossDomain: true,
-            body: formData
-        }).then((res) => {
-            return res.json()
-        }).then((data) => {
-            data.code === 200
-                ? window.location = '/admin/users'
-                : dispatcherRequest(true, 401, data.error)
-        })
-    }
+      fetch(base_url + '/api/admin/v1/user', {
+          method: 'POST',
+          credentials: 'include',
+          crossDomain: true,
+          body: formData
+      }).then((res) => {
+          return res.json()
+      }).then((data) => {
+          data.code === 200
+              ? window.location = '/admin/users'
+              : dispatcherRequest(true, 401, data.error)
+      })
+   }
 
     render() {
         const {is_logged_in} = this.props

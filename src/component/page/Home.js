@@ -4,14 +4,51 @@ import {connect} from 'react-redux'
 
 import {Navbar, Newsbar, LayoutUser, InputContent} from '../index.js'
 
+import {Dev as base_url} from '../../env/Environment'
+
 class Home extends Component {
+    constructor() {
+        super()
+        this.state = {
+            data: 
+            [
+                {
+                    Assignment: {
+                        ID: '',
+                        Name: '',
+                        Status: '',
+                        Description: {
+                            String: '',
+                            Valid: ''
+                        },
+                        GradeParameterID: '',
+                        DueDate: ''
+                    }
+                }
+            ]
+        }
+    }
+    componentDidMount() {
+        fetch(base_url + '/api/v1/course/assignment/149?pg=1&ttl=10', {
+            method: 'GET',
+            credentials: 'include',
+            crossDomain: true
+        }).then((res) => {
+            return res.json()
+        }).then((data) => {
+            if (data.code === 200) {
+                this.setState({data: data.data})
+            }
+        })
+    }
     render() {
         const {is_logged_in} = this.props
+        const data = this.state.data
         return (is_logged_in
-            ? this.renderMain()
+            ? this.renderMain(data)
             : <Redirect to={`/login`}/>)
     }
-    renderMain = () => {
+    renderMain = (props) => {
         return (
             <LayoutUser>
                 <Navbar match={this.props.match}/>
@@ -25,90 +62,7 @@ class Home extends Component {
                 <div className="_cn">
                     <div className="_ro">
                         <div className="_c5m38 _pd5n _pd3cl _pd5m3n">
-                            <div className="_se _se3a">
-                                <div className="_ro">
-                                    <div className="_c5x312">
-                                        <h1 className="_se5t">Assignment</h1>
-                                        <hr/>
-                                    </div>
-                                </div>
-                                <div className="_ro">
-                                    <div className="_c5x34">
-                                        <p className="_se5ct">
-                                            <i className="fa fa-circle _i3a" aria-hidden="true"></i>
-                                            YESTERDAY</p>
-                                    </div>
-                                    <div className="_c5x36">
-                                        <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
-                                    </div>
-                                    <div className="_c5x32 _pd">
-                                        <i className="fa fa-check-square-o _ic " aria-hidden="true"></i>
-                                        <i className="fa fa-pencil-square-o _ic __wr" aria-hidden="true"></i>
-                                    </div>
-                                </div>
-                                <div className="_ro">
-                                    <div className="_c5x312">
-                                        <hr/>
-                                    </div>
-                                </div>
-                                <div className="_ro">
-                                    <div className="_c5x34">
-                                        <p className="_se5ct">
-                                            <i className="fa fa-circle _ic3xs" aria-hidden="true"></i>
-                                            TODAY</p>
-                                    </div>
-                                    <div className="_c5x36">
-                                        <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
-                                    </div>
-                                    <div className="_c5x32 _pd">
-                                        <i className="fa fa-check-square-o _ic " aria-hidden="true"></i>
-                                        <i className="fa fa-pencil-square-o _ic __wr" aria-hidden="true"></i>
-                                    </div>
-                                </div>
-                                <div className="_ro">
-                                    <div className="_c5x312">
-                                        <hr/>
-                                    </div>
-                                </div>
-                                <div className="_ro">
-                                    <div className="_c5x34">
-                                        <p className="_se5ct">
-                                            <i className="fa fa-circle _ic3xs" aria-hidden="true"></i>
-                                            SEPT 12</p>
-                                    </div>
-                                    <div className="_c5x36">
-                                        <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
-                                    </div>
-                                    <div className="_c5x32 _pd">
-                                        <i className="fa fa-check-square-o _ic " aria-hidden="true"></i>
-                                        <i className="fa fa-pencil-square-o _ic __wr" aria-hidden="true"></i>
-                                    </div>
-                                </div>
-                                <div className="_ro">
-                                    <div className="_c5x312">
-                                        <hr/>
-                                    </div>
-                                </div>
-                                <div className="_ro">
-                                    <div className="_c5x34">
-                                        <p className="_se5ct">
-                                            <i className="fa fa-circle _ic3xs _i3a" aria-hidden="true"></i>
-                                            SEPT 12</p>
-                                    </div>
-                                    <div className="_c5x36">
-                                        <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
-                                    </div>
-                                    <div className="_c5x32 _pd">
-                                        <i className="fa fa-check-square-o _ic " aria-hidden="true"></i>
-                                        <i className="fa fa-pencil-square-o _ic __wr" aria-hidden="true"></i>
-                                    </div>
-                                </div>
-                                <div className="_ro">
-                                    <div className="_c5x312">
-                                        <hr/>
-                                    </div>
-                                </div>
-                            </div>
+                            <Assignment data={props}/>
                             <div className="_se _se3s">
                                 <div className="_ro">
                                     <div className="_c5x312">
@@ -156,7 +110,7 @@ class Home extends Component {
                         <Newsbar/>
                     </div>
                 </div>
-                <div className="_md _dn">
+                <div className="_md">
                     <div className="__x"></div>
                     <div className="_ro">
                         <div className="_c5x312 _c5m36 _c5m3o3">
@@ -221,6 +175,43 @@ class Home extends Component {
             </LayoutUser>
         )
     }
+}
+const Assignment = (props) => {
+    return (
+        <div className="_se _se3a">
+            <div className="_ro">
+                <div className="_c5x312">
+                    <h1 className="_se5t">Assignment</h1>
+                    <hr/>
+                </div>
+            </div>
+            {props
+                .data
+                .map((data, i) => (
+                    <div className="_ro" key={i}>
+                        <div className="_c5x34">
+                            <p className="_se5ct">
+                                <i className="fa fa-circle _i3a" aria-hidden="true"></i>
+                                {data.Assignment.DueDate}</p>
+                        </div>
+                        <div className="_c5x36">
+                            <p className="_se5c">{data.Assignment.Name}</p>
+                        </div>
+                        <div className="_c5x31 _pd">
+                            <i className="fa fa-check-square-o _ic " aria-hidden="true"></i>
+                        </div>
+                        <div className="_c5x31 _pd">
+                            <i className="fa fa-pencil-square-o _ic __wr" aria-hidden="true"></i>
+                        </div>
+                        <div className="_c5x312">
+                            <hr/>
+                        </div>
+                    </div>
+                    
+                )
+            )}
+        </div>
+    )
 }
 
 const mapStatetoProps = (state) => {

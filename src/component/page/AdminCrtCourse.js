@@ -5,6 +5,8 @@ import {connect} from 'react-redux'
 import {actorRequest} from '../../action/action'
 import {Navbar, LayoutUser, InputContent} from '../index.js'
 
+import {Pro as base_url} from '../../env/Environment'
+
 class AdminCrtCourse extends Component {
     constructor() {
         super()
@@ -46,8 +48,6 @@ class AdminCrtCourse extends Component {
         formData.append('place', this.state.place )
         formData.append('is_update', true )
         
-        const host = `meikoapp.herokuapp.com`;
-        const base_url = `https://` + host;
         fetch(base_url + '/api/admin/v1/course', {
             method: 'POST',
             credentials: 'include',
@@ -63,7 +63,6 @@ class AdminCrtCourse extends Component {
       }
     render() {
         const {is_logged_in} = this.props
-        const data = this.state.data
         return (is_logged_in
             ? <LayoutUser>
                     <Navbar match={this.props.match}/>

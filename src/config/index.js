@@ -9,10 +9,12 @@ import {initAction} from '../action/action'
 import Reducers from '../reducer/index'
 import {Animation} from '../component/index.js'
 
+import {Dev as base_url} from '../env/Environment'
+
 class Init extends React.Component {
 
     componentWillMount() {
-        fetch("https://meikoapp.herokuapp.com/api/v1/role", {
+        fetch(base_url + "/api/v1/role", {
             method: "GET",
             credentials: "include",
             crossDomain: true

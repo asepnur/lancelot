@@ -4,6 +4,9 @@ import {connect} from 'react-redux'
 
 import {InputContent, LayoutGuest} from '../index.js'
 import {actorRequest} from '../../action/action'
+
+import {Pro as base_url} from '../../env/Environment'
+
 class Signup extends Component {
     constructor() {
         super()
@@ -40,7 +43,7 @@ class Signup extends Component {
         formData.append('email', this.state.email)
         formData.append('password', this.state.password)
 
-        fetch('https://meikoapp.herokuapp.com/api/v1/user/register', {
+        fetch(base_url + '/api/v1/user/register', {
             method: 'POST',
             credentials: 'include',
             crossDomain: true,

@@ -5,6 +5,8 @@ import {connect} from 'react-redux'
 import {actorRequest} from '../../action/action'
 import {Navbar, LayoutUser} from '../index'
 
+import {Pro as base_url} from '../../env/Environment'
+
 const ListCourse = (props) => {
    return (
       <div className="_cn">
@@ -94,8 +96,6 @@ class AdminCourse extends Component {
       }
    }
    componentDidMount() {
-      const host = `meikoapp.herokuapp.com`;
-      const base_url = `https://` + host;
       fetch(base_url + '/api/admin/v1/course?pg=1&ttl=10', {
          method: 'GET',
          credentials: 'include',

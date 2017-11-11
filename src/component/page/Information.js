@@ -4,9 +4,11 @@ import {Redirect} from 'react-router-dom'
 
 import {actorRequest} from '../../action/action'
 import {Navbar, Newsbar, LayoutUser} from '../index.js'
+import {Dev as base_url} from '../../env/Environment'
 
-class Information extends Component {
-    constructor() {
+class Information extends Component{
+    constructor(){
+
         super()
         this.state = {
             recent: [
@@ -25,9 +27,7 @@ class Information extends Component {
             ]
         }
     }
-    componentDidMount() {
-        const host = `meikoapp.herokuapp.com`;
-        const base_url = `https://` + host;
+    componentDidMount () {
         fetch(base_url + '/api/v1/information', {
             method: 'GET',
             credentials: 'include',
