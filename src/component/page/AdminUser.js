@@ -26,6 +26,10 @@ class AdminUser extends Component {
     }
   }
   componentDidMount() {
+    this.handleInit()
+  }
+  
+  handleInit = ()=>{
     fetch(base_url + '/api/admin/v1/user?pg=1&ttl=10', {
       method: 'GET',
       credentials: 'include',
@@ -38,7 +42,6 @@ class AdminUser extends Component {
       }
     })
   }
-
   handleUsersMenu = (e) => {
     e.preventDefault()
 
@@ -103,7 +106,7 @@ class AdminUser extends Component {
         return res.json()
     }).then((data) => {
         data.code === 200
-            ? window.location = '/admin/users'
+            ? window.location= '/admin/users'
             : dispatcherRequest(true, 401, data.error)
     })
   }
@@ -137,7 +140,7 @@ class AdminUser extends Component {
               </div>
             </div>
             <div id="users-content">
-              <Users  data={data} handleToCreateUser={this.handleToCreateUser} handleDelete={this.handleDelete} handleChangeStatus={this.handleChangeStatus}/>
+              <Users  data={data} handleToCreateUser={this.handleToCreateUser} handleDelete={this.handleDelete} handleChangeStatus={this.handleChangeStatus} dispatcherRequest={this.props.dispatcherRequest}/>
             </div>
             <div id="roles-content" style={{display:'none'}}>
               <Roles  data={data} />
@@ -286,5 +289,4 @@ const mapDispatchtoProps = (dispatch) => {
     dispatcherRequest: (is_logged_in, request_status, error_message) => dispatch(actorRequest(is_logged_in, request_status, error_message))
   }
 }
-
 export default connect(mapStatetoProps, mapDispatchtoProps)(AdminUser)

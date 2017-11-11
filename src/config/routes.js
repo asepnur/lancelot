@@ -112,21 +112,21 @@ export const routes = [
     }, {
         path: '/admin/course/assistant/create',
         component: AdminCrtAssis,
-        exact: false
+        exact: true
     }, {
         path: '/admin/course/assignment/create',
         component: AdminCrtAssign,
-        exact: false
+        exact: true
     }, {
         path: '/admin/course/attandance/create',
         component: AdminCrtAttand,
-        exact: false
+        exact: true
     }, {
         path: '/admin/course',
         component: AdminCourse,
-        exact: false
+        exact: true
     }, {
-        path: '/admin/manage/course/:id',
+        path: '/admin/course/manage/:id',
         component: AdminManageCourse,
         exact: true
     }, {

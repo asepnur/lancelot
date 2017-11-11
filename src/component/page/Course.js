@@ -103,6 +103,9 @@ class Course extends Component {
           }
         })
     }
+    handleRedirect = () =>{
+        window.location = '/admin/course'
+    }
     render() {
         const {is_logged_in} = this.props
         const data = this.state.data
@@ -111,15 +114,21 @@ class Course extends Component {
                     <Navbar match={this.props.match}/>
                     <div className="_cn">
                         <div className="_ro">
-                            <div className="_pd5m3n _c5m312 _c5x312">
-                                <h1 className="_he3b">My Courses</h1>
+                            <div className="_pd5m3n _c5m312 _c5x38">
+                                <h1 className="_he3b _ma3m3t">My Courses</h1>
+                            </div>
+                            <div className="_c5x34">
+                                <button className="_bt5m3b" onClick={ e=> {
+                                    e.preventDefault();
+                                    this.handleRedirect()
+                                }}>Manage <i className="fa fa-cog" aria-hidden="true"></i> </button>
                             </div>
                         </div>
                     </div>
                     <div className="_cn">
                         <div className="_ro">
                             <div className="_c5x312 _c5m312 _pd5m3n">
-                                <div className="_se se3a">
+                                <div className="">
                                     <div className="_c5x312 _c5m312 _pd3n3lr _ta">
                                         <ul className="_ta5l">
                                             <li>
@@ -164,8 +173,8 @@ const ListCourse = (props) => {
              {props
              .data
              .map((data) => (
-               <div className="_se _se3a">
-               <div className="_ro" key={data.id}>
+               <div className="_se _se3a" key={data.id}>
+               <div className="_ro" >
                   <div className="_c5x312 _c5m312">
                       <div className="_c5x312 _c5m312">
                           <p className="_he3x3bk">{data.name}</p>

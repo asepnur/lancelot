@@ -111,7 +111,7 @@ class AdminUpdateUser extends Component {
                         <div className="_se _se3a">
                            <div className="_ro">
                               <div className="_c5x310 _c5m311 ">
-                                 <h1 className="_he3m3b">Create User</h1>
+                                 <h1 className="_he3m3b">Update User</h1>
                               </div>
                            </div>
                            <div className="_ro _pd3n3b">
