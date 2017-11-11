@@ -13,8 +13,8 @@ class MyActivity extends Component {
                     <Navbar match={this.props.match}/>
                     <div className="_cn">
                         <div className="_ro">
-                            <div className="_pd3cl _c5m312 _c5x312 _pd5m3n">
-                                <h1 className="_he3m3b _ma3xl3t">My Activity</h1>
+                            <div className="_pd5m3n _c5m312 _c5x312">
+                                <h1 className="_he3b">My Acitivity</h1>
                             </div>
                         </div>
                     </div>
@@ -30,9 +30,9 @@ class MyActivity extends Component {
                                             <a href="">Active Task</a>
                                         </li>
                                     </ul>
-                                    <div className="_ta5c _dn">
+                                    <div className="_ta5c">
                                         <div className="_se _se3a">
-                                            <div className="_ro">
+                                            <div className="_ro _pd3l3t">
                                                 <div className="_c5x33 _c5m32">
                                                     <p className="_se5ct">YESTERDAY</p>
                                                 </div>
@@ -168,10 +168,10 @@ class MyActivity extends Component {
                                     </div>
                                     <div className="_ta5c">
                                         <div className="_se _se3a">
-                                            <div className="_ro">
+                                            <div className="_ro _pd3l3t">
                                                 <div className="_c5x312 _c5m312">
                                                     <h1 className="_he3m3bk">Lorem Ipsum</h1>
-                                                    <p className="_ct">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                                    <p className="_ct _pd3l3t">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                                                         Etiam non sagittis tortor. Mauris mattis sem vitae tellus fringilla lacinia.
                                                         Etiam suscipit leo ac ligula pretium, nec aliquet purus dapibus. Ut consectetur
                                                         libero metus, sit amet interdum justo egestas in. Suspendisse velit leo,
@@ -180,7 +180,7 @@ class MyActivity extends Component {
                                                         nec, vehicula ex. Nam et ultricies sus, quis varius elit.</p>
                                                 </div>
                                             </div>
-                                            <div className="_ro">
+                                            <div className="_ro _pd3l3t">
                                                 <div className="_c5m312 _c5x312">
                                                     <table className="_tb">
                                                         <thead>
@@ -202,7 +202,7 @@ class MyActivity extends Component {
                                                     </table>
                                                 </div>
                                             </div>
-                                            <div className="_ro">
+                                            <div className="_ro _pd3l3t">
                                                 <div className="_c5x35 _c5x3o7 _c5m33 _c5m3o9">
                                                     <button className="_bt5m3b">Add submition</button>
                                                 </div>
