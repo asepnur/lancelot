@@ -9,7 +9,7 @@ import ReactDOM from 'react-dom'
 import {actorRequest} from '../../action/action'
 import {Navbar, LayoutUser} from '../index.js'
 
-import {Pro as base_url} from '../../env/Environment'
+import {base_url} from '../../env/Environment'
 
 class AdminUser extends Component {
   constructor() {

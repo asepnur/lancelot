@@ -3,6 +3,7 @@ import {Link, Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 import ReactDOM from 'react-dom'
 
+import {base_url} from '../../env/Environment'
 import {actorRequest} from '../../action/action'
 class Navbar extends Component {
 
@@ -12,7 +13,7 @@ class Navbar extends Component {
       this.handleActiveMenu(id)
    }
    handlerSignOut = (dispatcherRequest) => {
-      fetch('https://meikoapp.herokuapp.com/api/v1/user/signout', {
+      fetch(base_url+'/api/v1/user/signout', {
          method: 'POST',
          credentials: 'include',
          crossDomain: true

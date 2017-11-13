@@ -8,7 +8,7 @@ import {connect} from 'react-redux'
 import {actorRequest} from '../../action/action'
 import {Navbar, LayoutUser, InputContent} from '../index.js'
 
-import {Pro as base_url} from '../../env/Environment'
+import {base_url} from '../../env/Environment'
 
 class AdminUpdateUser extends Component {
    constructor() {

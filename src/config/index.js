@@ -9,7 +9,7 @@ import {initAction} from '../action/action'
 import Reducers from '../reducer/index'
 import {Animation} from '../component/index.js'
 
-import {Dev as base_url} from '../env/Environment'
+import {base_url} from '../env/Environment'
 
 class Init extends React.Component {
 

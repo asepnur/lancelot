@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 
 import {Navbar, Newsbar, LayoutUser, InputContent} from '../index.js'
 
-import {Dev as base_url} from '../../env/Environment'
+import {base_url} from '../../env/Environment'
 
 class Home extends Component {
     constructor() {

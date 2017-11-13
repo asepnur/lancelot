@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom'
 import {actorRequest} from '../../action/action'
 import {LayoutGuest, InputContent} from '../index.js'
 
-import {Dev as base_url} from '../../env/Environment'
+import {base_url} from '../../env/Environment'
 
 class Login extends Component {
   constructor() {

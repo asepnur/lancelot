@@ -7,7 +7,7 @@ import LoadingBar from 'react-redux-loading-bar'
 import {Navbar, Newsbar, LayoutUser, InputContent} from '../index.js'
 import {actorRequest} from '../../action/action'
 
-import {Dev as base_url} from '../../env/Environment'
+import {base_url} from '../../env/Environment'
 
 class User extends Component {
     constructor() {

@@ -1,6 +1,6 @@
 {
     "webserver": {
-        "host": "192.168.103.101",
+        "host": "localhost",
         "port": "9000",
         "base_url": "http://"
     }

@@ -6,7 +6,7 @@ import {Redirect, Link} from 'react-router-dom'
 import {actorRequest} from '../../action/action'
 import {Navbar, Newsbar, LayoutUser} from '../index.js'
 
-import {Pro as base_url} from '../../env/Environment'
+import {base_url} from '../../env/Environment'
 
 class Course extends Component {
     constructor(){

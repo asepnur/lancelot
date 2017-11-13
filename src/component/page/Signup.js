@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 import {InputContent, LayoutGuest} from '../index.js'
 import {actorRequest} from '../../action/action'
 
-import {Pro as base_url} from '../../env/Environment'
+import {base_url} from '../../env/Environment'
 
 class Signup extends Component {
     constructor() {

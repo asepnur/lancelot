@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 import {LayoutGuest, InputContent} from '../index.js'
 import {actorRequest} from '../../action/action'
 
-import {Pro as base_url} from '../../env/Environment'
+import {base_url} from '../../env/Environment'
 
 class Forgot extends Component {
 		constructor() {
