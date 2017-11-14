@@ -4,14 +4,16 @@
 const initialState = {
     is_logged_in:           false,
     is_loading:             true,
-    is_login_failed:        false,
     is_signup_success:      false,
     signup_status:          1,
     is_email_registered:    false,
     is_code_match:          false,
     request_status:         0,
     error_message:          '',
-    modules_access:         ''
+    modules_access:         '',
+    progress: 0,
+    error: false
+
 }
 const Reducers = (
 state = {    

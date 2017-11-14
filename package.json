@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios-progress-bar": "^1.0.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-scripts": "1.0.14"
@@ -16,8 +17,10 @@
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).",
   "main": "index.js",
   "devDependencies": {
+    "axios": "^0.17.1",
     "prop-types": "^15.6.0",
     "react-loading": "^1.0.1",
+    "react-loadingbar": "0.0.1",
     "react-redux": "^5.0.6",
     "react-redux-loading-bar": "^2.9.3",
     "react-router": "^4.2.0",

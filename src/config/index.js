@@ -19,12 +19,13 @@ class Init extends React.Component {
             credentials: "include",
             crossDomain: true
         }).then(res => {
+            
             if (res.ok) {
                 return res.json()
             }
         }).then((data) => {
             data.data.is_logged_in
-                ? this.props.onInitialize(true,data.data.modules)
+                ? this.props.onInitialize(true, data.data.modules)
                 : this.props.onInitialize(false,'')
         })
         

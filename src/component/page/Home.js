@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
 import {Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
+import ReactDOM from 'react-dom'
 
 import {Navbar, Newsbar, LayoutUser, InputContent} from '../index.js'
-
 import {base_url} from '../../env/Environment'
 
 class Home extends Component {
@@ -48,6 +48,16 @@ class Home extends Component {
             ? this.renderMain(data)
             : <Redirect to={`/login`}/>)
     }
+    handleClickUpload = ()=>{
+        let modal = document.getElementById('_md')
+
+        let dom = ReactDOM.findDOMNode
+        console.log(modal)
+        // dom(advance).className = ""
+        // dom(basic).className = "_ta5l3a"
+         dom(modal).style.display = 'block'
+        // dom(advance_content).style.display = 'none'
+    }
     renderMain = (props) => {
         return (
             <LayoutUser>
@@ -62,7 +72,7 @@ class Home extends Component {
                 <div className="_cn">
                     <div className="_ro">
                         <div className="_c5m38 _pd5n _pd3cl _pd5m3n">
-                            <Assignment data={props}/>
+                            <Assignment data={props} handleClickUpload={this.handleClickUpload}/>
                             <div className="_se _se3s">
                                 <div className="_ro">
                                     <div className="_c5x312">
@@ -106,11 +116,10 @@ class Home extends Component {
                                 </div>
                             </div>
                         </div>
-
                         <Newsbar/>
                     </div>
                 </div>
-                <div className="_md">
+                <div className="_md" id="_md">
                     <div className="__x"></div>
                     <div className="_ro">
                         <div className="_c5x312 _c5m36 _c5m3o3">
@@ -156,7 +165,7 @@ class Home extends Component {
                         </div>
                     </div>
                 </div>
-                <div className="_md5s _dn">
+                <div className="_md5s">
                     <div className="__x"></div>
                     <div className="_ro">
                         <div className="_c5x312 _c5m36 _c5m3o3">
@@ -201,7 +210,7 @@ const Assignment = (props) => {
                             <i className="fa fa-check-square-o _ic " aria-hidden="true"></i>
                         </div>
                         <div className="_c5x31 _pd">
-                            <i className="fa fa-pencil-square-o _ic __wr" aria-hidden="true"></i>
+                            <i className="fa fa-pencil-square-o _ic __wr" aria-hidden="true" onClick={props.handleClickUpload}></i>
                         </div>
                         <div className="_c5x312">
                             <hr/>

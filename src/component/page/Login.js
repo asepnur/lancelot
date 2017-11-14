@@ -3,6 +3,7 @@ import {Link, Redirect} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import ReactDOM from 'react-dom'
+import { loadProgressBar } from 'axios-progress-bar'
 
 import {actorRequest} from '../../action/action'
 import {LayoutGuest, InputContent} from '../index.js'
