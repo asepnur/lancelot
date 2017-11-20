@@ -13,6 +13,7 @@ import {
     MyActivity,
     Grade,
     Information,
+    DetInformation,
     User,
     AdminCrtUser,
     AdminUpdateUser,
@@ -85,6 +86,10 @@ export const routes = [
     }, {
         path: '/information',
         component: Information,
+        exact: false
+    },{
+        path: '/detinformation',
+        component: DetInformation,
         exact: false
     }, {
         path: '/user',
