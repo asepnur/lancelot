@@ -1,13 +1,32 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {Redirect} from 'react-router-dom'
+import {Link, Redirect} from 'react-router-dom'
 import {actorRequest} from '../../action/action'
 import {Navbar, Newsbar, LayoutUser} from '../index.js'
-
+import {base_url} from '../../env/Environment'
 class MyActivity extends Component {
+    constructor(){
+        super()
+        this.state = {
+            data:[]
+        }
+    }
+    componentDidMount(){
+        fetch(base_url + '/api/v1/course/assignment/149?pg=1&ttl=10', {
+            method: 'GET',
+            credentials: 'include',
+            crossDomain: true
+        }).then((res) => {
+            return res.json()
+        }).then((data) => {
+            return data.code === 200
+                ? this.setState({data: data.data})
+                : null
+        })
+    }
     render() {
         const {is_logged_in} = this.props
-
+        const data = this.state.data
         return (is_logged_in
             ? <LayoutUser>
                     <Navbar match={this.props.match}/>
@@ -30,6 +49,7 @@ class MyActivity extends Component {
                                             <a href="">Active Task</a>
                                         </li>
                                     </ul>
+                                    <ListActivity data={data} />
                                     <div className="_ta5c">
                                         <div className="_se _se3a">
                                             <div className="_ro _pd3l3t">
@@ -217,6 +237,29 @@ class MyActivity extends Component {
                 </LayoutUser>
             : <Redirect to={`/login`}/>)
     }
+}
+const ListActivity = (props)=>{
+    return(
+        <div className="_ta5c">
+        <div className="_se _se3a">
+            {props.data.map((data,i)=>(
+                <div className="_ro" key={i}>
+                        <div className="_c5x33 _c5m32">
+                            <p className="_se5ct">{data.Assignment.DueDate}</p>
+                        </div>
+                        <div className="_c5x35 _pd _c5m38">
+                            <p className="_se5c">{data.Assignment.Name}</p>
+                        </div>
+                        <div className="_c5x34 _c5m32">
+                            <Link to={'/myactivity/detail/' + data.Assignment.ID}>
+                                <button className="_bt3g">submited</button>
+                            </Link>
+                        </div>
+                    </div>
+            ))}
+        </div>
+    </div>
+    )
 }
 const mapStatetoProps = (state) => {
     return {is_logged_in: state.is_logged_in, request_status: state.request_status, error_message: state.error_message}

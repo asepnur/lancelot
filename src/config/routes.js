@@ -11,6 +11,7 @@ import {
     DetCourse,
     Schedule,
     MyActivity,
+    AssignmentDetail,
     Grade,
     Information,
     User,
@@ -76,6 +77,10 @@ export const routes = [
         path: '/myactivity',
         component: MyActivity,
         exact: false
+    }, {
+        path: '/myactivity/detail/:id',
+        component: AssignmentDetail,
+        exact: true
     }, {
         path: '/grade',
         component: Grade,
