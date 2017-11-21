@@ -11,7 +11,7 @@ class DetInformation extends Component {
 
         super()
         this.state = {
-            information: [
+            info: [
                 {
                     avatar: '',
                     title: '',
@@ -32,15 +32,14 @@ class DetInformation extends Component {
             return res.json()
         }).then((data) => {
             if (data.code === 200) {
-                this.setState({information: data.data.information})
+                this.setState({info: data.data.info})
             }
         })
 
     }
     render() {
         const {is_logged_in} = this.props
-        const recent = this.state.recent
-        const last = this.state.last
+        const info = this.state.info
         return (is_logged_in
             ? <LayoutUser>
                     <Navbar match={this.props.match}/>
@@ -50,7 +49,7 @@ class DetInformation extends Component {
                                 <h1 className="_he3b">Information</h1>
                             </div>
                         </div>
-                        <DetInfo data={information}/>
+                        <DetInfo data={info}/>
                     </div>
                 </LayoutUser>
             : <Redirect to={`/login`}/>);
