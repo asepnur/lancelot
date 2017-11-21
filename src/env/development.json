@@ -1,7 +1,7 @@
 {
     "webserver": {
-        "host": "localhost",
-        "port": "9000",
+        "host": "meikoapp.herokuapp.com",
+        "port": "",
         "base_url": "http://"
     }
 }
