@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 import {actorRequest} from '../../action/action'
 import {Navbar, LayoutUser} from '../index'
 
-
+import {base_url} from '../../env/Environment'
 
 const SideBar = () => {
   return (
@@ -72,223 +72,223 @@ const SettingCourse = (props) => {
     </div>
   )
 }
-// const Assistant = () => {
-//   return (
-//     <div className="_ro _c5m39 _c5x39 __menu2 ">
-//       <div className="_c5x312 _c5m312 _pd3n3lr">
-//         <div className="_se _se3a">
-//           <div className="_ro _pd3n3b">
-//             <div className="_c5m36 _c5x312">
-//               <div className="_c5m35 _c5x35 _el3 _pd3m3t">
-//                 <Link to="#" to="#" className="_he3b _pl3l ">Assistants</Link>
-//               </div>
-//               <div className="_c5m36 _c5x37 _el3">
-//                 <button className="_bt5m3b" type="">+Create New</button>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//       <div className="_c5x312 _c5m312 _pd3n3lr">
-//         <div className="_se _se3a">
-//           <div className="_ro _pd3n3b _ma3l3lr">
-//             <table className="_tb3g">
-//               <tr>
-//                 <th>Assistant Name</th>
-//                 <th>No. Hp</th>
-//                 <th>Action</th>
-//               </tr>
-//             </table>
-//             <div className="_c5m312 _c5x312 _pd3n3lr _ov3y _pdx3n">
-//               <table className="_tb3g">
-//                 <tr>
-//                   <td>lorem Ipsum</td>
-//                   <td>0858 **** ****</td>
-//                   <td>
-//                     <div>
-//                       <Link to="#" className="" href="">
-//                         <i className="fa fa-pencil-square-o _ic3xs" aria-hidden="true"></i>
-//                       </Link>
-//                       <Link to="#" className="" href="">
-//                         <i className="fa fa-times _ic3xs" aria-hidden="true"></i>
-//                       </Link>
-//                     </div>
-//                   </td>
-//                 </tr>
-//               </table>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   )
-// }
-// const TutorialFile = () => {
-//   return (
-//     <div className="_ro _c5m39 _c5x39 __menu3 ">
-//       <div className="_c5x312 _c5m312 _pd3n3lr">
-//         <div className="_se _se3a">
-//           <div className="_ro _pd3n3b">
-//             <div className="_c5m36 _c5x312">
-//               <div className="_c5m35 _c5x35 _el3 _pd3m3t">
-//                 <Link to="#" className="_he3b _pl3l ">Tutorial File</Link>
-//               </div>
-//               <div className="_c5m36 _c5x37 _el3">
-//                 <button className="_bt5m3b" type="">Upload File</button>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//       <div className="_c5x312 _c5m312 _pd3n3lr">
-//         <div className="_se _se3a">
-//           <div className="_ro _pd3n3b _ma3l3lr">
-//             <table className="_tb3g34">
-//               <tr>
-//                 <th>File</th>
-//                 <th>Description</th>
-//                 <th>Created At</th>
-//                 <th>Action</th>
-//               </tr>
-//             </table>
-//             <div className="_c5m312 _c5x312 _pd3n3lr _ov3y _pdx3n">
-//               <table className="_tb3g34">
-//                 <tr>
-//                   <td>lorem Ipsum</td>
-//                   <td>Lorem Ipsum Dolor Set Amet</td>
-//                   <td>11 September 2017 00:12:23</td>
-//                   <td>
-//                     <div>
-//                       <Link to="#" className="" href="">
-//                         <i className="fa fa-pencil-square-o _ic3xs" aria-hidden="true"></i>
-//                       </Link>
-//                       <Link to="#" className="" href="">
-//                         <i className="fa fa-times _ic3xs" aria-hidden="true"></i>
-//                       </Link>
-//                     </div>
-//                   </td>
-//                 </tr>
-//               </table>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   )
-// }
-// const Attendance = () => {
-//   return (
-//     <div className="_ro _c5m39 _c5x39 __menu4 ">
-//       <div className="_c5x312 _c5m312 _pd3n3lr">
-//         <div className="_se _se3a">
-//           <div className="_ro _pd3n3b">
-//             <div className="_c5m36 _c5x312">
-//               <div className="_c5m35 _c5x35 _el3 _pd3m3t">
-//                 <Link to="#" className="_he3b _pl3l ">Attandance</Link>
-//               </div>
-//               <div className="_c5m36 _c5x37 _el3">
-//                 <button className="_bt5m3b" type="">+Create New</button>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//       <div className="_c5x312 _c5m312 _pd3n3lr">
-//         <div className="_se _se3a">
-//           <div className="_ro _pd3n3b _ma3l3lr">
-//             <table className="_tb3g36">
-//               <tr>
-//                 <th>No.</th>
-//                 <th>Subject</th>
-//                 <th>Description</th>
-//                 <th>Class</th>
-//                 <th>n</th>
-//                 <th>Action</th>
-//               </tr>
-//             </table>
-//             <div className="_c5m312 _c5x312 _pd3n3lr _ov3y _pdx3n">
-//               <table className="_tb3g36">
-//                 <tr>
-//                   <td>4</td>
-//                   <td>Lorem Ipsum</td>
-//                   <td>Lorem Ipsum Dolor Set Amet</td>
-//                   <td>A</td>
-//                   <td>29</td>
-//                   <td>
-//                     <div>
-//                       <Link to="#" className="" href="">
-//                         <i className="fa fa-pencil-square-o _ic3xs" aria-hidden="true"></i>
-//                       </Link>
-//                       <Link to="#" className="" href="">
-//                         <i className="fa fa-times _ic3xs" aria-hidden="true"></i>
-//                       </Link>
-//                     </div>
-//                   </td>
-//                 </tr>
-//               </table>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   )
-// }
-// const Assignment = () => {
-//   return (
-//     <div className="_ro _c5m39 _c5x39 __menu5 ">
-//       <div className="_c5x312 _c5m312 _pd3n3lr">
-//         <div className="_se _se3a">
-//           <div className="_ro _pd3n3b">
-//             <div className="_c5m36 _c5x312">
-//               <div className="_c5m35 _c5x35 _el3 _pd3m3t">
-//                 <Link to="#" className="_he3b _pl3l ">Assignment</Link>
-//               </div>
-//               <div className="_c5m36 _c5x37 _el3">
-//                 <button className="_bt5m3b" type="">+Create New</button>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//       <div className="_c5x312 _c5m312 _pd3n3lr">
-//         <div className="_se _se3a">
-//           <div className="_ro _pd3n3b _ma3l3lr">
-//             <table className="_tb3g34">
-//               <tr>
-//                 <th>Subject</th>
-//                 <th>Due Date</th>
-//                 <th>Created At</th>
-//                 <th>Action</th>
-//               </tr>
-//             </table>
-//             <div className="_c5m312 _c5x312 _pd3n3lr _ov3y _pdx3n">
-//               <table className="_tb3g34">
-//                 <tr>
-//                   <td>lorem Ipsum</td>
-//                   <td>Tuesday, 19 September 2017, 9.00 PM</td>
-//                   <td>11 September 2017 00:12:23</td>
-//                   <td>
-//                     <div>
-//                       <Link to="#" className="" href="">
-//                         <i className="fa fa-folder-open _ic3xs" aria-hidden="true"></i>
-//                       </Link>
-//                       <Link to="#" className="" href="">
-//                         <i className="fa fa-pencil-square-o _ic3xs" aria-hidden="true"></i>
-//                       </Link>
-//                       <Link to="#" className="" href="">
-//                         <i className="fa fa-times _ic3xs" aria-hidden="true"></i>
-//                       </Link>
-//                     </div>
-//                   </td>
-//                 </tr>
-//               </table>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//       </div>
-//    )
-// }
+const Assistant = () => {
+  return (
+    <div className="_ro _c5m39 _c5x39 __menu2 ">
+      <div className="_c5x312 _c5m312 _pd3n3lr">
+        <div className="_se _se3a">
+          <div className="_ro _pd3n3b">
+            <div className="_c5m36 _c5x312">
+              <div className="_c5m35 _c5x35 _el3 _pd3m3t">
+                <Link to="#" to="#" className="_he3b _pl3l ">Assistants</Link>
+              </div>
+              <div className="_c5m36 _c5x37 _el3">
+                <button className="_bt5m3b" type="">+Create New</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="_c5x312 _c5m312 _pd3n3lr">
+        <div className="_se _se3a">
+          <div className="_ro _pd3n3b _ma3l3lr">
+            <table className="_tb3g">
+              <tr>
+                <th>Assistant Name</th>
+                <th>No. Hp</th>
+                <th>Action</th>
+              </tr>
+            </table>
+            <div className="_c5m312 _c5x312 _pd3n3lr _ov3y _pdx3n">
+              <table className="_tb3g">
+                <tr>
+                  <td>lorem Ipsum</td>
+                  <td>0858 **** ****</td>
+                  <td>
+                    <div>
+                      <Link to="#" className="" href="">
+                        <i className="fa fa-pencil-square-o _ic3xs" aria-hidden="true"></i>
+                      </Link>
+                      <Link to="#" className="" href="">
+                        <i className="fa fa-times _ic3xs" aria-hidden="true"></i>
+                      </Link>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+const TutorialFile = () => {
+  return (
+    <div className="_ro _c5m39 _c5x39 __menu3 ">
+      <div className="_c5x312 _c5m312 _pd3n3lr">
+        <div className="_se _se3a">
+          <div className="_ro _pd3n3b">
+            <div className="_c5m36 _c5x312">
+              <div className="_c5m35 _c5x35 _el3 _pd3m3t">
+                <Link to="#" className="_he3b _pl3l ">Tutorial File</Link>
+              </div>
+              <div className="_c5m36 _c5x37 _el3">
+                <button className="_bt5m3b" type="">Upload File</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="_c5x312 _c5m312 _pd3n3lr">
+        <div className="_se _se3a">
+          <div className="_ro _pd3n3b _ma3l3lr">
+            <table className="_tb3g34">
+              <tr>
+                <th>File</th>
+                <th>Description</th>
+                <th>Created At</th>
+                <th>Action</th>
+              </tr>
+            </table>
+            <div className="_c5m312 _c5x312 _pd3n3lr _ov3y _pdx3n">
+              <table className="_tb3g34">
+                <tr>
+                  <td>lorem Ipsum</td>
+                  <td>Lorem Ipsum Dolor Set Amet</td>
+                  <td>11 September 2017 00:12:23</td>
+                  <td>
+                    <div>
+                      <Link to="#" className="" href="">
+                        <i className="fa fa-pencil-square-o _ic3xs" aria-hidden="true"></i>
+                      </Link>
+                      <Link to="#" className="" href="">
+                        <i className="fa fa-times _ic3xs" aria-hidden="true"></i>
+                      </Link>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+const Attendance = () => {
+  return (
+    <div className="_ro _c5m39 _c5x39 __menu4 ">
+      <div className="_c5x312 _c5m312 _pd3n3lr">
+        <div className="_se _se3a">
+          <div className="_ro _pd3n3b">
+            <div className="_c5m36 _c5x312">
+              <div className="_c5m35 _c5x35 _el3 _pd3m3t">
+                <Link to="#" className="_he3b _pl3l ">Attandance</Link>
+              </div>
+              <div className="_c5m36 _c5x37 _el3">
+                <button className="_bt5m3b" type="">+Create New</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="_c5x312 _c5m312 _pd3n3lr">
+        <div className="_se _se3a">
+          <div className="_ro _pd3n3b _ma3l3lr">
+            <table className="_tb3g36">
+              <tr>
+                <th>No.</th>
+                <th>Subject</th>
+                <th>Description</th>
+                <th>Class</th>
+                <th>n</th>
+                <th>Action</th>
+              </tr>
+            </table>
+            <div className="_c5m312 _c5x312 _pd3n3lr _ov3y _pdx3n">
+              <table className="_tb3g36">
+                <tr>
+                  <td>4</td>
+                  <td>Lorem Ipsum</td>
+                  <td>Lorem Ipsum Dolor Set Amet</td>
+                  <td>A</td>
+                  <td>29</td>
+                  <td>
+                    <div>
+                      <Link to="#" className="" href="">
+                        <i className="fa fa-pencil-square-o _ic3xs" aria-hidden="true"></i>
+                      </Link>
+                      <Link to="#" className="" href="">
+                        <i className="fa fa-times _ic3xs" aria-hidden="true"></i>
+                      </Link>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+const Assignment = () => {
+  return (
+    <div className="_ro _c5m39 _c5x39 __menu5 ">
+      <div className="_c5x312 _c5m312 _pd3n3lr">
+        <div className="_se _se3a">
+          <div className="_ro _pd3n3b">
+            <div className="_c5m36 _c5x312">
+              <div className="_c5m35 _c5x35 _el3 _pd3m3t">
+                <Link to="#" className="_he3b _pl3l ">Assignment</Link>
+              </div>
+              <div className="_c5m36 _c5x37 _el3">
+                <button className="_bt5m3b" type="">+Create New</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="_c5x312 _c5m312 _pd3n3lr">
+        <div className="_se _se3a">
+          <div className="_ro _pd3n3b _ma3l3lr">
+            <table className="_tb3g34">
+              <tr>
+                <th>Subject</th>
+                <th>Due Date</th>
+                <th>Created At</th>
+                <th>Action</th>
+              </tr>
+            </table>
+            <div className="_c5m312 _c5x312 _pd3n3lr _ov3y _pdx3n">
+              <table className="_tb3g34">
+                <tr>
+                  <td>lorem Ipsum</td>
+                  <td>Tuesday, 19 September 2017, 9.00 PM</td>
+                  <td>11 September 2017 00:12:23</td>
+                  <td>
+                    <div>
+                      <Link to="#" className="" href="">
+                        <i className="fa fa-folder-open _ic3xs" aria-hidden="true"></i>
+                      </Link>
+                      <Link to="#" className="" href="">
+                        <i className="fa fa-pencil-square-o _ic3xs" aria-hidden="true"></i>
+                      </Link>
+                      <Link to="#" className="" href="">
+                        <i className="fa fa-times _ic3xs" aria-hidden="true"></i>
+                      </Link>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+   )
+}
 
 class AdminManageCourse extends React.Component {
   constructor() {
@@ -311,8 +311,8 @@ class AdminManageCourse extends React.Component {
   }
   componentDidMount() {
     let id = this.props.match.params.id
-    const host = `meikoapp.herokuapp.com`;
-    const base_url = `https://` + host;
+    //const host = `meikoapp.herokuapp.com`;
+    //const base_url = `https://` + host;
     fetch(base_url + '/api/admin/v1/course/' + id, {
       method: 'GET',
       credentials: 'include',
@@ -345,8 +345,8 @@ class AdminManageCourse extends React.Component {
     formData.append('status', this.state.status)
     formData.append('description', this.state.description)
 
-    const host = `meikoapp.herokuapp.com`;
-    const base_url = `https://` + host;
+    //const host = `meikoapp.herokuapp.com`;
+    //const base_url = `https://` + host;
     fetch(base_url + '/api/admin/v1/course/' + this.state.schedule_id, {
         method: 'POST',
         credentials: 'include',
@@ -359,6 +359,12 @@ class AdminManageCourse extends React.Component {
             ? window.location = '/admin/course'
             : dispatcherRequest(true, 401, data.error)
     })
+  }
+  handleBasic = () => {
+
+  }
+  handleAssignment = () => {
+
   }
   render() {
     const {is_logged_in} = this.props

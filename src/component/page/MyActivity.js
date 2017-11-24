@@ -1,14 +1,24 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Link, Redirect} from 'react-router-dom'
+import ReactDOM from 'react-dom'
 import {actorRequest} from '../../action/action'
 import {Navbar, Newsbar, LayoutUser} from '../index.js'
+
 import {base_url} from '../../env/Environment'
 class MyActivity extends Component {
     constructor(){
         super()
         this.state = {
-            data:[]
+            data:[
+                {
+                    id: '',
+                    name: '',
+                    status: '',
+                    description: '',
+                    due_date: ''
+                }
+            ]
         }
     }
     componentDidMount(){
@@ -24,9 +34,74 @@ class MyActivity extends Component {
                 : null
         })
     }
+    handleAll = () => {
+        let all = document.getElementById('all')
+        let submitted = document.getElementById('submitted')
+        let notSubmitted = document.getElementById('notSubmitted')
+
+        let dom = ReactDOM.findDOMNode
+        dom(submitted).className = ""
+        dom(notSubmitted).className = ""
+        dom(all).className = "_ta5l3a"
+
+        fetch(base_url + '/api/v1/course/assignment/149?pg=1&ttl=10', {
+          method: 'GET',
+          credentials: 'include',
+          crossDomain: true
+        }).then((res) => {
+          return res.json()
+        }).then((data) => {
+          if(data.code === 200){
+              this.setState({data: data.data})
+          }
+        })
+    }
+    handleSubmitted = () => {
+        let all = document.getElementById('all')
+        let submitted = document.getElementById('submitted')
+        let notSubmitted = document.getElementById('notSubmitted')
+
+        let dom = ReactDOM.findDOMNode
+        dom(submitted).className = "_ta5l3a"
+        dom(notSubmitted).className = ""
+        dom(all).className = ""
+
+        /*
+        fetch(base_url + '/api/v1/course/assignment/149?pg=1&ttl=10', {
+          method: 'GET',
+          credentials: 'include',
+          crossDomain: true
+        }).then((res) => {
+          return res.json()
+        }).then((data) => {
+          if(data.code === 200){
+              this.setState({data: data.data})
+          }
+        })*/
+    }
+    handleNotSubmitted = () => {
+        let all = document.getElementById('all')
+        let submitted = document.getElementById('submitted')
+        let notSubmitted = document.getElementById('notSubmitted')
+
+        let dom = ReactDOM.findDOMNode
+        dom(submitted).className = ""
+        dom(notSubmitted).className = "_ta5l3a"
+        dom(all).className = ""
+
+        const data = this.state.data
+   
+        function checkNotSubmitted(status) {
+            return status === 1;
+        }
+        if (data.code === 200){
+            this.setState({data: data.filter(checkNotSubmitted)})
+        }
+    }
     render() {
         const {is_logged_in} = this.props
         const data = this.state.data
+
         return (is_logged_in
             ? <LayoutUser>
                     <Navbar match={this.props.match}/>
@@ -43,81 +118,36 @@ class MyActivity extends Component {
                                 <div className="_ta">
                                     <ul className="_ta5l">
                                         <li>
-                                            <a className="_ta5l3a" href="">Last Activity</a>
+                                            <Link
+                                                id="all"
+                                                onClick=
+                                                {e => {e.preventDefault(); this.handleAll()}}
+                                                className="_ta5l3a"
+                                                to="#">
+                                                All
+                                            </Link>
                                         </li>
                                         <li>
-                                            <a href="">Active Task</a>
+                                            <Link
+                                                id="submitted"
+                                                onClick=
+                                                {e => {e.preventDefault(); this.handleSubmitted()}}
+                                                to="#">
+                                                Submitted
+                                            </Link>
+                                        </li>
+                                        <li>
+                                            <Link
+                                                id="notSubmitted"
+                                                onClick=
+                                                {e => {e.preventDefault(); this.handleNotSubmitted()}}
+                                                to="#">
+                                                Not Submitted
+                                            </Link>
                                         </li>
                                     </ul>
                                     <ListActivity data={data} />
-                                    <div className="_ta5c">
-                                        <div className="_se _se3a">
-                                            <div className="_ro _pd3l3t">
-                                                <div className="_c5x33 _c5m32">
-                                                    <p className="_se5ct">YESTERDAY</p>
-                                                </div>
-                                                <div className="_c5x35 _c5m38 _pd">
-                                                    <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
-                                                </div>
-                                                <div className="_c5x34 _c5m32">
-                                                    <button className="_bt3g">submited</button>
-                                                </div>
-                                            </div>
-                                            <div className="_ro">
-                                                <div className="_c5x312">
-                                                    <hr/>
-                                                </div>
-                                            </div>
-                                            <div className="_ro">
-                                                <div className="_c5x33 _c5m32">
-                                                    <p className="_se5ct">YESTERDAY</p>
-                                                </div>
-                                                <div className="_c5x35 _pd _c5m38">
-                                                    <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
-                                                </div>
-                                                <div className="_c5x34 _c5m32">
-                                                    <button className="_bt3g">submited</button>
-                                                </div>
-                                            </div>
-                                            <div className="_ro">
-                                                <div className="_c5x312">
-                                                    <hr/>
-                                                </div>
-                                            </div>
-                                            <div className="_ro">
-                                                <div className="_c5x33 _c5m32">
-                                                    <p className="_se5ct">YESTERDAY</p>
-                                                </div>
-                                                <div className="_c5x35 _pd _c5m38">
-                                                    <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
-                                                </div>
-                                                <div className="_c5x34 _c5m32">
-                                                    <button className="_bt3g">submited</button>
-                                                </div>
-                                            </div>
-                                            <div className="_ro">
-                                                <div className="_c5x312">
-                                                    <hr/>
-                                                </div>
-                                            </div>
-                                            <div className="_ro">
-                                                <div className="_c5x33 _c5m32 ">
-                                                    <p className="_se5ct">YESTERDAY</p>
-                                                </div>
-                                                <div className="_c5x35 _pd _c5m38">
-                                                    <p className="_se5c ">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
-                                                </div>
-                                                <div className="_c5x34 _c5m32">
-                                                    <button className="_bt3r">not submited</button>
-                                                </div>
-                                            </div>
-                                            <div className="_ro">
-                                                <div className="_c5x312">
-                                                    <hr/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+
                                     <div className="_ta5c _dn">
                                         <div className="_se _se3a">
                                             <div className="_ro">
@@ -186,7 +216,7 @@ class MyActivity extends Component {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="_ta5c">
+                                    <div className="_ta5c _dn">
                                         <div className="_se _se3a">
                                             <div className="_ro _pd3l3t">
                                                 <div className="_c5x312 _c5m312">
@@ -245,14 +275,16 @@ const ListActivity = (props)=>{
             {props.data.map((data,i)=>(
                 <div className="_ro" key={i}>
                         <div className="_c5x33 _c5m32">
-                            <p className="_se5ct">{data.Assignment.DueDate}</p>
+                            <p className="_se5ct">{data.due_date}</p>
                         </div>
                         <div className="_c5x35 _pd _c5m38">
-                            <p className="_se5c">{data.Assignment.Name}</p>
+                            <p className="_se5c">{data.name}</p>
                         </div>
                         <div className="_c5x34 _c5m32">
-                            <Link to={'/myactivity/detail/' + data.Assignment.ID}>
-                                <button className="_bt3g">submited</button>
+                            <Link to={'/myactivity/detail/' + data.id}>
+                                {data.status === 1 
+                                    ? <button className="_bt3g">Not Submited</button> 
+                                    : <button className="_bt3g">Read Detail</button>}
                             </Link>
                         </div>
                     </div>

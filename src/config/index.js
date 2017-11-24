@@ -9,7 +9,7 @@ import {initAction} from '../action/action'
 import Reducers from '../reducer/index'
 import {Animation} from '../component/index.js'
 
-import {Dev as base_url} from '../env/Environment'
+import {base_url} from '../env/Environment'
 
 class Init extends React.Component {
 
@@ -19,12 +19,13 @@ class Init extends React.Component {
             credentials: "include",
             crossDomain: true
         }).then(res => {
+            
             if (res.ok) {
                 return res.json()
             }
         }).then((data) => {
             data.data.is_logged_in
-                ? this.props.onInitialize(true,data.data.modules)
+                ? this.props.onInitialize(true, data.data.modules)
                 : this.props.onInitialize(false,'')
         })
         

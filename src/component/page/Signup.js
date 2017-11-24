@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 import {InputContent, LayoutGuest} from '../index.js'
 import {actorRequest} from '../../action/action'
 
-import {Pro as base_url} from '../../env/Environment'
+import {base_url} from '../../env/Environment'
 
 class Signup extends Component {
     constructor() {
@@ -59,7 +59,9 @@ class Signup extends Component {
     renderMain() {
         return (
             <LayoutGuest>
-                <div className="_bl5b"></div>
+                <div className="_bl5b">
+                    <img src="/img/icon/white/logo.png" alt="logo"/>
+                </div>
                 <form
                     className="_cn"
                     onSubmit={(e) => {

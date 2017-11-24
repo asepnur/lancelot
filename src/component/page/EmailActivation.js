@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 import {actorRequest} from '../../action/action'
 import {LayoutGuest, InputContent} from '../index.js'
 
-import {Pro as base_url} from '../../env/Environment'
+import {base_url} from '../../env/Environment'
 
 class EmailActivation extends Component {
     constructor(props) {
