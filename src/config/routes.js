@@ -11,6 +11,7 @@ import {
     DetCourse,
     Schedule,
     MyActivity,
+    AssignmentDetail,
     Grade,
     Information,
     User,
@@ -25,6 +26,7 @@ import {
     AdminCrtAttand,
     AdminCrtCourse,
     AdminManageCourse,
+    AdminManageAssignment,
     Test
 } from '../component/index.js'
 export const routes = [
@@ -75,7 +77,11 @@ export const routes = [
     }, {
         path: '/myactivity',
         component: MyActivity,
-        exact: false
+        exact: true
+    }, {
+        path: '/myactivity/detail/:id',
+        component: AssignmentDetail,
+        exact: true
     }, {
         path: '/grade',
         component: Grade,
@@ -128,6 +134,10 @@ export const routes = [
     }, {
         path: '/admin/course/manage/:id',
         component: AdminManageCourse,
+        exact: true
+    }, {
+        path: 'admin/course/manage/assignment/:id',
+        component: AdminManageAssignment,
         exact: true
     }, {
         path: '/admin/create/course',

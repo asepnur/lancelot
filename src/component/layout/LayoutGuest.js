@@ -5,7 +5,7 @@ import {ErrorMessage} from '../index.js'
 class LayoutGuest extends Component{
     render(){
         return(
-        <div className="_f5a">
+        <div className="_f5a _pd3n3lr _c5m312">
             <ErrorMessage />
             <div className="_bl _c5m3o3 _c5m36">
                 {this.props.children}

@@ -3,8 +3,6 @@ import {Link, Redirect} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import ReactDOM from 'react-dom'
-import { loadProgressBar } from 'axios-progress-bar'
-
 import {actorRequest} from '../../action/action'
 import {LayoutGuest, InputContent} from '../index.js'
 
@@ -28,7 +26,9 @@ class Login extends Component {
   renderMain = () => {
     return (
       <LayoutGuest>
-        <div className="_bl5b"></div>
+        <div className="_bl5b">
+          <img src="/img/icon/white/logo.png" alt="logo"/>
+        </div>
         <form
           className="_cn"
           onSubmit={(e) => {

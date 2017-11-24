@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom'
 
 import {base_url} from '../../env/Environment'
 import {actorRequest} from '../../action/action'
+
 class Navbar extends Component {
 
    componentDidMount() {
@@ -44,16 +45,16 @@ class Navbar extends Component {
          for (let i = 0; i < length; i++) {
             li[i].className = ''
          }
-         ReactDOM
-            .findDOMNode(id)
-            .className = '_n3a'
+
+        // ReactDOM.findDOMNode(id).className = '_n3a'
       }
    }
    render() {
       const {is_logged_in} = this.props
    
       return (is_logged_in
-         ? <div className="_cn">
+         ? <div className="_ro">
+            <div className="_mn">
                <div className="_c5x32">
                   <nav className="_cn5n">
                      <i className="fa fa-bars _i5h" aria-hidden="true"></i>
@@ -116,6 +117,7 @@ class Navbar extends Component {
                <div className="_c5x3o1 _c5x39">
                   <p className="_me5ts _pd3cr">11.59 PM | Monday, September 11, 2017</p>
                </div>
+            </div>
             </div>
          : <Redirect to={'/login'}/>)
    }
