@@ -50,7 +50,7 @@ const ListCourse = (props) => {
                                        <td>{data.name}</td>
                                        <td>{data.class}</td>
                                        <td>
-                                          <div align="center">
+                                          <div align="left">
                                              <Link to={'/admin/course/manage/' + data.schedule_id}>
                                                 <i className="fa fa-pencil-square _ic3mb _ma3lr" aria-hidden="true"></i>
                                              </Link>

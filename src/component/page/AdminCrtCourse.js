@@ -175,7 +175,7 @@ class AdminCrtCourse extends Component {
                                                         value={this.state.place}/>
                                                 </div>
                                                 <div className="_ro">
-                                                    <div className="_c5x3o8 _c5m33 _c5x34 _pd3l">
+                                                    <div className="_c5m33 _c5x34 _pl5r">
                                                         <button
                                                             onClick={e => {
                                                             e.preventDefault();

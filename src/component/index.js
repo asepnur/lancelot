@@ -12,6 +12,7 @@ export {default as Navbar}from './navbar/Navbar.js'
 export {default as Newsbar}from './features/Newsbar.js'
 // Content
 export {default as InputContent}from './section/InputContent.js'
+export {default as TextareaContent}from './section/TextareaContent.js'
 //page
 export {default as App}from './page/App.js'
 export {default as EmailActivation}from './page/EmailActivation.js'

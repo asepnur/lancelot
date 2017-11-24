@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
 //import {Switch} from 'react-router'
-import {connect} from 'react-redux'
-import {Redirect} from 'react-router-dom'
+//import {connect} from 'react-redux'
+//import {Redirect} from 'react-router-dom'
 
-import {actorRequest} from '../../action/action'
+//import {actorRequest} from '../../action/action'
 import {base_url} from '../../env/Environment'
 
 class Newsbar extends Component {
@@ -11,7 +11,7 @@ class Newsbar extends Component {
 
         super()
         this.state = {
-            news: [
+            last: [
                 {
                     avatar:'',
                     author: '',
@@ -30,13 +30,13 @@ class Newsbar extends Component {
             return res.json()
         }).then((data) => {
             if (data.code === 200) {
-                this.setState({news: data.data.news})
+                this.setState({last: data.data.last})
             }
         })
 
     }
     render() {
-        const news = this.state.news
+        const last = this.state.last
         return (
             <div className="_c5m34 _c5x312 _pd3cr">
                 <div className="_se _se3n">
@@ -44,11 +44,11 @@ class Newsbar extends Component {
                         + VIEW MORE</div>
                     <div className="_ro">
                         <div className="_c5x312">
-                            <h1 className="_se5t">News Board</h1>
+                            <h1 className="_se5t">last Board</h1>
                             <hr/>
                         </div>
                     </div>
-                    <Main data={news}/>
+                    <Main data={last}/>
                     {/*<div className="_ro">
                         <div className="_c5x312 _c5m312">
                             <p className="_se5c">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>

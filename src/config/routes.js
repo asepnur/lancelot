@@ -84,14 +84,14 @@ export const routes = [
         component: Grade,
         exact: false
     }, {
+        path: '/information/det',
+        component: DetInformation,
+        exact: false
+    }, {
         path: '/information',
         component: Information,
         exact: false
     },{
-        path: '/detinformation',
-        component: DetInformation,
-        exact: false
-    }, {
         path: '/user',
         component: User,
         exact: false
@@ -141,7 +141,7 @@ export const routes = [
         component: AdminManageSubmission,
         exact: true
     },{
-        path: '/manage/information',
+        path: '/admin/information',
         component: AdminManageInformation,
         exact: true
     },{

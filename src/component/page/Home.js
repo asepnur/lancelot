@@ -165,7 +165,7 @@ class Home extends Component {
                         </div>
                     </div>
                 </div>
-                <div className="_md5s">
+                <div className="_md5s _dn">
                     <div className="__x"></div>
                     <div className="_ro">
                         <div className="_c5x312 _c5m36 _c5m3o3">

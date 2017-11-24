@@ -1,9 +1,9 @@
 import React from 'react';
 //import {Link, Redirect} from 'react-router-dom'
-//import {connect} from 'react-redux'
+import {connect} from 'react-redux'
 
 //import {actorRequest} from '../../action/action'
-import {NavbarAdmin, LayoutUser} from '../index.js'
+import {Navbar, LayoutUser} from '../index.js'
 
 //import {base_url} from '../../env/Environment'
 
@@ -11,7 +11,7 @@ class AdminManageSubmission extends React.Component {
     render() {
         return (
             <LayoutUser>
-                <NavbarAdmin/>
+                <Navbar match={this.props.match}/>
                 <div className="_cn">
                     <div className="_ro">
                         <div className="_pd5m3n _c5m312 _c5x312">
@@ -89,58 +89,6 @@ class AdminManageSubmission extends React.Component {
                                                     <button className="_bt5m3b" type="">Download</button>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>140810******</td>
-                                                <td>Lorem Ipsum</td>
-                                                <td>
-                                                    <div>
-                                                        <input type="text" name="grade" placeholder="Grade"/>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <button className="_bt5m3b" type="">Download</button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>140810******</td>
-                                                <td>Lorem Ipsum</td>
-                                                <td>
-                                                    <div>
-                                                        <input type="text" name="grade" placeholder="Grade"/>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <button className="_bt5m3b" type="">Download</button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td>140810******</td>
-                                                <td>Lorem Ipsum</td>
-                                                <td>
-                                                    <div>
-                                                        <input type="text" name="grade" placeholder="Grade"/>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <button className="_bt5m3b" type="">Download</button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>4</td>
-                                                <td>140810******</td>
-                                                <td>Lorem Ipsum</td>
-                                                <td>
-                                                    <div>
-                                                        <input type="text" name="grade" placeholder="Grade"/>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <button className="_bt5m3b" type="">Download</button>
-                                                </td>
-                                            </tr>
                                         </table>
                                     </div>
                                 </div>
@@ -169,4 +117,12 @@ class AdminManageSubmission extends React.Component {
     }
 }
 
-export default AdminManageSubmission
+const mapStatetoProps = (state) => {
+    return {is_logged_in: state.is_logged_in}
+}
+const mapDispatchtoProps = (dispatch) => {
+    return {
+        dispatcher: () => dispatch()
+    }
+}
+export default connect(mapStatetoProps, mapDispatchtoProps)(AdminManageSubmission)
