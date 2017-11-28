@@ -158,7 +158,7 @@ const ListCourse = (props) => {
                     <tr>
                         <td>
                             
-<i class="fa fa-book" aria-hidden="true"></i>
+<i className="fa fa-book" aria-hidden="true"></i>
                         </td>
                     </tr>
                     <tr>

@@ -14,7 +14,7 @@ class Navbar extends Component{
                             <li><img className="_i3c" src="/img/icon/white/logo copy 4.png" alt="logo"/></li>
                             <li><Link to={'/'}><i className="fa fa-home" aria-hidden="true"></i></Link></li>
                             <li><Link to={'/course'}><i className="fa fa-clone" aria-hidden="true"></i></Link></li>
-                            <li className="_n3a"><Link to={''}><i class="fa fa-users" aria-hidden="true"></i></Link></li>
+                            <li className="_n3a"><Link to={''}><i className="fa fa-users" aria-hidden="true"></i></Link></li>
                         </div>
                         <div className="_n52">
                             <li><Link to={'/information'}><i className="fa fa-bell-o" aria-hidden="true"></i></Link></li>

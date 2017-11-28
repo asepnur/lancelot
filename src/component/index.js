@@ -45,6 +45,8 @@ export {default as AdminManageCourse} from './page/AdminManageCourse.js'
 export {default as AdminManageAssignment} from './page/AdminManageAssignment.js'
 
 //Animation
+export {default as LoadingAnim} from './section/LoadingAnim.js'
+export {default as Loading} from './page/Loading.js'
 export {default as Animation}from './animation/Animation.js'
 
 //Error Message

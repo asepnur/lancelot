@@ -7,7 +7,7 @@ import PropTypes from 'prop-types'
 import {createStore} from 'redux'
 import {initAction} from '../action/action'
 import Reducers from '../reducer/index'
-import {Animation} from '../component/index.js'
+import {Loading} from '../component/index.js'
 
 import {base_url} from '../env/Environment'
 
@@ -34,7 +34,7 @@ class Init extends React.Component {
     render() {
         const {is_loading} = this.props
         return (is_loading
-            ? <Animation />
+            ? <Loading />
             : this.props.children)
     }
 }
