@@ -5,7 +5,6 @@ import {connect} from 'react-redux'
 import {actorRequest} from '../../action/action'
 import {LayoutGuest, InputContent} from '../index.js'
 
-import {base_url} from '../../env/Environment'
 
 class EmailActivation extends Component {
     constructor(props) {
@@ -41,7 +40,7 @@ class EmailActivation extends Component {
         formData.append('code', this.state.code)
         formData.append('email', this.state.email)
 
-        fetch(base_url + '/api/v1/user/verify', {
+        fetch('/api/v1/user/verify', {
             method: 'POST',
             credentials: 'include',
             crossDomain: true,

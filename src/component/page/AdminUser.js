@@ -10,7 +10,6 @@ import ReactDOM from 'react-dom'
 import {actorRequest} from '../../action/action'
 import {Navbar, LayoutUser} from '../index.js'
 
-import {base_url} from '../../env/Environment'
 
 class AdminUser extends Component {
     constructor() {
@@ -31,7 +30,7 @@ class AdminUser extends Component {
     }
 
     handleInit = () => {
-        fetch(base_url + '/api/admin/v1/user?pg=1&ttl=10', {
+        fetch('/api/admin/v1/user?pg=1&ttl=10', {
             method: 'GET',
             credentials: 'include',
             crossDomain: true
@@ -82,7 +81,7 @@ class AdminUser extends Component {
     }
     handleDelete = (dispatcherRequest, id) => {
         const index = this.state.data.findIndex((val) => val.id === id)
-        fetch(base_url + '/api/admin/v1/user/' + id + '/delete', {
+        fetch('/api/admin/v1/user/' + id + '/delete', {
             method: 'POST',
             credentials: 'include',
             crossDomain: true
@@ -103,7 +102,7 @@ class AdminUser extends Component {
 
         let formData = new FormData()
         formData.append('status', value)
-        fetch(base_url + '/api/admin/v1/user/' + id + '/activate', {
+        fetch('/api/admin/v1/user/' + id + '/activate', {
             method: 'POST',
             credentials: 'include',
             crossDomain: true,

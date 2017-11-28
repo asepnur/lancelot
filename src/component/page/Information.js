@@ -4,7 +4,6 @@ import {Redirect} from 'react-router-dom'
 
 import {actorRequest} from '../../action/action'
 import {Navbar, Newsbar, LayoutUser} from '../index.js'
-import {base_url} from '../../env/Environment'
 
 class Information extends Component{
     constructor(){
@@ -28,7 +27,7 @@ class Information extends Component{
         }
     }
     componentDidMount () {
-        fetch(base_url + '/api/v1/information', {
+        fetch('/api/v1/information', {
             method: 'GET',
             credentials: 'include',
             crossDomain: true

@@ -5,8 +5,6 @@ import {connect} from 'react-redux'
 import {LayoutGuest, InputContent} from '../index.js'
 import {actorRequest} from '../../action/action'
 
-import {base_url} from '../../env/Environment'
-
 class Forgot extends Component {
 		constructor() {
 				super()
@@ -25,7 +23,7 @@ class Forgot extends Component {
 				let formData = new FormData()
 				formData.append('email', this.state.email)
 				formData.append('resend', 'true')
-				fetch(base_url + '/api/v1/user/forgot', {
+				fetch('/api/v1/user/forgot', {
 						method: 'POST',
 						credentials: 'include',
 						crossDomain: true,

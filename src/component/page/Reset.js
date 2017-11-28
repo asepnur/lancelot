@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
 import {Link, Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
+
 import {actorRequest} from '../../action/action'
 import {LayoutGuest, InputContent} from '../index.js'
-import {base_url} from '../../env/Environment'
 
 class Reset extends Component {
     constructor() {
@@ -36,7 +36,7 @@ class Reset extends Component {
         formData.append('email', this.state.email)
         formData.append('code', this.state.code)
         formData.append('password', this.state.password)
-        fetch(base_url + '/api/v1/user/forgot', {
+        fetch('/api/v1/user/forgot', {
             method: 'POST',
             credentials: 'include',
             crossDomain: true,

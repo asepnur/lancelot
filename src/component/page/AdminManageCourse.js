@@ -5,8 +5,6 @@ import {connect} from 'react-redux'
 import {actorRequest} from '../../action/action'
 import {Navbar, LayoutUser} from '../index'
 
-import {base_url} from '../../env/Environment'
-
 const SideBar = () => {
   return (
     <div className="_ro _c5m33 _c5x33 _pd5m3n _pd3n3r">
@@ -311,9 +309,8 @@ class AdminManageCourse extends React.Component {
   }
   componentDidMount() {
     let id = this.props.match.params.id
-    //const host = `meikoapp.herokuapp.com`;
-    //const base_url = `https://` + host;
-    fetch(base_url + '/api/admin/v1/course/' + id, {
+    
+    fetch('/api/admin/v1/course/' + id, {
       method: 'GET',
       credentials: 'include',
       crossDomain: true
@@ -345,9 +342,7 @@ class AdminManageCourse extends React.Component {
     formData.append('status', this.state.status)
     formData.append('description', this.state.description)
 
-    //const host = `meikoapp.herokuapp.com`;
-    //const base_url = `https://` + host;
-    fetch(base_url + '/api/admin/v1/course/' + this.state.schedule_id, {
+    fetch('/api/admin/v1/course/' + this.state.schedule_id, {
         method: 'POST',
         credentials: 'include',
         crossDomain: true,

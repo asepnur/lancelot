@@ -5,7 +5,6 @@ import {connect} from 'react-redux'
 import {InputContent, LayoutGuest} from '../index.js'
 import {actorRequest} from '../../action/action'
 
-import {base_url} from '../../env/Environment'
 
 class Signup extends Component {
     constructor() {
@@ -43,7 +42,7 @@ class Signup extends Component {
         formData.append('email', this.state.email)
         formData.append('password', this.state.password)
 
-        fetch(base_url + '/api/v1/user/register', {
+        fetch('/api/v1/user/register', {
             method: 'POST',
             credentials: 'include',
             crossDomain: true,

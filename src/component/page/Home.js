@@ -4,7 +4,6 @@ import {connect} from 'react-redux'
 import ReactDOM from 'react-dom'
 
 import {Navbar, Newsbar, LayoutUser, InputContent} from '../index.js'
-import {base_url} from '../../env/Environment'
 
 class Home extends Component {
     constructor() {
@@ -14,7 +13,7 @@ class Home extends Component {
         }
     }
     componentDidMount() {
-        fetch(base_url + '/api/v1/course/assignment/149?pg=1&ttl=10', {
+        fetch('/api/v1/course/assignment/149?pg=1&ttl=10', {
             method: 'GET',
             credentials: 'include',
             crossDomain: true

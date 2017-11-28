@@ -2,10 +2,10 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 import ReactDOM from 'react-dom'
+
 import {actorRequest} from '../../action/action'
 import {Navbar, Newsbar, LayoutUser, InputContent} from '../index.js'
 
-import {base_url} from '../../env/Environment'
 
 class AssignmentDetail extends Component {
     constructor(){
@@ -18,7 +18,7 @@ class AssignmentDetail extends Component {
     componentDidMount(){
         const id = this.props.match.params.id
 
-        fetch(base_url + '/api/v1/assignment/' + id, {
+        fetch('/api/v1/assignment/' + id, {
             method: 'GET',
             credentials: 'include',
             crossDomain: true
@@ -40,7 +40,7 @@ class AssignmentDetail extends Component {
         formData.append('id', this.state.id)
         formData.append('email', this.state.email)
 
-        fetch(base_url + '/api/v1/user/profile', {
+        fetch('/api/v1/user/profile', {
             method: 'POST',
             credentials: 'include',
             crossDomain: true,

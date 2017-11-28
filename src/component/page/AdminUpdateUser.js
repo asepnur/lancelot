@@ -8,8 +8,6 @@ import {connect} from 'react-redux'
 import {actorRequest} from '../../action/action'
 import {Navbar, LayoutUser, InputContent} from '../index.js'
 
-import {base_url} from '../../env/Environment'
-
 class AdminUpdateUser extends Component {
    constructor() {
       super()
@@ -26,7 +24,7 @@ class AdminUpdateUser extends Component {
    componentDidMount(){
     const id = this.props.match.params.id
     
-    fetch(base_url + '/api/admin/v1/user/' + id, {
+    fetch('/api/admin/v1/user/' + id, {
       method: 'GET',
       credentials: 'include',
       crossDomain: true
@@ -62,7 +60,7 @@ class AdminUpdateUser extends Component {
       formData.append('about', this.state.about)
       formData.append('status', 'active')
 
-      fetch(base_url + '/api/admin/v1/user/' + this.state.id, {
+      fetch('/api/admin/v1/user/' + this.state.id, {
           method: 'POST',
           credentials: 'include',
           crossDomain: true,

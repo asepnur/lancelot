@@ -2,6 +2,9 @@ import React, {Component} from 'react'
 //import {Switch} from 'react-router'
 
 class Newsbar extends Component {
+    componentDidMount(){
+        
+    }
     render() {
         return (
             <div className="_c5m34 _c5x312 _pd3cr">

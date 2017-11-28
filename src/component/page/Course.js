@@ -6,7 +6,6 @@ import {Redirect, Link} from 'react-router-dom'
 import {actorRequest} from '../../action/action'
 import {Navbar, Newsbar, LayoutUser} from '../index.js'
 
-import {base_url} from '../../env/Environment'
 
 class Course extends Component {
     constructor() {
@@ -19,7 +18,7 @@ class Course extends Component {
         let current = document.getElementById('current')
         let dom = ReactDOM.findDOMNode
         dom(current).className = "_active"
-        fetch(base_url + '/api/v1/course?payload=current', {
+        fetch('/api/v1/course?payload=current', {
             method: 'GET',
             credentials: 'include',
             crossDomain: true
@@ -42,7 +41,7 @@ class Course extends Component {
         dom(current).className = ""
         dom(all).className = ""
 
-        fetch(base_url + '/api/v1/course?payload=last', {
+        fetch('/api/v1/course?payload=last', {
             method: 'GET',
             credentials: 'include',
             crossDomain: true
@@ -64,7 +63,7 @@ class Course extends Component {
         dom(current).className = "_active"
         dom(all).className = ""
 
-        fetch(base_url + '/api/v1/course?payload=current', {
+        fetch('/api/v1/course?payload=current', {
             method: 'GET',
             credentials: 'include',
             crossDomain: true
@@ -86,7 +85,7 @@ class Course extends Component {
         dom(current).className = ""
         dom(all).className = "_active"
 
-        fetch(base_url + '/api/v1/course?payload=all', {
+        fetch('/api/v1/course?payload=all', {
             method: 'GET',
             credentials: 'include',
             crossDomain: true

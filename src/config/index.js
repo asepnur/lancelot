@@ -5,16 +5,15 @@ import React from 'react'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import {createStore} from 'redux'
+
 import {initAction} from '../action/action'
 import Reducers from '../reducer/index'
 import {Loading} from '../component/index.js'
 
-import {base_url} from '../env/Environment'
-
 class Init extends React.Component {
 
     componentWillMount() {
-        fetch(base_url + "/api/v1/role", {
+        fetch("/api/v1/role", {
             method: "GET",
             credentials: "include",
             crossDomain: true

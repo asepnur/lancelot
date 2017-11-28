@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "axios-progress-bar": "^1.0.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-scripts": "1.0.14"
@@ -19,10 +18,7 @@
   "devDependencies": {
     "axios": "^0.17.1",
     "prop-types": "^15.6.0",
-    "react-loading": "^1.0.1",
-    "react-loadingbar": "0.0.1",
     "react-redux": "^5.0.6",
-    "react-redux-loading-bar": "^2.9.3",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "redux": "^3.7.2"
@@ -36,5 +32,6 @@
   "bugs": {
     "url": "https://github.com/asepnur/lancelot/issues"
   },
-  "homepage": "https://github.com/asepnur/lancelot#readme"
+  "homepage": "https://github.com/asepnur/lancelot#readme",
+  "proxy": "http://localhost:9000"
 }

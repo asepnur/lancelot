@@ -2,12 +2,9 @@ import React, {Component} from 'react'
 import {Link, Redirect} from 'react-router-dom'
 import ReactDOM from 'react-dom'
 import {connect} from 'react-redux'
-import LoadingBar from 'react-redux-loading-bar'
 
 import {Navbar, Newsbar, LayoutUser, InputContent} from '../index.js'
 import {actorRequest} from '../../action/action'
-
-import {base_url} from '../../env/Environment'
 
 class User extends Component {
     constructor() {
@@ -44,7 +41,7 @@ class User extends Component {
         }
         const {is_logged_in} = this.props
         return (is_logged_in
-            ? <div><LoadingBar/>
+            ? <div>
                     <LayoutUser>
                         <Navbar match={this.props.match}/>
                         <div className="_cn">
@@ -85,7 +82,7 @@ class User extends Component {
             : <Redirect to={`/login`}/>)
     }
     componentDidMount() {
-        fetch(base_url + '/api/v1/user/profile', {
+        fetch('/api/v1/user/profile', {
             method: 'GET',
             credentials: 'include',
             crossDomain: true
@@ -113,7 +110,7 @@ class User extends Component {
         formData.append('password', this.state.password)
         formData.append('password_confirmation', this.state.password_confirmation)
 
-        fetch(base_url + '/api/v1/user/changepassword', {
+        fetch('/api/v1/user/changepassword', {
             method: 'POST',
             credentials: 'include',
             crossDomain: true,
@@ -136,7 +133,7 @@ class User extends Component {
         formData.append('line_id', this.state.line_id)
         formData.append('about_me', this.state.about_me)
 
-        fetch(base_url + '/api/v1/user/profile', {
+        fetch('/api/v1/user/profile', {
             method: 'POST',
             credentials: 'include',
             crossDomain: true,
@@ -153,7 +150,7 @@ class User extends Component {
         let formData = new FormData()
         formData.append('file', value)
 
-        fetch(base_url + '/api/v1/image/profile', {
+        fetch('/api/v1/image/profile', {
             method: 'POST',
             credentials: 'include',
             crossDomain: true,
@@ -287,7 +284,7 @@ class Basic extends Component {
                                     this.props.data.handleUpload(e.target.value, this.props.data.dispatcherRequest)
                                     }} />
                             <div className="_cn3ep" >
-                                <img className="_i3pr _i3ci" src={base_url + "/api/v1/files/profile/1510389487806194000.945229.1.jpg"} alt="profil"/>
+                                <img className="_i3pr _i3ci" src={"/api/v1/files/profile/1510389487806194000.945229.1.jpg"} alt="profil"/>
                                 <i className="fa fa-camera _icx _i3ep" aria-hidden="true"></i>
                             </div>
                         </div>

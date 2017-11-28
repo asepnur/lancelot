@@ -5,8 +5,6 @@ import {connect} from 'react-redux'
 import {actorRequest} from '../../action/action'
 import {Navbar, LayoutUser, InputContent} from '../index.js'
 
-import {base_url} from '../../env/Environment'
-
 class AdminCrtCourse extends Component {
     constructor() {
         super()
@@ -48,7 +46,7 @@ class AdminCrtCourse extends Component {
         formData.append('place', this.state.place )
         formData.append('is_update', true )
         
-        fetch(base_url + '/api/admin/v1/course', {
+        fetch('/api/admin/v1/course', {
             method: 'POST',
             credentials: 'include',
             crossDomain: true,

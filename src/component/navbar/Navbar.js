@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import {Link, Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 
-import {base_url} from '../../env/Environment'
 import {actorRequest} from '../../action/action'
 
 class Navbar extends Component {
@@ -13,7 +12,7 @@ class Navbar extends Component {
       this.handleActiveMenu(id)
    }
    handlerSignOut = (dispatcherRequest) => {
-      fetch(base_url+'/api/v1/user/signout', {
+      fetch('/api/v1/user/signout', {
          method: 'POST',
          credentials: 'include',
          crossDomain: true
@@ -60,7 +59,7 @@ class Navbar extends Component {
                      <ul className="_n">
                         <div className="_n51">
                            <li id="home" className="_n3a">
-                              <Link to={`/`}><img className="_i3c" src="/img/icon/white/logo copy 4.png" alt="logo"/></Link>
+                              <Link to={`/`}><img className="_i3c" src="../img/icon/white/logo_utama.png" alt="logo"/></Link>
                            </li>
                            <li id="course">
                               <Link to={'/course'}>
