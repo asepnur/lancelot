@@ -17,3 +17,11 @@ export const actorRequest = (is_logged_in, request_status, error_message)  => {
         error_message
     }
 }
+
+export const loadingRequest = (loading_progress, is_loading_error) => {
+    return {
+        type: 'LOADING',
+        loading_progress,
+        is_loading_error
+    }
+}

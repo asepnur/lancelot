@@ -11,8 +11,8 @@ const initialState = {
     request_status:         0,
     error_message:          '',
     modules_access:         '',
-    progress: 0,
-    error: false
+    loading_progress: 0,
+    is_loading_error: false
 
 }
 const Reducers = (
@@ -22,17 +22,22 @@ state = {
 action) => {
     switch (action.type) {
         case "INIT":
-            return {
+            return Object.assign({}, state, {
                 is_loading: false, 
                 is_logged_in: action.is_logged_in,
                 modules_access: action.modules_access
-            }
+            })
         case "REQUEST":
-            return {
+            return Object.assign({}, state, {
                 is_logged_in: action.is_logged_in, 
                 request_status: action.request_status, 
                 error_message: action.error_message
-            }
+            })
+        case "LOADING":
+            return Object.assign({}, state, {
+                loading_progress: action.loading_progress,
+                is_loading_error: action.is_loading_error
+            })
         default:
             return state
     }
