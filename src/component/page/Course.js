@@ -113,29 +113,28 @@ class Course extends Component {
                                 <div className="_c5m38 _c5x312 _pd5n _pd3cl _pd5m3n ">
                                     <div className="_he3b _pd3l3b">My Course</div>
                                     <div className="_c5x312 _c5m312 _pd3n3lr _ta ">
-                                        <ul className="_ta5l">
+                                        <ul className="_ta5l3b">
                                             <li id="last">
-                                                <i className="fa fa-history" aria-hidden="true"></i>
+                                                <i onClick= { e => {e.preventDefault(); this.handleLast()}} className="fa fa-history" aria-hidden="true"></i>
                                                 <Link onClick= { e => {e.preventDefault(); this.handleLast()}} to="#">
                                                     &nbsp;Last</Link>
                                             </li>
-                                            <li id="current" className="_active">
+                                            <li onClick= { e => {e.preventDefault(); this.handleCurrent()}} id="current" className="_active">
                                                 <i className="fa fa-clock-o" aria-hidden="true"></i>
-                                                <Link onClick= { e => {e.preventDefault(); this.handleCurrent()}} to="#">
+                                                <Link to="#">
                                                     &nbsp;Current</Link>
                                             </li>
-                                            <li id="all">
+                                            <li onClick= { e => {e.preventDefault(); this.handleAll()}} id="all">
                                                 <i className="fa fa-list" aria-hidden="true"></i>
-                                                <Link onClick= { e => {e.preventDefault(); this.handleAll()}} to="#">
+                                                <Link to="#">
                                                     &nbsp;All</Link>
                                             </li>
-                                            <li id="manage">
-                                                <i className="fa fa-cog" aria-hidden="true"></i>
-                                                <Link
-                                                    onClick={e => {
+                                            <li onClick={e => {
                                                     e.preventDefault();
                                                     this.handleRedirect()
-                                                }}
+                                                }} id="manage">    
+                                                <i className="fa fa-cog" aria-hidden="true"></i>
+                                                <Link
                                                     to="#">
                                                     &nbsp;Manage</Link>
                                             </li>

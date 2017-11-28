@@ -4,7 +4,7 @@ import React, {Component} from 'react'
 class Newsbar extends Component {
     render() {
         return (
-            <div className="_c5m34 _pd3cr">
+            <div className="_c5m34 _c5x312 _pd3cr">
                 <div className="_he3b">Last News</div>
                 <table className="_se3inf">
                     <tbody>
