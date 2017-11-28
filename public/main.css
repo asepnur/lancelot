@@ -1265,7 +1265,7 @@ hr {
 ._ma3n3a {
   margin: 0px; }
 
-._ct, ._ct3s, ._ct3m, ._ta ._ta5lh li a, ._ct3b, ._ct3x, ._ct3xs, ._ct3xm, ._ct3xb, ._ct3ms, ._ct3mm, ._ct3mb, ._ct3nor, ._tb th, ._tb td, ._tb3g th, ._tb3g34 th, ._tb3g343l th, ._tb3g353l th, ._tb3g36 th, ._tb3g td, ._tb3g34 td, ._tb3g343l td, ._tb3g353l td, ._tb3g36 td, ._se3msg tbody tr td, ._se3msg3l tbody tr td, ._se3o thead tr th, ._se3g thead tr th, ._se3o tbody tr td, ._se3g tbody tr td, ._ta ._ta5l li a, ._ta ._ta5l3b li a, ._ta ._ta5l3w li a {
+._ct, ._ct3s, ._ct3m, ._ta ._ta5lh li a, ._ct3b, ._ct3x, ._ct3xs, ._ct3xm, ._ct3xb, ._ct3ms, ._ct3mm, ._ct3mb, ._ct3nor, ._tb th, ._tb td, ._tb3g th, ._tb3g34 th, ._tb3g343l th, ._tb3g353l th, ._tb3g36 th, ._tb3g td, ._tb3g34 td, ._tb3g343l td, ._tb3g353l td, ._tb3g36 td, ._se3msg tbody tr td, ._se3msg3l tbody tr td, ._se3o thead tr th, ._se3o tbody tr td, ._se3g thead tr th, ._se3g tbody tr td, ._ta ._ta5l li a, ._ta ._ta5l3b li a, ._ta ._ta5l3w li a {
   font-family: "PT Sans";
   font-size: .9em;
   color: #000000;
@@ -1590,7 +1590,7 @@ hr {
 ._ma3n3a {
   margin: 0px; }
 
-._ct, ._ct3s, ._ct3m, ._ta ._ta5lh li a, ._ct3b, ._ct3x, ._ct3xs, ._ct3xm, ._ct3xb, ._ct3ms, ._ct3mm, ._ct3mb, ._ct3nor, ._tb th, ._tb td, ._tb3g th, ._tb3g34 th, ._tb3g343l th, ._tb3g353l th, ._tb3g36 th, ._tb3g td, ._tb3g34 td, ._tb3g343l td, ._tb3g353l td, ._tb3g36 td, ._se3msg tbody tr td, ._se3msg3l tbody tr td, ._se3o thead tr th, ._se3g thead tr th, ._se3o tbody tr td, ._se3g tbody tr td, ._ta ._ta5l li a, ._ta ._ta5l3b li a, ._ta ._ta5l3w li a {
+._ct, ._ct3s, ._ct3m, ._ta ._ta5lh li a, ._ct3b, ._ct3x, ._ct3xs, ._ct3xm, ._ct3xb, ._ct3ms, ._ct3mm, ._ct3mb, ._ct3nor, ._tb th, ._tb td, ._tb3g th, ._tb3g34 th, ._tb3g343l th, ._tb3g353l th, ._tb3g36 th, ._tb3g td, ._tb3g34 td, ._tb3g343l td, ._tb3g353l td, ._tb3g36 td, ._se3msg tbody tr td, ._se3msg3l tbody tr td, ._se3o thead tr th, ._se3o tbody tr td, ._se3g thead tr th, ._se3g tbody tr td, ._ta ._ta5l li a, ._ta ._ta5l3b li a, ._ta ._ta5l3w li a {
   font-family: "PT Sans";
   font-size: .9em;
   color: #000000;
@@ -2674,7 +2674,7 @@ input:checked + .slider:before {
       ._se3msg tbody tr td p, ._se3msg3l tbody tr td p {
         margin-bottom: 0px; }
 
-._se3o, ._se3g {
+._se3o {
   position: relative;
   border-radius: 5px;
   box-shadow: 0.5px 0.5px 1px #C0C0C0;
@@ -2694,12 +2694,12 @@ input:checked + .slider:before {
   flex-direction: column;
   width: 100%;
   font-size: 1em; }
-  ._se3o thead, ._se3g thead {
+  ._se3o thead {
     padding: 5px;
     background-color: #2095b3;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px; }
-    ._se3o thead tr, ._se3g thead tr {
+    ._se3o thead tr {
       display: -webkit-box;
       display: -webkit-flex;
       display: -webkit-flexbox;
@@ -2719,7 +2719,7 @@ input:checked + .slider:before {
       -moz-align-items: center;
       -ms-align-items: center;
       align-items: center; }
-      ._se3o thead tr th, ._se3g thead tr th {
+      ._se3o thead tr th {
         color: #FFFFFF;
         font-weight: bold;
         background-color: #2095b3;
@@ -2745,7 +2745,7 @@ input:checked + .slider:before {
         -moz-align-items: center;
         -ms-align-items: center;
         align-items: center; }
-  ._se3o tbody tr, ._se3g tbody tr {
+  ._se3o tbody tr {
     padding-top: 5px;
     padding-bottom: 5px;
     display: -webkit-box;
@@ -2767,7 +2767,7 @@ input:checked + .slider:before {
     -moz-align-items: center;
     -ms-align-items: center;
     align-items: center; }
-    ._se3o tbody tr td, ._se3g tbody tr td {
+    ._se3o tbody tr td {
       font-size: 1.6em;
       text-align: center;
       color: #000000;
@@ -2793,12 +2793,146 @@ input:checked + .slider:before {
       -ms-align-items: center;
       align-items: center; }
 
-._se3g tbody tr:nth-child(2n) {
-  background-color: #f2f2f2; }
-
-._se3g tbody tr td {
-  font-size: 1em;
-  font-weight: bold; }
+._se3g {
+  position: relative;
+  border-radius: 5px;
+  box-shadow: 0.5px 0.5px 1px #C0C0C0;
+  margin: 15px;
+  margin-left: 0px;
+  margin-right: 0px;
+  background-color: #FFFFFF;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -webkit-flexbox;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+  font-size: 1em; }
+  ._se3g thead {
+    padding: 3px;
+    background-color: #2095b3;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px; }
+    ._se3g thead tr {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -webkit-flexbox;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-flex-direction: row;
+      -moz-flex-direction: row;
+      -ms-flex-direction: row;
+      flex-direction: row;
+      -webkit-justify-content: center;
+      -moz-justify-content: center;
+      -ms-justify-content: center;
+      justify-content: center;
+      -ms-flex-pack: center;
+      -webkit-align-items: center;
+      -moz-align-items: center;
+      -ms-align-items: center;
+      align-items: center; }
+      ._se3g thead tr th {
+        color: #FFFFFF;
+        font-weight: bold;
+        background-color: #2095b3;
+        padding: 10px;
+        font-size: 1em;
+        -webkit-box-flex: 2;
+        -moz-box-flex: 2;
+        -webkit-flex: 2;
+        -ms-flex: 2;
+        flex: 2;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -webkit-flexbox;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-justify-content: center;
+        -moz-justify-content: center;
+        -ms-justify-content: center;
+        justify-content: center;
+        -ms-flex-pack: center;
+        -webkit-align-items: center;
+        -moz-align-items: center;
+        -ms-align-items: center;
+        align-items: center; }
+  ._se3g tbody tr {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -webkit-flexbox;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -moz-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-justify-content: center;
+    -moz-justify-content: center;
+    -ms-justify-content: center;
+    justify-content: center;
+    -ms-flex-pack: center;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    -ms-align-items: center;
+    align-items: center; }
+    ._se3g tbody tr:nth-child(2n) {
+      background-color: #f2f2f2; }
+    ._se3g tbody tr td:nth-child(2) {
+      overflow: auto;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -webkit-flexbox;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-justify-content: left;
+      -moz-justify-content: left;
+      -ms-justify-content: left;
+      justify-content: left;
+      -ms-flex-pack: left;
+      -webkit-align-items: left;
+      -moz-align-items: left;
+      -ms-align-items: left;
+      align-items: left; }
+    ._se3g tbody tr td {
+      font-size: 1em;
+      font-weight: bold;
+      text-align: center;
+      color: #000000;
+      padding: 10px;
+      -webkit-box-flex: 2;
+      -moz-box-flex: 2;
+      -webkit-flex: 2;
+      -ms-flex: 2;
+      flex: 2;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -webkit-flexbox;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-justify-content: center;
+      -moz-justify-content: center;
+      -ms-justify-content: center;
+      justify-content: center;
+      -ms-flex-pack: center;
+      -webkit-align-items: center;
+      -moz-align-items: center;
+      -ms-align-items: center;
+      align-items: center; }
 
 ._se3a {
   position: relative;
@@ -3234,6 +3368,8 @@ input:checked + .slider:before {
         flex: 1; }
 
 @media (max-width: 992px) {
+  ._se3g thead tr th span {
+    display: none; }
   ._ta ._ta5lh {
     padding: 0;
     list-style-type: none; }
@@ -3454,6 +3590,8 @@ input:checked + .slider:before {
         color: rgba(0, 0, 0, 0.5); }
   ._ta ._ta5l3b li a {
     display: none; }
+    ._ta ._ta5l3b li a li {
+      display: block !important; }
   ._ta ._ta5lh {
     list-style-type: none;
     text-align: center;
