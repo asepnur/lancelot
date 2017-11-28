@@ -9,32 +9,27 @@ import {Navbar, Newsbar, LayoutUser} from '../index.js'
 import {base_url} from '../../env/Environment'
 
 class Course extends Component {
-    constructor(){
+    constructor() {
         super()
         this.state = {
-            data: [
-                {
-                    id: '',
-                    name: '',
-                    description: '',
-                    class: '',
-                    semester: ''    
-                }
-            ]
+            data: []
         }
     }
-    componentDidMount () {
-      fetch(base_url + '/api/v1/course?payload=current', {
-        method: 'GET',
-        credentials: 'include',
-        crossDomain: true
-      }).then((res) => {
-        return res.json()
-      }).then((data) => {
-        if(data.code === 200){
-            this.setState({data: data.data})
-        }
-      })
+    componentDidMount() {
+        let current = document.getElementById('current')
+        let dom = ReactDOM.findDOMNode
+        dom(current).className = "_active"
+        fetch(base_url + '/api/v1/course?payload=current', {
+            method: 'GET',
+            credentials: 'include',
+            crossDomain: true
+        }).then((res) => {
+            return res.json()
+        }).then((data) => {
+            if (data.code === 200) {
+                this.setState({data: data.data})
+            }
+        })
     }
 
     handleLast = () => {
@@ -43,20 +38,20 @@ class Course extends Component {
         let all = document.getElementById('all')
 
         let dom = ReactDOM.findDOMNode
-        dom(last).className = "_ta5l3a"
+        dom(last).className = "_active"
         dom(current).className = ""
         dom(all).className = ""
 
         fetch(base_url + '/api/v1/course?payload=last', {
-          method: 'GET',
-          credentials: 'include',
-          crossDomain: true
+            method: 'GET',
+            credentials: 'include',
+            crossDomain: true
         }).then((res) => {
-          return res.json()
+            return res.json()
         }).then((data) => {
-          if(data.code === 200){
-              this.setState({data: data.data})
-          }
+            if (data.code === 200) {
+                this.setState({data: data.data})
+            }
         })
     }
     handleCurrent = () => {
@@ -66,19 +61,19 @@ class Course extends Component {
 
         let dom = ReactDOM.findDOMNode
         dom(last).className = ""
-        dom(current).className = "_ta5l3a"
+        dom(current).className = "_active"
         dom(all).className = ""
 
         fetch(base_url + '/api/v1/course?payload=current', {
-          method: 'GET',
-          credentials: 'include',
-          crossDomain: true
+            method: 'GET',
+            credentials: 'include',
+            crossDomain: true
         }).then((res) => {
-          return res.json()
+            return res.json()
         }).then((data) => {
-          if(data.code === 200){
-              this.setState({data: data.data})
-          }
+            if (data.code === 200) {
+                this.setState({data: data.data})
+            }
         })
     }
     handleAll = () => {
@@ -89,21 +84,21 @@ class Course extends Component {
         let dom = ReactDOM.findDOMNode
         dom(last).className = ""
         dom(current).className = ""
-        dom(all).className = "_ta5l3a"
+        dom(all).className = "_active"
 
         fetch(base_url + '/api/v1/course?payload=all', {
-          method: 'GET',
-          credentials: 'include',
-          crossDomain: true
+            method: 'GET',
+            credentials: 'include',
+            crossDomain: true
         }).then((res) => {
-          return res.json()
+            return res.json()
         }).then((data) => {
-          if(data.code === 200){
-              this.setState({data: data.data})
-          }
+            if (data.code === 200) {
+                this.setState({data: data.data})
+            }
         })
     }
-    handleRedirect = () =>{
+    handleRedirect = () => {
         window.location = '/admin/course'
     }
     render() {
@@ -112,54 +107,45 @@ class Course extends Component {
         return (is_logged_in
             ? <LayoutUser>
                     <Navbar match={this.props.match}/>
-                    <div className="_cn">
-                        <div className="_ro">
-                            <div className="_pd5m3n _c5m312 _c5x38">
-                                <h1 className="_he3b _ma3m3t">My Courses</h1>
-                            </div>
-                            <div className="_c5x34">
-                                <button className="_bt5m3b" onClick={ e=> {
-                                    e.preventDefault();
-                                    this.handleRedirect()
-                                }}>Manage <i className="fa fa-cog" aria-hidden="true"></i> </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="_cn">
-                        <div className="_ro">
-                            <div className="_c5x312 _c5m312 _pd5m3n">
-                                <div className="">
-                                    <div className="_c5x312 _c5m312 _pd3n3lr _ta">
+                    <div className="_ro _ma3mn">
+                        <div className="_cn">
+                            <div className="_ro">
+                                <div className="_c5m38 _c5x312 _pd5n _pd3cl _pd5m3n ">
+                                    <div className="_he3b _pd3l3b">My Course</div>
+                                    <div className="_c5x312 _c5m312 _pd3n3lr _ta ">
                                         <ul className="_ta5l">
-                                            <li>
-                                                <Link 
-                                                    id="last" 
-                                                    onClick= 
-                                                    { e => {e.preventDefault(); this.handleLast()}} 
-                                                    to="#">Last</Link>
+                                            <li id="last">
+                                                <i className="fa fa-history" aria-hidden="true"></i>
+                                                <Link onClick= { e => {e.preventDefault(); this.handleLast()}} to="#">
+                                                    &nbsp;Last</Link>
                                             </li>
-                                            <li>
+                                            <li id="current" className="_active">
+                                                <i className="fa fa-clock-o" aria-hidden="true"></i>
+                                                <Link onClick= { e => {e.preventDefault(); this.handleCurrent()}} to="#">
+                                                    &nbsp;Current</Link>
+                                            </li>
+                                            <li id="all">
+                                                <i className="fa fa-list" aria-hidden="true"></i>
+                                                <Link onClick= { e => {e.preventDefault(); this.handleAll()}} to="#">
+                                                    &nbsp;All</Link>
+                                            </li>
+                                            <li id="manage">
+                                                <i className="fa fa-cog" aria-hidden="true"></i>
                                                 <Link
-                                                    id="current"
-                                                    onClick=
-                                                    { e => {e.preventDefault(); this.handleCurrent()}}
-                                                    className="_ta5l3a"
-                                                    to="#">Current</Link>
-                                            </li>
-                                            <li>
-                                                <Link 
-                                                    id="all" 
-                                                    onClick= 
-                                                    { e => {e.preventDefault(); this.handleAll()}} 
-                                                    to="#">All</Link>
+                                                    onClick={e => {
+                                                    e.preventDefault();
+                                                    this.handleRedirect()
+                                                }}
+                                                    to="#">
+                                                    &nbsp;Manage</Link>
                                             </li>
                                         </ul>
                                     </div>
+                                    <ListCourse data={data}/>
                                 </div>
+                                <Newsbar/>
                             </div>
                         </div>
-                        <ListCourse data={data}/>
-                        <Newsbar/>
                     </div>
                 </LayoutUser>
             : <Redirect to={`/login`}/>);
@@ -167,33 +153,41 @@ class Course extends Component {
 }
 
 const ListCourse = (props) => {
-   return (
-      <div className="_ro _c5m38 _c5x312 _pd5m3n">
-      <div className="_c5x312 _c5m34 _pd3n3lr">
-             {props
-             .data
-             .map((data) => (
-               <div className="_se _se3a" key={data.id}>
-               <div className="_ro" >
-                  <div className="_c5x312 _c5m312">
-                      <div className="_c5x312 _c5m312">
-                          <p className="_he3x3bk">{data.name}</p>
-                      </div>
-                      <div className="_c5x312 _c5m312">
-                          <p className="_ct3s">{data.description}</p>
-                      </div>
-                      <div className="_c5x312 _c5m312 _ma3m3t">
-                          <a className="_ct3mb" href="">[Read More]</a>
-                      </div>
-                  </div>
-              </div>
-              </div>
-               )
-             )
-             }
-      </div>
-  </div>
-   )
+    return props.data.length === 0
+        ? <table className="_se3msg3l">
+                <tbody>
+                    <tr>
+                        <td>
+                            
+<i class="fa fa-book" aria-hidden="true"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p className="_head">Ooops... No course yet in this Category</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p className="_main">Find in another Category</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        : props
+            .data
+            .map((data) => (
+                <div className="_c5x312 _c5m34 _pd3n3lr3x" key={data.id}>
+                    <div className="_se3lc">
+                        <div>
+                            <p>{data.name}</p>
+                            <p>{data.description}
+                            </p>
+                            <button className="_bt5xs3b">View Detail</button>
+                        </div>
+                    </div>
+                </div>
+            ))
 }
 const mapStatetoProps = (state) => {
     return {is_logged_in: state.is_logged_in, request_status: state.request_status, error_message: state.error_message}

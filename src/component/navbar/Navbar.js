@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {Link, Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
-import ReactDOM from 'react-dom'
 
 import {base_url} from '../../env/Environment'
 import {actorRequest} from '../../action/action'
@@ -39,7 +38,7 @@ class Navbar extends Component {
          id_param = result[0]
       }
       if(id_param !== undefined){
-         let id = document.getElementById(id_param)
+         //let id = document.getElementById(id_param)
          let li = document.getElementsByTagName('li')
          let length = li.length
          for (let i = 0; i < length; i++) {
@@ -65,22 +64,22 @@ class Navbar extends Component {
                            </li>
                            <li id="course">
                               <Link to={'/course'}>
-                                 <i className="fa fa-clone" aria-hidden="true"></i>
+                              <i className="fa fa-th-large" aria-hidden="true"></i>
                               </Link>
                            </li>
                            <li id="schedule">
                               <Link to={'/schedule'}>
-                                 <i className="fa fa-clock-o" aria-hidden="true"></i>
+                              <i className="fa fa-calendar" aria-hidden="true"></i>
                               </Link>
                            </li>
                            <li id="myactivity">
                               <Link to={'/myactivity'}>
-                                 <i className="fa fa-tasks" aria-hidden="true"></i>
+                              <i className="fa fa-tasks" aria-hidden="true"></i>
                               </Link>
                            </li>
                            <li id="grade">
                               <Link to={'/grade'}>
-                                 <i className="fa fa-folder" aria-hidden="true"></i>
+                              <i className="fa fa-bar-chart" aria-hidden="true"></i>
                               </Link>
                            </li>
                            <li id="admin" className="_n3a">
@@ -92,12 +91,12 @@ class Navbar extends Component {
                         <div className="_n52">
                            <li id="information">
                               <Link to={'/information'}>
-                                 <i className="fa fa-bell-o" aria-hidden="true"></i>
+                                 <i className="fa fa-info-circle" aria-hidden="true"></i>
                               </Link>
                            </li>
                            <li id="user">
                               <Link to={'/user'}>
-                                 <i className="fa fa-cog" aria-hidden="true"></i>
+                              <i className="fa fa-user-circle-o" aria-hidden="true"></i>
                               </Link>
                            </li>
                            <li
@@ -107,7 +106,7 @@ class Navbar extends Component {
                               this.handlerSignOut(this.props.dispatcherRequest)
                            }}>
                               <Link to={'#'}>
-                                 <i className="fa fa-power-off" aria-hidden="true"></i>
+                              <i className="fa fa-sign-out" aria-hidden="true"></i>
                               </Link>
                            </li>
                         </div>
