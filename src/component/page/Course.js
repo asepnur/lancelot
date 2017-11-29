@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import ReactDOM from 'react-dom'
 import {Redirect, Link} from 'react-router-dom'
+import axios from 'axios'
 
 import {actorRequest} from '../../action/action'
 import {Navbar, Newsbar, LayoutUser} from '../index.js'
@@ -10,91 +11,97 @@ class Course extends Component {
     constructor() {
         super()
         this.state = {
-            data: []
+            data: [],
+            all: [],
+            current: [],
+            last: []
         }
     }
     componentDidMount() {
-        let current = document.getElementById('current')
+        let current = document.getElementById('tab_current')
         let dom = ReactDOM.findDOMNode
         dom(current).className = "_active"
-        fetch('/api/v1/course?payload=current', {
-            method: 'GET',
-            credentials: 'include',
-            crossDomain: true
-        }).then((res) => {
-            return res.json()
-        }).then((data) => {
-            if (data.code === 200) {
-                this.setState({data: data.data})
+
+        axios.get(`/api/v1/course?payload=current`, {
+            validateStatus: (status) => {
+                return status === 200
             }
+        }).then((res) => {
+            res.data.code === 200
+                ? this.setState({current: res.data.data})
+                : this.setState({current: []})
+            this.setState({data: this.state.current})
+        }).catch((err) => {
+            console.log(err)
         })
+
     }
-
-    handleLast = () => {
-        let last = document.getElementById('last')
-        let current = document.getElementById('current')
-        let all = document.getElementById('all')
-
-        let dom = ReactDOM.findDOMNode
-        dom(last).className = "_active"
-        dom(current).className = ""
-        dom(all).className = ""
-
-        fetch('/api/v1/course?payload=last', {
-            method: 'GET',
-            credentials: 'include',
-            crossDomain: true
-        }).then((res) => {
-            return res.json()
-        }).then((data) => {
-            if (data.code === 200) {
-                this.setState({data: data.data})
-            }
+    handleActiveTab = (e) => {
+        const tagID = e.currentTarget.id
+        const id = ["tab_all", "tab_last", "tab_current"]
+        id.map((val) => {
+            let dom = document.getElementById(val)
+            val === tagID
+                ? ReactDOM
+                    .findDOMNode(dom)
+                    .className = "_active"
+                : ReactDOM
+                    .findDOMNode(dom)
+                    .className = ""
         })
-    }
-    handleCurrent = () => {
-        let last = document.getElementById('last')
-        let current = document.getElementById('current')
-        let all = document.getElementById('all')
+        switch (tagID) {
+            case "tab_all":
+                this.state.all.length === 0
+                    ? axios.get(`/api/v1/course?payload=all`, {
+                        validateStatus: (status) => {
+                            return status === 200
+                        }
+                    }).then((res) => {
+                        res.data.code === 200
+                            ? this.setState({all: res.data.data})
+                            : null
+                    }).catch((err) => {
+                        console.log(err)
+                    })
+                    : null
+                this.setState({data: this.state.all})
+                break
+            case "tab_last":
+                this.state.last.length === 0
+                    ? axios.get(`/api/v1/course?payload=last`, {
+                        validateStatus: (status) => {
+                            return status === 200
+                        }
+                    }).then((res) => {
+                        res.data.code === 200
+                            ? this.setState({last: res.data.data})
+                            : null
+                    }).catch((err) => {
+                        console.log(err)
+                    })
+                    : null
+                this.setState({data: this.state.last})
+                break
+            case "tab_current":
+                this.state.current.length === 0
+                    ? axios.get(`/api/v1/course?payload=current`, {
+                        validateStatus: (status) => {
+                            return status === 200
+                        }
+                    }).then((res) => {
+                        res.data.code === 200
+                            ? this.setState({current: res.data.data})
+                            : null
+                    }).catch((err) => {
+                        console.log(err)
+                    })
+                    : null
+                this.setState({data: this.state.current})
+                break
+            default:
+                break
+        }
 
-        let dom = ReactDOM.findDOMNode
-        dom(last).className = ""
-        dom(current).className = "_active"
-        dom(all).className = ""
-
-        fetch('/api/v1/course?payload=current', {
-            method: 'GET',
-            credentials: 'include',
-            crossDomain: true
-        }).then((res) => {
-            return res.json()
-        }).then((data) => {
-            if (data.code === 200) {
-                this.setState({data: data.data})
-            }
-        })
-    }
-    handleAll = () => {
-        let last = document.getElementById('last')
-        let current = document.getElementById('current')
-        let all = document.getElementById('all')
-
-        let dom = ReactDOM.findDOMNode
-        dom(last).className = ""
-        dom(current).className = ""
-        dom(all).className = "_active"
-
-        fetch('/api/v1/course?payload=all', {
-            method: 'GET',
-            credentials: 'include',
-            crossDomain: true
-        }).then((res) => {
-            return res.json()
-        }).then((data) => {
-            if (data.code === 200) {
-                this.setState({data: data.data})
-            }
-        })
     }
     handleRedirect = () => {
         window.location = '/admin/course'
@@ -112,25 +119,17 @@ class Course extends Component {
                                     <div className="_he3b _pd3l3b">My Course</div>
                                     <div className="_c5x312 _c5m312 _pd3n3lr _ta ">
                                         <ul className="_ta5l3b">
-                                            <li id="last">
-                                                <i
-                                                    onClick=
-                                                    { e => {e.preventDefault(); this.handleLast()}}
-                                                    className="fa fa-history"
-                                                    aria-hidden="true"></i>
-                                                <Link onClick= { e => {e.preventDefault(); this.handleLast()}} to="#">
+                                            <li id="tab_last" onClick={this.handleActiveTab}>
+                                                <i className="fa fa-history" aria-hidden="true"></i>
+                                                <Link to="#">
                                                     &nbsp;Last</Link>
                                             </li>
-                                            <li
-                                                onClick=
-                                                { e => {e.preventDefault(); this.handleCurrent()}}
-                                                id="current"
-                                                className="_active">
+                                            <li id="tab_current" onClick={this.handleActiveTab}>
                                                 <i className="fa fa-clock-o" aria-hidden="true"></i>
                                                 <Link to="#">
                                                     &nbsp;Current</Link>
                                             </li>
-                                            <li onClick= { e => {e.preventDefault(); this.handleAll()}} id="all">
+                                            <li id="tab_all" onClick={this.handleActiveTab}>
                                                 <i className="fa fa-list" aria-hidden="true"></i>
                                                 <Link to="#">
                                                     &nbsp;All</Link>
@@ -140,7 +139,7 @@ class Course extends Component {
                                                 e.preventDefault();
                                                 this.handleRedirect()
                                             }}
-                                                id="manage">
+                                                id="tab_manage">
                                                 <i className="fa fa-cog" aria-hidden="true"></i>
                                                 <Link to="#">
                                                     &nbsp;Manage</Link>

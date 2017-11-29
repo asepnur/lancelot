@@ -30,6 +30,12 @@ class DetCourse extends Component {
         }
     }
     componentDidMount() {
+
+        let dom = document.getElementById("tab_assignment")
+        ReactDOM
+        .findDOMNode(dom)
+        .className = "_active"
+        
         this.props.match.params.id !== undefined
             ? axios.get(`/api/v1/assignment/` + this.props.match.params.id + `?pg=1&ttl=10`, {
                 validateStatus: (status) => {

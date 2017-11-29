@@ -2,6 +2,8 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Link, Redirect} from 'react-router-dom'
 import ReactDOM from 'react-dom'
+import axios from 'axios'
+
 import {actorRequest} from '../../action/action'
 import {Navbar, Newsbar, LayoutUser} from '../index.js'
 
@@ -9,98 +11,95 @@ class MyActivity extends Component {
     constructor() {
         super()
         this.state = {
-            data: [
-                {
-                    id: '',
-                    name: '',
-                    status: '',
-                    description: '',
-                    due_date: ''
-                }
-            ]
+            data: [],
+            submitted: [],
+            not_submitted: [],
+            all: []
         }
     }
     componentDidMount() {
-        let notSubmitted = document.getElementById('notSubmitted')
+        let not_submitted = document.getElementById('tab_not_submitted')
         let dom = ReactDOM.findDOMNode
-        dom(notSubmitted).className = "_active"
-
-        fetch('/api/v1/course/assignment/149?pg=1&ttl=10', {
-            method: 'GET',
-            credentials: 'include',
-            crossDomain: true
-        }).then((res) => {
-            return res.json()
-        }).then((data) => {
-            return data.code === 200
-                ? this.setState({data: data.data})
-                : null
-        })
-    }
-    handleAll = () => {
-        let all = document.getElementById('all')
-        let submitted = document.getElementById('submitted')
-        let notSubmitted = document.getElementById('notSubmitted')
-
-        let dom = ReactDOM.findDOMNode
-        dom(submitted).className = ""
-        dom(notSubmitted).className = ""
-        dom(all).className = "_active"
-
-        fetch('/api/v1/course/assignment/149?pg=1&ttl=10', {
-            method: 'GET',
-            credentials: 'include',
-            crossDomain: true
-        }).then((res) => {
-            return res.json()
-        }).then((data) => {
-            if (data.code === 200) {
-                this.setState({data: data.data})
+        dom(not_submitted).className = "_active"
+        axios.get(`/api/v1/assignment/149?pg=1&ttl=10`, {
+            validateStatus: (status) => {
+                return status === 200
             }
+        }).then((res) => {
+            res.data.code === 200
+                ? this.setState({not_submitted: res.data.data})
+                : this.setState({not_submitted: []})
+            this.setState({data: this.state.not_submitted})
+        }).catch((err) => {
+            console.log(err)
         })
     }
-    handleSubmitted = () => {
-        let all = document.getElementById('all')
-        let submitted = document.getElementById('submitted')
-        let notSubmitted = document.getElementById('notSubmitted')
+    handleActiveTab = (e) => {
+        const tagID = e.currentTarget.id
+        const id = ["tab_submitted", "tab_not_submitted", "tab_all"]
+        id.map((val) => {
+            let dom = document.getElementById(val)
+            val === tagID
+                ? ReactDOM
+                    .findDOMNode(dom)
+                    .className = "_active"
+                : ReactDOM
+                    .findDOMNode(dom)
+                    .className = ""
+        })
+        switch (tagID) {
+            case "tab_submitted":
+                this.state.submitted.length === 0
+                    ? axios.get(`/api/v1/assignment/149?pg=1&ttl=10`, {
+                        validateStatus: (status) => {
+                            return status === 200
+                        }
+                    }).then((res) => {
+                        res.data.code === 200
+                            ? this.setState({submitted: res.data.data})
+                            : this.setState({submitted: []})
+                        this.setState({data: this.state.submitted})
+                    }).catch((err) => {
+                        console.log(err)
+                    })
+                    : null
+                this.setState({data: this.state.submitted})
+                break
+            case "tab_not_submitted":
+                this.state.not_submitted.length === 0
+                    ? axios.get(`/api/v1/assignment/149?pg=1&ttl=10`, {
+                        validateStatus: (status) => {
+                            return status === 200
+                        }
+                    }).then((res) => {
+                        res.data.code === 200
+                            ? this.setState({not_submitted: res.data.data})
+                            : this.setState({not_submitted: []})
+                    }).catch((err) => {
+                        console.log(err)
+                    })
+                    : null
+                this.setState({data: this.state.not_submitted})
+                break
+            case "tab_all":
+                this.state.all.length === 0
+                    ? axios.get(`/api/v1/assignment/149?pg=1&ttl=10`, {
+                        validateStatus: (status) => {
+                            return status === 200
+                        }
+                    }).then((res) => {
+                        res.data.code === 200
+                            ? this.setState({all: res.data.data})
+                            : this.setState({all: []})
+                    }).catch((err) => {
+                        console.log(err)
+                    })
+                    : null
+                this.setState({data: this.state.all})
+                break;
 
-        let dom = ReactDOM.findDOMNode
-        dom(submitted).className = "_active"
-        dom(notSubmitted).className = ""
-        dom(all).className = ""
-
-        /*
-        fetch('/api/v1/course/assignment/149?pg=1&ttl=10', {
-          method: 'GET',
-          credentials: 'include',
-          crossDomain: true
-        }).then((res) => {
-          return res.json()
-        }).then((data) => {
-          if(data.code === 200){
-              this.setState({data: data.data})
-          }
-        })*/
-    }
-    handleNotSubmitted = () => {
-        let all = document.getElementById('all')
-        let submitted = document.getElementById('submitted')
-        let notSubmitted = document.getElementById('notSubmitted')
-
-        let dom = ReactDOM.findDOMNode
-        dom(submitted).className = ""
-        dom(notSubmitted).className = "_active"
-        dom(all).className = ""
-
-        const data = this.state.data
-
-        function checkNotSubmitted(status) {
-            return status === 1;
-        }
-        if (data.code === 200) {
-            this.setState({
-                data: data.filter(checkNotSubmitted)
-            })
+            default:
+                break;
         }
     }
     render() {
@@ -116,21 +115,17 @@ class MyActivity extends Component {
                                 <div className="_he3b _pd3l3b">My Assignments</div>
                                 <div className="_c5x312 _c5m312 _pd3n3lr _ta ">
                                     <ul className="_ta5l3b ">
-                                        <li id="submitted" onClick= {e => {e.preventDefault(); this.handleSubmitted()}}>
+                                        <li id="tab_submitted" onClick={this.handleActiveTab}>
                                             <i className="fa fa-check-square" aria-hidden="true"></i>
                                             <a href=" ">
                                                 &nbsp;Submitted</a>
                                         </li>
-                                        <li
-                                            id="notSubmitted"
-                                            onClick=
-                                            {e => {e.preventDefault(); this.handleNotSubmitted()}}
-                                            className="_active">
+                                        <li id="tab_not_submitted" onClick={this.handleActiveTab}>
                                             <i className="fa fa-window-close" aria-hidden="true"></i>
                                             <a href="#">
                                                 &nbsp;Not Submitted</a>
                                         </li>
-                                        <li id="all" onClick= {e => {e.preventDefault(); this.handleAll()}}>
+                                        <li id="tab_all" onClick={this.handleActiveTab}>
                                             <i className="fa fa-list" aria-hidden="true"></i>
                                             <a href=" ">
                                                 &nbsp;All</a>
