@@ -65,11 +65,11 @@ export const routes = [
     }, {
         path: '/course',
         component: Course,
-        exact: false
+        exact: true
     }, {
-        path: '/detcourse',
+        path: '/course/:id',
         component: DetCourse,
-        exact: false
+        exact: true
     }, {
         path: '/schedule',
         component: Schedule,

@@ -13,7 +13,7 @@ class Home extends Component {
         }
     }
     componentDidMount() {
-        fetch('/api/v1/course/assignment/149?pg=1&ttl=10', {
+        fetch('/api/v1/assignment?schedule_id=149&pg=1&ttl=10', {
             method: 'GET',
             credentials: 'include',
             crossDomain: true
@@ -154,9 +154,28 @@ class Home extends Component {
         )
     }
 }
-const Assignment = (props) => {
-    return (
-        <div>
+export const Assignment = (props) => {
+    return (props.data.length === 0
+        ? <table className="_se3msg">
+                <tbody>
+                    <tr>
+                        <td>
+                            <i className="fa fa-smile-o" aria-hidden="true"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p className="_head">Nothing To Report!</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p className="_main">Have a nice day Rifki Muhammad</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        : <div>
             <table className="_se3a">
                 <tbody>
                     {props
@@ -204,8 +223,7 @@ const Assignment = (props) => {
                     </tr>
                 </tfoot>
             </table>
-        </div>
-    )
+        </div>)
 }
 
 const mapStatetoProps = (state) => {

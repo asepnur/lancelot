@@ -6,7 +6,6 @@ import {Redirect, Link} from 'react-router-dom'
 import {actorRequest} from '../../action/action'
 import {Navbar, Newsbar, LayoutUser} from '../index.js'
 
-
 class Course extends Component {
     constructor() {
         super()
@@ -114,11 +113,19 @@ class Course extends Component {
                                     <div className="_c5x312 _c5m312 _pd3n3lr _ta ">
                                         <ul className="_ta5l3b">
                                             <li id="last">
-                                                <i onClick= { e => {e.preventDefault(); this.handleLast()}} className="fa fa-history" aria-hidden="true"></i>
+                                                <i
+                                                    onClick=
+                                                    { e => {e.preventDefault(); this.handleLast()}}
+                                                    className="fa fa-history"
+                                                    aria-hidden="true"></i>
                                                 <Link onClick= { e => {e.preventDefault(); this.handleLast()}} to="#">
                                                     &nbsp;Last</Link>
                                             </li>
-                                            <li onClick= { e => {e.preventDefault(); this.handleCurrent()}} id="current" className="_active">
+                                            <li
+                                                onClick=
+                                                { e => {e.preventDefault(); this.handleCurrent()}}
+                                                id="current"
+                                                className="_active">
                                                 <i className="fa fa-clock-o" aria-hidden="true"></i>
                                                 <Link to="#">
                                                     &nbsp;Current</Link>
@@ -128,13 +135,14 @@ class Course extends Component {
                                                 <Link to="#">
                                                     &nbsp;All</Link>
                                             </li>
-                                            <li onClick={e => {
-                                                    e.preventDefault();
-                                                    this.handleRedirect()
-                                                }} id="manage">    
+                                            <li
+                                                onClick={e => {
+                                                e.preventDefault();
+                                                this.handleRedirect()
+                                            }}
+                                                id="manage">
                                                 <i className="fa fa-cog" aria-hidden="true"></i>
-                                                <Link
-                                                    to="#">
+                                                <Link to="#">
                                                     &nbsp;Manage</Link>
                                             </li>
                                         </ul>
@@ -156,8 +164,8 @@ const ListCourse = (props) => {
                 <tbody>
                     <tr>
                         <td>
-                            
-<i className="fa fa-book" aria-hidden="true"></i>
+
+                            <i className="fa fa-book" aria-hidden="true"></i>
                         </td>
                     </tr>
                     <tr>
@@ -181,7 +189,9 @@ const ListCourse = (props) => {
                             <p>{data.name}</p>
                             <p>{data.description}
                             </p>
-                            <button className="_bt5xs3b">View Detail</button>
+                            <Link to={"/course/" + data.id}>
+                                <button className="_bt5xs3b">View Detail</button>
+                            </Link>
                         </div>
                     </div>
                 </div>
