@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom'
 import {connect} from 'react-redux'
 
 import {Navbar, Newsbar, LayoutUser, InputContent} from '../index.js'
-import {actorRequest} from '../../action/action'
+import {actorRequest, loadingRequest} from '../../action/action'
 
 class User extends Component {
     constructor() {
@@ -21,7 +21,9 @@ class User extends Component {
             file_name:'',
             password: '',
             old_password: '',
-            password_confirmation: ''
+            password_confirmation: '',
+            img: '',
+            img_t: ''
         }
     }
     render() {
@@ -33,11 +35,14 @@ class User extends Component {
             line_id: this.state.line_id,
             about_me: this.state.about_me,
             file_name: this.state.file_name,
+            img: this.state.img,
+            img_t: this.state.img_t,
             handleChange: this.handleChange,
             handleChangePassword: this.handleChangePassword,
             handleUpdate: this.handleUpdate,
             handleUpload: this.handleUpload,
-            dispatcherRequest: this.props.dispatcherRequest
+            dispatcherRequest: this.props.dispatcherRequest,
+            dispatcherLoading: this.props.dispatcherLoading
         }
         const {is_logged_in} = this.props
         return (is_logged_in
@@ -97,12 +102,15 @@ class User extends Component {
                     phone: data.data.phone,
                     line_id: data.data.line_id,
                     about_me: data.data.about_me,
-                    img: data.data.img
+                    img: data.data.img,
+                    img_t: data.data.img_t
                 })
                 : null
         })
     }
-    handleChangePassword = (dispatcherRequest) => {
+    handleChangePassword = (dispatcherRequest, dispatcherLoading) => {
+        dispatcherLoading(10, false)
+
         let formData = new FormData()
         formData.append('id', this.state.id)
         formData.append('email', this.state.email)
@@ -118,12 +126,19 @@ class User extends Component {
         }).then((res) => {
             return res.json()
         }).then((data) => {
-            data.code === 200
-                ? dispatcherRequest(true, 200, '')
-                : dispatcherRequest(true, 401, data.error)
+            if (data.code === 200) {
+                dispatcherLoading(100, false)
+                dispatcherRequest(true, 200, '')
+            } else {
+                dispatcherLoading(10, true)
+                dispatcherRequest(this.props.is_logged_in, 401, data.error)
+            }
         })
     }
-    handleUpdate = (dispatcherRequest) => {
+    handleUpdate = (dispatcherRequest, dispatcherLoading) => {
+
+        dispatcherLoading(10, false)
+
         let formData = new FormData()
         formData.append('id', this.state.id)
         formData.append('email', this.state.email)
@@ -141,12 +156,18 @@ class User extends Component {
         }).then((res) => {
             return res.json()
         }).then((data) => {
-            data.code === 200
-                ? dispatcherRequest(true, 200, '')
-                : dispatcherRequest(true, 401, data.error)
+            if (data.code === 200) {
+                dispatcherLoading(100, false)
+                dispatcherRequest(true, 200, '')
+            } else {
+                dispatcherLoading(10, true)
+                dispatcherRequest(this.props.is_logged_in, 401, data.error)
+            }
         })
     }
-    handleUpload = (value, dispatcherRequest) => {
+    handleUpload = (value, dispatcherRequest, dispatcherLoading) => {
+        dispatcherLoading(10, false)
+
         let formData = new FormData()
         formData.append('file', value)
 
@@ -158,9 +179,13 @@ class User extends Component {
         }).then((res) => {
             return res.json()
         }).then((data) => {
-            data.code === 200
-                ? dispatcherRequest(true, 200, '')
-                : dispatcherRequest(true, 401, data.error)
+            if (data.code === 200) {
+                dispatcherLoading(100, false)
+                dispatcherRequest(true, 200, '')
+            } else {
+                dispatcherLoading(10, true)
+                dispatcherRequest(this.props.is_logged_in, 401, data.error)
+            }
         })
     }
     handleChange = (e) => {
@@ -251,7 +276,7 @@ class Advance extends Component {
                                 this
                                     .props
                                     .data
-                                    .handleChangePassword(this.props.data.dispatcherRequest)
+                                    .handleChangePassword(this.props.data.dispatcherRequest, this.props.data.dispatcherLoading)
                             }}
                                 className="_bt5m3b">Save</button>
                         </div>
@@ -281,10 +306,10 @@ class Basic extends Component {
                         <div className="_c5x33 _c5m31">
                             <input name="file" id="update_file" accept="image/*" type="file" style={{display: 'none'}}
                                 onChange={(e)=>{ 
-                                    this.props.data.handleUpload(e.target.value, this.props.data.dispatcherRequest)
+                                    this.props.data.handleUpload(e.target.value, this.props.data.dispatcherRequest, this.props.dispatcherLoading)
                                     }} />
                             <div className="_cn3ep" >
-                                <img className="_i3pr _i3ci" src={"/api/v1/files/profile/1510389487806194000.945229.1.jpg"} alt="profil"/>
+                                <img className="_i3pr _i3ci" src={this.props.data.img_t} alt="profil"/>
                                 <i className="fa fa-camera _icx _i3ep" aria-hidden="true"></i>
                             </div>
                         </div>
@@ -353,7 +378,7 @@ class Basic extends Component {
                                 this
                                     .props
                                     .data
-                                    .handleUpdate(this.props.data.dispatcherRequest)
+                                    .handleUpdate(this.props.data.dispatcherRequest, this.props.data.dispatcherLoading)
                             }}
                                 className="_bt5m3b"
                                 type="submit">Save</button>
@@ -369,7 +394,8 @@ const mapStatetoProps = (state) => {
 }
 const mapDispatchtoProps = (dispatch) => {
     return {
-        dispatcherRequest: (is_logged_in, request_status, error_message) => dispatch(actorRequest(is_logged_in, request_status, error_message))
+        dispatcherRequest: (is_logged_in, request_status, error_message) => dispatch(actorRequest(is_logged_in, request_status, error_message)),
+        dispatcherLoading: (loading_progress, is_loading_error) => dispatch(loadingRequest(loading_progress, is_loading_error))
     }
 }
 export default connect(mapStatetoProps, mapDispatchtoProps)(User)
