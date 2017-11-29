@@ -4930,3 +4930,25 @@ input:checked+.slider:before {
 .LoadingBar--error .LoadingBar-glow {
     box-shadow: -3px 0 15px 1px rgba(244, 67, 54, 0.4);
 }
+._erm5cn {
+  width: 100%;
+  margin: 0;
+  padding: 8px;
+  position: fixed;
+  transition: 0.7s top;
+  z-index: 100;
+}
+
+._erm5cn>span {
+  margin: 0;
+  background-color: #f5f5f7;
+  padding: 15px;
+  border-radius: 5px;
+  display: block;
+}
+
+._erm5cn>span p {
+  margin: auto;
+  padding: 0;
+  text-align: center;
+}

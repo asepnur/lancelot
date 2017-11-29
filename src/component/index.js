@@ -49,6 +49,6 @@ export {default as LoadingAnim} from './section/LoadingAnim.js'
 export {default as LoadingBar} from './section/LoadingBar.js'
 export {default as Loading} from './page/Loading.js'
 export {default as Animation}from './animation/Animation.js'
+export {default as ErrorMessage}from './section/ErrorMessage'
 
-//Error Message
-export {default as ErrorMessage}    from './message/ErrorMessage'
+

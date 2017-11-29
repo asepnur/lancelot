@@ -4,28 +4,36 @@ import {connect} from 'react-redux'
 import {actorRequest} from '../../action/action'
 
 class ErrorMessage extends Component {
+    constructor() {
+        super()
+        this.state = {
+            is_play: false
+        }
+    }
     render() {
         const {is_logged_in, request_status, error_message, dispatcherRequest} = this.props
         return (
             <div
-                className="_erm _c5m3o3 _c5m36 _c5x312"
+                id="errmsg"
+                className={'_erm5cn'}
                 style={{
-                display: request_status === 401
-                    ? 'block'
-                    : 'none'
+                top: request_status === 401
+                    ? 0
+                    : '-75px'
             }}>
-                <div className="_erm5cn">
+                <span>
                     <p>
-                        <i className="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                         {error_message}
-                        <i className="fa fa-times _erm5c" aria-hidden="true" onClick={e =>{
+                        <i className="fa fa-exclamation-triangle _ma3m3lr" aria-hidden="true"></i>
+                        {error_message}
+                        <i
+                            className="fa fa-times _ma3m3lr"
+                            aria-hidden="true"
+                            onClick={e => {
                             e.preventDefault();
-                            is_logged_in
-                                ?dispatcherRequest(true, 0, '')
-                                :dispatcherRequest(false, 0, '')
+                            dispatcherRequest(is_logged_in, 0, error_message)
                         }}></i>
                     </p>
-                </div>
+                </span>
             </div>
         )
     }
