@@ -17,14 +17,14 @@ class Home extends Component {
             assignment: []
         }
     }
-/*----------------------------------------------------------------
+    /*----------------------------------------------------------------
                             LIFE CYCLE
 ------------------------------------------------------------------*/
     componentDidMount() {
         this.handleGetAssignment()
         this.handleGetScheduleToday()
     }
-/*----------------------------------------------------------------
+    /*----------------------------------------------------------------
                             HANDLER FUNCTION
 ------------------------------------------------------------------*/
     handleGetScheduleToday = () => {
@@ -71,6 +71,19 @@ class Home extends Component {
                             <div className="_c5m38 _pd5n _pd3cl _pd5m3n">
                                 <div className="_he3b">Assignment</div>
                                 <Assignment data={assignment} handleClickUpload={this.handleClickUpload}/>
+                                <div className="_pg">
+                                    <div>
+                                        <p>1 of 2 Page</p>
+                                    </div>
+                                    <div>
+                                        <a href="">
+                                            <i className="fa fa-angle-left" aria-hidden="true"></i>
+                                            &nbsp;previous</a>
+                                        <a href="">next&nbsp;
+                                            <i className="fa fa-angle-right" aria-hidden="true"></i>
+                                        </a>
+                                    </div>
+                                </div>
                                 <div className="_he3b">Schedule Today</div>
                                 <Today data={today}/>
                             </div>
@@ -143,7 +156,7 @@ class Home extends Component {
             </LayoutUser>
         )
     }
-/*----------------------------------------------------------------
+    /*----------------------------------------------------------------
                             RENDER COMPONENT
 ------------------------------------------------------------------*/
     render() {
@@ -180,55 +193,32 @@ export const Assignment = (props) => {
                     </tr>
                 </tbody>
             </table>
-        : <div>
-            <table className="_se3a">
-                <tbody>
-                    {props
-                        .data
-                        .map((data, i) => (
-                            <tr key={i}>
-                                <td>
-                                    <i className="fa fa-circle _i3a" aria-hidden="true"></i>
-                                </td>
-                                <td>{data.due_date}</td>
-                                <td>{data.name}</td>
-                                <td>
-                                    <i
-                                        className="fa fa-pencil-square-o _ic __wr"
-                                        aria-hidden="true"
-                                        onClick={props.handleClickUpload}></i>
-                                </td>
-                                <td>
-                                    <i className="fa fa-angle-double-right _ic __wr" aria-hidden="true"></i>
-                                </td>
-                            </tr>
-                        ))
+        : <table className="_se3a">
+            <tbody>
+                {props
+                    .data
+                    .map((data, i) => (
+                        <tr key={i}>
+                            <td>
+                                <i className="fa fa-circle _i3a" aria-hidden="true"></i>
+                            </td>
+                            <td>{data.due_date}</td>
+                            <td>{data.name}</td>
+                            <td>
+                                <i
+                                    className="fa fa-pencil-square-o _ic __wr"
+                                    aria-hidden="true"
+                                    onClick={props.handleClickUpload}></i>
+                            </td>
+                            <td>
+                                <i className="fa fa-angle-double-right _ic __wr" aria-hidden="true"></i>
+                            </td>
+                        </tr>
+                    ))
 }
 
-                </tbody>
-            </table>
-            <table>
-                <tfoot>
-                    <tr className="_pg">
-                        <td>
-                            <a href="">&laquo;</a>
-                        </td>
-                        <td>
-                            <a href="">1</a>
-                        </td>
-                        <td>
-                            <a className="_active" href="">2</a>
-                        </td>
-                        <td>
-                            <a href="">3</a>
-                        </td>
-                        <td>
-                            <a href="">&raquo;</a>
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>)
+            </tbody>
+        </table>)
 }
 const Today = (props) => {
     return props.data.length === 0
