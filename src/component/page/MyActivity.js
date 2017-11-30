@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {Link, Redirect} from 'react-router-dom'
+import {Redirect} from 'react-router-dom'
 import ReactDOM from 'react-dom'
 import axios from 'axios'
 
@@ -37,7 +37,7 @@ class MyActivity extends Component {
     handleActiveTab = (e) => {
         const tagID = e.currentTarget.id
         const id = ["tab_submitted", "tab_not_submitted", "tab_all"]
-        id.map((val) => {
+        id.forEach(function(val) {
             let dom = document.getElementById(val)
             val === tagID
                 ? ReactDOM
@@ -46,11 +46,12 @@ class MyActivity extends Component {
                 : ReactDOM
                     .findDOMNode(dom)
                     .className = ""
-        })
+        }, this)
+
         switch (tagID) {
             case "tab_submitted":
-                this.state.submitted.length === 0
-                    ? axios.get(`/api/v1/assignment/149?pg=1&ttl=10`, {
+                if (this.state.submitted.length === 0){
+                    axios.get(`/api/v1/assignment/149?pg=1&ttl=10`, {
                         validateStatus: (status) => {
                             return status === 200
                         }
@@ -62,12 +63,12 @@ class MyActivity extends Component {
                     }).catch((err) => {
                         console.log(err)
                     })
-                    : null
+                }
                 this.setState({data: this.state.submitted})
                 break
             case "tab_not_submitted":
-                this.state.not_submitted.length === 0
-                    ? axios.get(`/api/v1/assignment/149?pg=1&ttl=10`, {
+                if(this.state.not_submitted.length === 0){
+                     axios.get(`/api/v1/assignment/149?pg=1&ttl=10`, {
                         validateStatus: (status) => {
                             return status === 200
                         }
@@ -78,12 +79,12 @@ class MyActivity extends Component {
                     }).catch((err) => {
                         console.log(err)
                     })
-                    : null
+                }
                 this.setState({data: this.state.not_submitted})
                 break
             case "tab_all":
-                this.state.all.length === 0
-                    ? axios.get(`/api/v1/assignment/149?pg=1&ttl=10`, {
+                if(this.state.all.length === 0){
+                    axios.get(`/api/v1/assignment/149?pg=1&ttl=10`, {
                         validateStatus: (status) => {
                             return status === 200
                         }
@@ -94,7 +95,7 @@ class MyActivity extends Component {
                     }).catch((err) => {
                         console.log(err)
                     })
-                    : null
+                }
                 this.setState({data: this.state.all})
                 break;
 
@@ -122,7 +123,7 @@ class MyActivity extends Component {
                                         </li>
                                         <li id="tab_not_submitted" onClick={this.handleActiveTab}>
                                             <i className="fa fa-window-close" aria-hidden="true"></i>
-                                            <a href="#">
+                                            <a href="">
                                                 &nbsp;Not Submitted</a>
                                         </li>
                                         <li id="tab_all" onClick={this.handleActiveTab}>

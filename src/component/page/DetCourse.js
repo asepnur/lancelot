@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Redirect, Link} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import ReactDOM from 'react-dom'
 import {connect} from 'react-redux'
 import axios from 'axios'
@@ -10,11 +10,12 @@ import {actorRequest} from '../../action/action'
 import {Navbar, Newsbar, LayoutUser} from '../index.js'
 
 class DetCourse extends Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
+            id: this.props.match.params.id,
             assignment: [],
-            attendance: [],
+            attendance: {},
             download: [],
             assitant: [],
             grade: [],
@@ -29,25 +30,23 @@ class DetCourse extends Component {
             }
         }
     }
+    /*----------------------------------------------------------------
+                            LIFE CYCLE
+    ------------------------------------------------------------------*/
     componentDidMount() {
 
         let dom = document.getElementById("tab_assignment")
         ReactDOM
-        .findDOMNode(dom)
-        .className = "_active"
-        
-        this.props.match.params.id !== undefined
-            ? axios.get(`/api/v1/assignment/` + this.props.match.params.id + `?pg=1&ttl=10`, {
-                validateStatus: (status) => {
-                    return status === 200
-                }
-            }).then((res) => {
-                this.setState({assignment: res.data.data})
-            }).catch((err) => {
-                console.log(err)
-            })
-            : null
+            .findDOMNode(dom)
+            .className = "_active"
+
+        if (this.props.match.params.id !== undefined) {
+            this.handleGetAssignment()
+        }
     }
+    /*----------------------------------------------------------------
+                            HANDLER FUNCTION
+    ------------------------------------------------------------------*/
     handleActive = (e) => {
         const tagID = e.currentTarget.id
         const id = [
@@ -58,7 +57,7 @@ class DetCourse extends Component {
             "tab_grade",
             "tab_about"
         ]
-        id.map((val) => {
+        id.forEach((val) => {
             let dom = document.getElementById(val)
             val === tagID
                 ? ReactDOM
@@ -67,7 +66,8 @@ class DetCourse extends Component {
                 : ReactDOM
                     .findDOMNode(dom)
                     .className = ""
-        })
+        }, this);
+
         let content_active = {
             assignment: false,
             attendance: false,
@@ -84,12 +84,17 @@ class DetCourse extends Component {
             case "tab_attendance":
                 content_active.attendance = true
                 this.setState({content_active: content_active})
-                this.handleChart()
+                if (this.state.attendance.present === undefined ){
+                    this.handleGetAttendance(this.handleChart)
+                }
                 break
             case "tab_assistant":
                 content_active.assitant = true
                 this.setState({content_active: content_active})
-                break;
+                if (this.state.assitant.length === 0) {
+                    this.handleGetAssistant()
+                }
+                break
             case "tab_download":
                 content_active.download = true
                 this.setState({content_active: content_active})
@@ -106,8 +111,11 @@ class DetCourse extends Component {
                 break
         }
     }
-    handleChart() {
-        GoogleCharts.load(drawChart);
+
+    handleChart(present, absent) {
+        if (present !== 0 && absent !== 0){
+            GoogleCharts.load(drawChart)
+        }
         function drawChart() {
             const data = GoogleCharts
                 .api
@@ -117,15 +125,9 @@ class DetCourse extends Component {
                         'Task', ''
                     ],
                     [
-                        'PRESENT', 1
+                        'PRESENT', present
                     ],
-                    [
-                        'SICK', 4
-                    ],
-                    [
-                        'ABSENT', 5
-                    ],
-                    ['PERMISSION', 1]
+                    ['ABSENT', absent]
                 ])
             const options = {
                 'title': '',
@@ -143,6 +145,80 @@ class DetCourse extends Component {
             pie_1_chart.draw(data, options);
         }
     }
+    /*----------------------------------------------------------------
+                            HANDLE REQUEST
+    ------------------------------------------------------------------*/
+    handleGetAssignment = () => {
+        axios.get(`/api/v1/assignment/` + this.props.match.params.id + `?pg=1&ttl=10`, {
+            validateStatus: (status) => {
+                return status === 200
+            }
+        }).then((res) => {
+            this.setState({assignment: res.data.data})
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+    handleGetAssistant = () => {
+        axios.get(`/api/v1/course/` + this.state.id + `/assistant?payload=student`, {
+            validateStatus: (status) => {
+                return status === 200
+            }
+        }).then((res) => {
+            this.setState({assitant: res.data.data})
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+    handleGetAttendance = (callback) => {
+        axios.get(`/api/v1/attendance/summary?schedule_id=` + this.state.id, {
+            validateStatus: (status) => {
+                return status === 200
+            }
+        }).then((res) => {
+            const present = res.data.data.present
+            const absent = res.data.data.absent
+            this.setState({attendance: res.data.data}, callback(present, absent))
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+    handleGetAbout = () => {
+        axios.get(`/api/v1/course/` + this.state.id + `/assistant?payload=student`, {
+            validateStatus: (status) => {
+                return status === 200
+            }
+        }).then((res) => {
+            this.setState({assitant: res.data.data})
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+    handleGetDownload = () => {
+        axios.get(`/api/v1/course/` + this.state.id + `/assistant?payload=student`, {
+            validateStatus: (status) => {
+                return status === 200
+            }
+        }).then((res) => {
+            this.setState({download: res.data.data})
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+    handleGetGrade = () => {
+        axios.get(`/api/v1/course/` + this.state.id + `/assistant?payload=student`, {
+            validateStatus: (status) => {
+                return status === 200
+            }
+        }).then((res) => {
+            this.setState({grade: res.data.data})
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+    /*----------------------------------------------------------------
+                            RENDER ELEMENT
+    ------------------------------------------------------------------*/
     render() {
         return (
             <LayoutUser>
@@ -215,25 +291,7 @@ class DetCourse extends Component {
                                     ? 'block'
                                     : 'none'
                             }}>
-                                <div className="_se _se3a">
-                                    <div className="_ro">
-                                        <div className="_c5x312 _c5m312">
-                                            <div className="_c5x312 _c5m312 _he5co ">
-                                                <h4 className="_ma3l3b">ALGORITMA PEMROGRAMAN</h4>
-                                            </div>
-                                            <div className="_c5x312 _c5m312">
-                                                <p className="_d5ab _ma3n3lr">
-                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                                    incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis
-                                                    nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                                    incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis
-                                                    nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <About />
                             </div>
                             <div
                                 className="_c5x312 _c5m312 _pd3n3lr __ass"
@@ -253,75 +311,16 @@ class DetCourse extends Component {
                                     ? 'block'
                                     : 'none'
                             }}>
-                                <div className="_se">
-                                    <div id="attendance"></div>
-                                </div>
+                                <Attendance data={this.state.attendance} />
                             </div>
-                            <div className="_c5x312 _c5m312 _pd3n3lr __dow" style={{
+                            <div
+                                className="_c5x312 _c5m312 _pd3n3lr __dow"
+                                style={{
                                 display: this.state.content_active.download
                                     ? 'block'
                                     : 'none'
                             }}>
-                                <div className="_c5x312 _c5m34 _pd3n3lr3x">
-                                    <div className="_se3lc ">
-                                        <div>
-                                            <img src="/img/image.png" alt=""/>
-                                            <p>Asep Nur Muhammad</p>
-                                            <p>Asistan Pemrograman Web</p>
-                                            <button className="_bt5xs3b">Download</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="_c5x312 _c5m34 _pd3n3lr3x">
-                                    <div className="_se3lc ">
-                                        <div>
-                                            <img src="/img/image.png" alt=""/>
-                                            <p>ALGORITMA PEMROGRAMAN</p>
-                                            <p>Friday, 25 Desemebr 2017</p>
-                                            <button className="_bt5xs3b">Download</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="_c5x312 _c5m34 _pd3n3lr3x">
-                                    <div className="_se3lc ">
-                                        <div>
-                                            <img src="/img/image.png" alt=""/>
-                                            <p>Mobile Computing</p>
-                                            <p>Friday, 25 Desemebr 2017</p>
-                                            <button className="_bt5xs3b">Download</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="_c5x312 _c5m34 _pd3n3lr3x">
-                                    <div className="_se3lc ">
-                                        <div>
-                                            <img src="/img/image.png" alt=""/>
-                                            <p>ALGORITMA PEMROGRAMAN</p>
-                                            <p>Friday, 25 Desemebr 2017</p>
-                                            <button className="_bt5xs3b">Download</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="_c5x312 _c5m34 _pd3n3lr3x">
-                                    <div className="_se3lc ">
-                                        <div>
-                                            <img src="/img/image.png" alt=""/>
-                                            <p>ALGORITMA PEMROGRAMAN</p>
-                                            <p>Friday, 25 Desemebr 2017</p>
-                                            <button className="_bt5xs3b">Download</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="_c5x312 _c5m34 _pd3n3lr3x">
-                                    <div className="_se3lc ">
-                                        <div>
-                                            <img src="/img/image.png" alt=""/>
-                                            <p>Mobile Computing</p>
-                                            <p>Friday, 25 Desemebr 2017</p>
-                                            <button className="_bt5xs3b">Download</button>
-                                        </div>
-                                    </div>
-                                </div>
+                                <Download />
                             </div>
                             <div
                                 className="_c5x312 _c5m312 _pd3n3lr __ast"
@@ -331,96 +330,7 @@ class DetCourse extends Component {
                                     ? 'block'
                                     : 'none'
                             }}>
-                                <div className="_c5x312 _c5m34 _pd3n3lr3x">
-                                    <div className="_se3lc ">
-                                        <div>
-                                            <img src="/img/image.png" alt=""/>
-                                            <p>Asep Nur Muhammad</p>
-                                            <p>Asistan Pemrograman Web</p>
-                                            <p>
-                                                <i className="fa fa-phone _ic" aria-hidden="true"></i>
-                                                +081220058838</p>
-                                            <p>
-                                                <i className="fa fa-envelope-o _ic" aria-hidden="true"></i>
-                                                Loremipsum@gmail.com</p>
-                                            <p>
-                                                <i className="fa fa-map-marker _ic" aria-hidden="true"></i>
-                                                Lab RAI</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="_c5x312 _c5m34 _pd3n3lr3x">
-                                    <div className="_se3lc ">
-                                        <div>
-                                            <img src="/img/image.png" alt=""/>
-                                            <p>Asep Nur Muhammad</p>
-                                            <p>Asistan Pemrograman Web</p>
-                                            <p>
-                                                <i className="fa fa-phone _ic" aria-hidden="true"></i>
-                                                +081220058838</p>
-                                            <p>
-                                                <i className="fa fa-envelope-o _ic" aria-hidden="true"></i>
-                                                Loremipsum@gmail.com</p>
-                                            <p>
-                                                <i className="fa fa-map-marker _ic" aria-hidden="true"></i>
-                                                Lab RAI</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="_c5x312 _c5m34 _pd3n3lr3x">
-                                    <div className="_se3lc ">
-                                        <div>
-                                            <img src="/img/image.png" alt=""/>
-                                            <p>Asep Nur Muhammad</p>
-                                            <p>Asistan Pemrograman Web</p>
-                                            <p>
-                                                <i className="fa fa-phone _ic" aria-hidden="true"></i>
-                                                +081220058838</p>
-                                            <p>
-                                                <i className="fa fa-envelope-o _ic" aria-hidden="true"></i>
-                                                Loremipsum@gmail.com</p>
-                                            <p>
-                                                <i className="fa fa-map-marker _ic" aria-hidden="true"></i>
-                                                Lab RAI</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="_c5x312 _c5m34 _pd3n3lr3x">
-                                    <div className="_se3lc ">
-                                        <div>
-                                            <img src="/img/image.png" alt=""/>
-                                            <p>Asep Nur Muhammad</p>
-                                            <p>Asistan Pemrograman Web</p>
-                                            <p>
-                                                <i className="fa fa-phone _ic" aria-hidden="true"></i>
-                                                +081220058838</p>
-                                            <p>
-                                                <i className="fa fa-envelope-o _ic" aria-hidden="true"></i>
-                                                Loremipsum@gmail.com</p>
-                                            <p>
-                                                <i className="fa fa-map-marker _ic" aria-hidden="true"></i>
-                                                Lab RAI</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="_c5x312 _c5m34 _pd3n3lr3x">
-                                    <div className="_se3lc ">
-                                        <div>
-                                            <img src="/img/image.png" alt=""/>
-                                            <p>Asep Nur Muhammad</p>
-                                            <p>Asistan Pemrograman Web</p>
-                                            <p>
-                                                <i className="fa fa-phone _ic" aria-hidden="true"></i>
-                                                +081220058838</p>
-                                            <p>
-                                                <i className="fa fa-envelope-o _ic" aria-hidden="true"></i>
-                                                Loremipsum@gmail.com</p>
-                                            <p>
-                                                <i className="fa fa-map-marker _ic" aria-hidden="true"></i>
-                                                Lab RAI</p>
-                                        </div>
-                                    </div>
-                                </div>
+                                <Assistant data={this.state.assitant}/>
                             </div>
                             <div
                                 className="_c5x312 _c5m312 _pd3n3lr __grd"
@@ -430,27 +340,7 @@ class DetCourse extends Component {
                                     ? 'block'
                                     : 'none'
                             }}>
-                                <table className="_se3o">
-                                    <thead>
-                                        <tr>
-                                            <th>Tugas</th>
-                                            <th>QUIS</th>
-                                            <th>UTS</th>
-                                            <th>UAS</th>
-                                            <th>Final Score</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        <tr>
-                                            <td>90</td>
-                                            <td>75</td>
-                                            <td>85</td>
-                                            <td>70</td>
-                                            <td>80</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <Grade/>
                             </div>
                         </div>
                         <Newsbar/>
@@ -460,7 +350,109 @@ class DetCourse extends Component {
         )
     }
 }
+/*----------------------------------------------------------------
+                            FUNCTION ELEMENT
+------------------------------------------------------------------*/
+const Assistant = (props) => {
+    return props.data.length === 0
+        ? <div>kosong</div>
+        : props
+            .data
+            .map((data, i) => (
+                <div className="_c5x312 _c5m34 _pd3n3lr3x" key={i}>
+                    <div className="_se3lc ">
+                        <div>
+                            <img src="/img/image.png" alt=""/>
+                            <p>{data.name}</p>
+                            <p>{data.role}</p>
+                            <p>
+                                <i className="fa fa-phone _ic" aria-hidden="true"></i>
+                                &nbsp;{data.phone_number}</p>
+                            <p>
+                                <i className="fa fa-envelope-o _ic" aria-hidden="true"></i>
+                                &nbsp; {data.email}</p>
+                        </div>
+                    </div>
+                </div>
+            ))
+}
 
+const Grade = (props) => {
+    return (
+        <table className="_se3o">
+            <thead>
+                <tr>
+                    <th>Tugas</th>
+                    <th>QUIS</th>
+                    <th>UTS</th>
+                    <th>UAS</th>
+                    <th>Final Score</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>90</td>
+                    <td>75</td>
+                    <td>85</td>
+                    <td>70</td>
+                    <td>80</td>
+                </tr>
+            </tbody>
+        </table>
+    )
+}
+const Attendance = (props) => {
+    if (props.data.present === 0 && props.data.absent === 0){
+        return <div>kosong</div>
+    }else{
+        return (
+            <div className="_se">
+                <div id="attendance"></div>
+            </div>
+        )   
+    }
+}
+const Download = (props) => {
+    return (
+        <div className="_c5x312 _c5m34 _pd3n3lr3x">
+        <div className="_se3lc ">
+            <div>
+                <img src="/img/image.png" alt=""/>
+                <p>Asep Nur Muhammad</p>
+                <p>Asistan Pemrograman Web</p>
+                <button className="_bt5xs3b">Download</button>
+            </div>
+        </div>
+    </div>
+    )
+}
+const About =(props) =>{
+    return (
+        <div className="_se _se3a">
+        <div className="_ro">
+            <div className="_c5x312 _c5m312">
+                <div className="_c5x312 _c5m312 _he5co ">
+                    <h4 className="_ma3l3b">ALGORITMA PEMROGRAMAN</h4>
+                </div>
+                <div className="_c5x312 _c5m312">
+                    <p className="_d5ab _ma3n3lr">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                        incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis
+                        nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                        incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis
+                        nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    )
+}
+/*----------------------------------------------------------------
+                            DISPATCHER
+------------------------------------------------------------------*/
 const mapStatetoProps = (state) => {
     return {is_logged_in: state.is_logged_in, request_status: state.request_status, error_message: state.error_message}
 }

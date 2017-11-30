@@ -39,7 +39,7 @@ class Course extends Component {
     handleActiveTab = (e) => {
         const tagID = e.currentTarget.id
         const id = ["tab_all", "tab_last", "tab_current"]
-        id.map((val) => {
+        id.forEach((val) => {
             let dom = document.getElementById(val)
             val === tagID
                 ? ReactDOM
@@ -48,55 +48,59 @@ class Course extends Component {
                 : ReactDOM
                     .findDOMNode(dom)
                     .className = ""
-        })
+        }, this)
+
         switch (tagID) {
             case "tab_all":
-                this.state.all.length === 0
-                    ? axios.get(`/api/v1/course?payload=all`, {
+                if (this.state.all.length === 0) {
+                    axios.get(`/api/v1/course?payload=all`, {
                         validateStatus: (status) => {
                             return status === 200
                         }
                     }).then((res) => {
-                        res.data.code === 200
-                            ? this.setState({all: res.data.data})
-                            : null
+                        if (res.data.code === 200) {
+                            this.setState({all: res.data.data, data: res.data.data})
+                        }
                     }).catch((err) => {
                         console.log(err)
                     })
-                    : null
-                this.setState({data: this.state.all})
+                } else {
+                    this.setState({data: this.state.all})
+                }
                 break
             case "tab_last":
-                this.state.last.length === 0
-                    ? axios.get(`/api/v1/course?payload=last`, {
+                if (this.state.last.length === 0) {
+                    axios.get(`/api/v1/course?payload=last`, {
                         validateStatus: (status) => {
                             return status === 200
                         }
                     }).then((res) => {
-                        res.data.code === 200
-                            ? this.setState({last: res.data.data})
-                            : null
+                        if (res.data.code === 200) {
+                            this.setState({last: res.data.data, data: res.data.data})
+                        }
                     }).catch((err) => {
                         console.log(err)
                     })
-                    : null
-                this.setState({data: this.state.last})
+                } else {
+                    this.setState({data: this.state.last})
+                }
                 break
             case "tab_current":
-                this.state.current.length === 0
-                    ? axios.get(`/api/v1/course?payload=current`, {
+                if (this.state.current.length === 0) {
+                    axios.get(`/api/v1/course?payload=current`, {
                         validateStatus: (status) => {
                             return status === 200
                         }
                     }).then((res) => {
-                        res.data.code === 200
-                            ? this.setState({current: res.data.data})
-                            : null
+                        if (res.data.code === 200) {
+                            this.setState({current: res.data.data, data: res.data.data})
+                        }
                     }).catch((err) => {
                         console.log(err)
                     })
-                    : null
-                this.setState({data: this.state.current})
+                } else {
+                    this.setState({data: this.state.current})
+                }
                 break
             default:
                 break
@@ -109,6 +113,7 @@ class Course extends Component {
     render() {
         const {is_logged_in} = this.props
         const data = this.state.data
+        console.log(data)
         return (is_logged_in
             ? <LayoutUser>
                     <Navbar match={this.props.match}/>

@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 import ReactDOM from 'react-dom'
+import axios from 'axios'
 
 import {Navbar, Newsbar, LayoutUser, InputContent} from '../index.js'
 
@@ -9,27 +10,47 @@ class Home extends Component {
     constructor() {
         super()
         this.state = {
-            data: []
+            today: [],
+            assignment: []
         }
     }
     componentDidMount() {
-        fetch('/api/v1/assignment?schedule_id=149&pg=1&ttl=10', {
-            method: 'GET',
-            credentials: 'include',
-            crossDomain: true
-        }).then((res) => {
-            return res.json()
-        }).then((data) => {
-            if (data.code === 200) {
-                this.setState({data: data.data})
+        this.handleGetAssignment()
+        this.handleGetScheduleToday()
+    }
+    handleGetScheduleToday = () => {
+        axios.get(`/api/v1/course/149/today`, {
+            validateStatus: (status) => {
+                return status === 200
             }
+        }).then((res) => {
+            res.data.code === 200
+                ? this.setState({today: res.data.data})
+                : this.setState({today: []})
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+    handleGetAssignment = () => {
+        axios.get(`/api/v1/assignment?schedule_id=149&pg=1&ttl=10`, {
+            validateStatus: (status) => {
+                return status === 200
+            }
+        }).then((res) => {
+            res.data.code === 200
+                ? this.setState({assignment: res.data.data})
+                : this.setState({assignment: []})
+        }).catch((err) => {
+            console.log(err)
         })
     }
     render() {
         const {is_logged_in} = this.props
-        const data = this.state.data
+        const assignment = this.state.assignment
+        const today = this.state.today
+
         return (is_logged_in
-            ? this.renderMain(data)
+            ? this.renderMain(today, assignment)
             : <Redirect to={`/login`}/>)
     }
     handleClickUpload = () => {
@@ -40,7 +61,7 @@ class Home extends Component {
         dom(modal).style.display = 'block'
         // dom(advance_content).style.display = 'none'
     }
-    renderMain = (props) => {
+    renderMain = (today, assignment) => {
         return (
             <LayoutUser>
                 <Navbar match={this.props.match}/>
@@ -49,40 +70,9 @@ class Home extends Component {
                         <div className="_ro">
                             <div className="_c5m38 _pd5n _pd3cl _pd5m3n">
                                 <div className="_he3b">Assignment</div>
-                                <Assignment data={props} handleClickUpload={this.handleClickUpload}/>
+                                <Assignment data={assignment} handleClickUpload={this.handleClickUpload}/>
                                 <div className="_he3b">Schedule Today</div>
-                                <table className="_se3s">
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <p>10.30-12.00</p>
-                                                <p>
-                                                    <i className="fa fa-bookmark" aria-hidden="true"></i>
-                                                    Algoritma Pemrograman</p>
-                                                <p>
-                                                    <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                                    Laboratorium Pemrograman/ UDJT12</p>
-                                            </td>
-                                            <td>
-                                                <i className="fa fa-angle-double-right _ic __wr" aria-hidden="true"></i>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <p>10.30-12.00</p>
-                                                <p>
-                                                    <i className="fa fa-bookmark" aria-hidden="true"></i>
-                                                    Algoritma Pemrograman</p>
-                                                <p>
-                                                    <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                                    Laboratorium Pemrograman/ UDJT12</p>
-                                            </td>
-                                            <td>
-                                                <i className="fa fa-angle-double-right _ic __wr" aria-hidden="true"></i>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <Today data={today}/>
                             </div>
                             <Newsbar/>
                         </div>
@@ -224,6 +214,60 @@ export const Assignment = (props) => {
                 </tfoot>
             </table>
         </div>)
+}
+const Today = (props) => {
+    return props.data.length === 0
+        ? <table className="_se3msg">
+                <tbody>
+                    <tr>
+                        <td>
+                            <i className="fa fa-calendar-o" aria-hidden="true"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p className="_head">You Have No Upcoming Events.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p className="_main">let's do the best, although there is no events today</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        : <table className="_se3s">
+            <tbody>
+                <tr>
+                    <td>
+                        <p>10.30-12.00</p>
+                        <p>
+                            <i className="fa fa-bookmark" aria-hidden="true"></i>
+                            Algoritma Pemrograman</p>
+                        <p>
+                            <i className="fa fa-map-marker" aria-hidden="true"></i>
+                            Laboratorium Pemrograman/ UDJT12</p>
+                    </td>
+                    <td>
+                        <i className="fa fa-angle-double-right _ic __wr" aria-hidden="true"></i>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>10.30-12.00</p>
+                        <p>
+                            <i className="fa fa-bookmark" aria-hidden="true"></i>
+                            Algoritma Pemrograman</p>
+                        <p>
+                            <i className="fa fa-map-marker" aria-hidden="true"></i>
+                            Laboratorium Pemrograman/ UDJT12</p>
+                    </td>
+                    <td>
+                        <i className="fa fa-angle-double-right _ic __wr" aria-hidden="true"></i>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 }
 
 const mapStatetoProps = (state) => {

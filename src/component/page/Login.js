@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import {Link, Redirect} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import ReactDOM from 'react-dom'
 import axios from 'axios'
 
 import {actorRequest, loadingRequest} from '../../action/action'
