@@ -1,3 +1,6 @@
+/*----------------------------------------------------------------
+                            HOME PAGE
+------------------------------------------------------------------*/
 import React, {Component} from 'react'
 import {Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
@@ -14,10 +17,16 @@ class Home extends Component {
             assignment: []
         }
     }
+/*----------------------------------------------------------------
+                            LIFE CYCLE
+------------------------------------------------------------------*/
     componentDidMount() {
         this.handleGetAssignment()
         this.handleGetScheduleToday()
     }
+/*----------------------------------------------------------------
+                            HANDLER FUNCTION
+------------------------------------------------------------------*/
     handleGetScheduleToday = () => {
         axios.get(`/api/v1/course/149/today`, {
             validateStatus: (status) => {
@@ -44,15 +53,6 @@ class Home extends Component {
             console.log(err)
         })
     }
-    render() {
-        const {is_logged_in} = this.props
-        const assignment = this.state.assignment
-        const today = this.state.today
-
-        return (is_logged_in
-            ? this.renderMain(today, assignment)
-            : <Redirect to={`/login`}/>)
-    }
     handleClickUpload = () => {
         let modal = document.getElementById('_md')
 
@@ -64,7 +64,7 @@ class Home extends Component {
     renderMain = (today, assignment) => {
         return (
             <LayoutUser>
-                <Navbar match={this.props.match}/>
+                <Navbar match={this.props.match} active_navbar={"home"}/>
                 <div className="_ro _ma3mn">
                     <div className="_cn3w">
                         <div className="_ro">
@@ -143,7 +143,22 @@ class Home extends Component {
             </LayoutUser>
         )
     }
+/*----------------------------------------------------------------
+                            RENDER COMPONENT
+------------------------------------------------------------------*/
+    render() {
+        const {is_logged_in} = this.props
+        const assignment = this.state.assignment
+        const today = this.state.today
+
+        return (is_logged_in
+            ? this.renderMain(today, assignment)
+            : <Redirect to={`/login`}/>)
+    }
 }
+/*----------------------------------------------------------------
+                            ELEMENT FUNCTION
+------------------------------------------------------------------*/
 export const Assignment = (props) => {
     return (props.data.length === 0
         ? <table className="_se3msg">
@@ -269,7 +284,9 @@ const Today = (props) => {
             </tbody>
         </table>
 }
-
+/*----------------------------------------------------------------
+                            DISPATCHER
+------------------------------------------------------------------*/
 const mapStatetoProps = (state) => {
     return {is_logged_in: state.is_logged_in}
 }

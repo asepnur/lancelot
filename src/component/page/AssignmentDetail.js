@@ -60,7 +60,6 @@ class AssignmentDetail extends Component {
         return (is_logged_in
             ? <LayoutUser>
                     <Navbar match={this.props.match}/> 
-                    
                     <div className="_cn">
                         <div className="_ro">
                             <div className="_pd5m3n _c5m312 _c5x312">
@@ -76,7 +75,6 @@ class AssignmentDetail extends Component {
                                         <div className="_se _se3a">
                                             <div className="_ro _pd3l3t">
                                                 <div className="_c5x312 _c5m312">
-                                                    <h1 className="_he3m3bk"></h1>
                                                     <p className="_ct _pd3l3t">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                                                         Etiam non sagittis tortor. Mauris mattis sem vitae tellus fringilla lacinia.
                                                         Etiam suscipit leo ac ligula pretium, nec aliquet purus dapibus. Ut consectetur

@@ -25,7 +25,7 @@ class Grade extends Component {
         console.log(this.state.data)
         return (
             <LayoutUser>
-                <Navbar match={this.props.match}/>
+                <Navbar match={this.props.match} active_navbar={"grade"}/>
                 <div className="_ro _ma3mn">
                     <div className="_cn">
                         <div className="_ro">

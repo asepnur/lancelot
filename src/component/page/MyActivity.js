@@ -21,7 +21,7 @@ class MyActivity extends Component {
         let not_submitted = document.getElementById('tab_not_submitted')
         let dom = ReactDOM.findDOMNode
         dom(not_submitted).className = "_active"
-        axios.get(`/api/v1/assignment/149?pg=1&ttl=10`, {
+        axios.get(`/api/v1/assignment?schedule_id=149&pg=1&ttl=10`, {
             validateStatus: (status) => {
                 return status === 200
             }
@@ -109,7 +109,7 @@ class MyActivity extends Component {
 
         return (is_logged_in
             ? <LayoutUser>
-                    <Navbar match={this.props.match}/>
+                    <Navbar match={this.props.match} active_navbar={"assignment"}/>
                     <div className="_cn">
                         <div className="_ro _ma3mn">
                             <div className="_c5m38 _pd5n _pd3cl _pd5m3n">

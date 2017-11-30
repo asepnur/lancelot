@@ -168,7 +168,7 @@ class AdminManageAssignment extends React.Component {
   }
   render() {
     const {is_logged_in} = this.props
-    const data = this.state
+    //const data = this.state
     console.log('admin manage assignment')
     return (is_logged_in
       ? <LayoutUser>

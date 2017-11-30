@@ -47,7 +47,7 @@ class Information extends Component{
         const last = this.state.last
         return (is_logged_in
             ? <LayoutUser>
-                    <Navbar match={this.props.match}/>
+                    <Navbar match={this.props.match} active_navbar={"information"}/>
                     <div className="_cn">
                         <div className="_ro">
                             <div className="_pd5m3n _c5m312 _c5x312">

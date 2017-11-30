@@ -1,3 +1,6 @@
+/*----------------------------------------------------------------
+                            COURSE
+------------------------------------------------------------------*/
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import ReactDOM from 'react-dom'
@@ -17,6 +20,9 @@ class Course extends Component {
             last: []
         }
     }
+/*----------------------------------------------------------------
+                        LIFE CYCLE
+------------------------------------------------------------------*/
     componentDidMount() {
         let current = document.getElementById('tab_current')
         let dom = ReactDOM.findDOMNode
@@ -36,6 +42,9 @@ class Course extends Component {
         })
 
     }
+/*----------------------------------------------------------------
+                            HANDLE FUNCTION
+------------------------------------------------------------------*/
     handleActiveTab = (e) => {
         const tagID = e.currentTarget.id
         const id = ["tab_all", "tab_last", "tab_current"]
@@ -110,13 +119,15 @@ class Course extends Component {
     handleRedirect = () => {
         window.location = '/admin/course'
     }
+/*----------------------------------------------------------------
+                            RENDER COMPONENT
+------------------------------------------------------------------*/
     render() {
         const {is_logged_in} = this.props
         const data = this.state.data
-        console.log(data)
         return (is_logged_in
             ? <LayoutUser>
-                    <Navbar match={this.props.match}/>
+                    <Navbar match={this.props.match} active_navbar={"course"}/>
                     <div className="_ro _ma3mn">
                         <div className="_cn">
                             <div className="_ro">
@@ -162,6 +173,9 @@ class Course extends Component {
     }
 }
 
+/*----------------------------------------------------------------
+                            ELEMENT 
+------------------------------------------------------------------*/
 const ListCourse = (props) => {
     return props.data.length === 0
         ? <table className="_se3msg3l">
@@ -201,6 +215,9 @@ const ListCourse = (props) => {
                 </div>
             ))
 }
+/*----------------------------------------------------------------
+                            DISPATCHER
+------------------------------------------------------------------*/
 const mapStatetoProps = (state) => {
     return {is_logged_in: state.is_logged_in, request_status: state.request_status, error_message: state.error_message}
 }

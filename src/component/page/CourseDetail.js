@@ -1,3 +1,6 @@
+/*----------------------------------------------------------------
+                            DETAIL COURSE
+------------------------------------------------------------------*/
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import ReactDOM from 'react-dom'
@@ -9,7 +12,7 @@ import {Assignment} from './Home'
 import {actorRequest} from '../../action/action'
 import {Navbar, Newsbar, LayoutUser} from '../index.js'
 
-class DetCourse extends Component {
+class CourseDetail extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -84,6 +87,7 @@ class DetCourse extends Component {
             case "tab_attendance":
                 content_active.attendance = true
                 this.setState({content_active: content_active})
+                console.log(this.state.attendance.present)
                 if (this.state.attendance.present === undefined ){
                     this.handleGetAttendance(this.handleChart)
                 }
@@ -149,7 +153,7 @@ class DetCourse extends Component {
                             HANDLE REQUEST
     ------------------------------------------------------------------*/
     handleGetAssignment = () => {
-        axios.get(`/api/v1/assignment/` + this.props.match.params.id + `?pg=1&ttl=10`, {
+        axios.get(`/api/v1/assignment?schedule_id=`+this.props.match.params.id+`&pg=1&ttl=10`, {
             validateStatus: (status) => {
                 return status === 200
             }
@@ -176,9 +180,11 @@ class DetCourse extends Component {
                 return status === 200
             }
         }).then((res) => {
-            const present = res.data.data.present
-            const absent = res.data.data.absent
-            this.setState({attendance: res.data.data}, callback(present, absent))
+            if (res.data.code === 200){
+                const present = res.data.data.present
+                const absent = res.data.data.absent
+                this.setState({attendance: res.data.data}, callback(present, absent))
+            }
         }).catch((err) => {
             console.log(err)
         })
@@ -222,7 +228,7 @@ class DetCourse extends Component {
     render() {
         return (
             <LayoutUser>
-                <Navbar match={this.props.match}/>
+                <Navbar match={this.props.match} active_navbar={"course"}/>
                 <div className="_ro _ma3mn">
                     <div className="_cn">
                         <div className="_ro _c5m38 _c5x312 _pd5m3n">
@@ -403,14 +409,32 @@ const Grade = (props) => {
     )
 }
 const Attendance = (props) => {
-    if (props.data.present === 0 && props.data.absent === 0){
-        return <div>kosong</div>
+    if ((props.data.present === 0 && props.data.absent === 0) || (props.data.present === undefined && props.data.absent === undefined) ){
+        return <table className="_se3msg">
+        <tbody>
+            <tr>
+                <td>
+                    <i className="fa fa-smile-o" aria-hidden="true"></i>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p className="_head">Nothing To Report!</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p className="_main">Have a nice day Rifki Muhammad</p>
+                </td>
+            </tr>
+        </tbody>
+    </table>   
     }else{
         return (
             <div className="_se">
                 <div id="attendance"></div>
             </div>
-        )   
+        )
     }
 }
 const Download = (props) => {
@@ -461,4 +485,4 @@ const mapDispatchtoProps = (dispatch) => {
         dispatcherRequest: (is_logged_in, request_status, error_message) => dispatch(actorRequest(is_logged_in, request_status, error_message))
     }
 }
-export default connect(mapStatetoProps, mapDispatchtoProps)(DetCourse)
+export default connect(mapStatetoProps, mapDispatchtoProps)(CourseDetail)

@@ -48,7 +48,7 @@ class User extends Component {
         return (is_logged_in
             ? <div>
                     <LayoutUser>
-                        <Navbar match={this.props.match}/>
+                        <Navbar match={this.props.match} active_navbar={"user"}/>
                         <div className="_cn">
                             <div className="_ro">
                                 <div className="_pd3cl _c5m312 _c5x312">

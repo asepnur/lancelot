@@ -8,7 +8,7 @@ import {
     ForgotActivation,
     Reset,
     Course,
-    DetCourse,
+    CourseDetail,
     Schedule,
     MyActivity,
     AssignmentDetail,
@@ -26,8 +26,7 @@ import {
     AdminCrtAttand,
     AdminCrtCourse,
     AdminManageCourse,
-    AdminManageAssignment,
-    Test
+    AdminManageAssignment
 } from '../component/index.js'
 export const routes = [
     {
@@ -68,7 +67,7 @@ export const routes = [
         exact: true
     }, {
         path: '/course/:id',
-        component: DetCourse,
+        component: CourseDetail,
         exact: true
     }, {
         path: '/schedule',
@@ -143,9 +142,5 @@ export const routes = [
         path: '/admin/create/course',
         component: AdminCrtCourse,
         exact: true
-    }, {
-        path: '/test',
-        component:Test,
-        exact: false
     }
 ]
