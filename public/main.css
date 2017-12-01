@@ -925,10 +925,18 @@ html {
     height: 30px; }
   
   ._i3pr {
-    width: 50px;
-    height: 50px;
-    border: 1px solid #217fbd;
-    object-fit: contain; }
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border: none;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1px 2px 0 rgba(0, 0, 0, 0.19);
+    margin-bottom: 10px; }
+  
+  @media (min-width: 992px) {
+    ._i3pr {
+      width: 90px;
+      height: 90px;
+      object-fit: cover; } }
   
   ._i3inf {
     width: 100%;
@@ -957,7 +965,16 @@ html {
     color: #FF0000; }
   
   ._icx {
-    font-size: .9em; }
+    font-size: .9em;
+    font-size: 0.8em;
+    position: absolute;
+    bottom: 10px;
+    left: 65px;
+    background-color: #FFFFFF;
+    padding: 3px;
+    border-radius: 10px;
+    border: 0.5px solid #C0C0C0;
+    color: #C0C0C0; }
   
   ._ic3xs {
     font-size: .9em;
@@ -1021,6 +1038,20 @@ html {
     font-size: 3.125em;
     color: #FF0000;
     padding-top: 15px; }
+  
+  @media (min-width: 992px) {
+    ._icx {
+      cursor: pointer;
+      font-size: 1.1em;
+      position: absolute;
+      bottom: 0;
+      left: 75px;
+      padding: 3px;
+      border-radius: 29px;
+      background-color: #FFFFFF;
+      background-color: #FFFFFF;
+      border: 0.5px solid #C0C0C0;
+      bottom: 10px; } }
   
   ._bo {
     font-weight: bold; }
@@ -1934,12 +1965,14 @@ html {
   textarea, ._txa3l {
     max-height: 225px;
     resize: vertical;
-    overflow: auto; }
+    overflow: auto;
+    min-height: 80px; }
   
   ._txa3l {
     height: 420px;
     resize: vertical;
-    overflow: auto; }
+    overflow: auto;
+    min-height: 80px; }
   
   input[type="checkbox"] {
     width: 20px;
@@ -2612,6 +2645,7 @@ html {
     position: relative;
     background-color: #FFFFFF;
     margin: 15px 0px;
+    margin-top: 50px;
     display: inline-block;
     width: 100%; }
   
@@ -3783,8 +3817,7 @@ html {
     width: auto;
     margin: 0 auto !important;
     padding-top: 25px !important;
-    padding-bottom: 25px !important; }
-  
+    padding-bottom: 25px !important; }  
 
 .LoadingBar {
     transition: all 0.3s ease;
