@@ -17,7 +17,7 @@ class ErrorMessage extends Component {
                 id="errmsg"
                 className={'_erm5cn'}
                 style={{
-                top: request_status === 401
+                top: request_status === 401 || request_status === 200
                     ? 0
                     : '-75px'
             }}>

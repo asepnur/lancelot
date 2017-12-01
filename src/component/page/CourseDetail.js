@@ -232,7 +232,7 @@ class CourseDetail extends Component {
                 <div className="_ro _ma3mn">
                     <div className="_cn">
                         <div className="_ro _c5m38 _c5x312 _pd5m3n">
-                            <div className="_he3b _pd3l3b">MyCourse</div>
+                            <div className="_he3b _pd3l3b">My Course</div>
                             <div className="_c5x312 _c5m312 _pd3n3lr  _pd3l3b">
                                 <div>
                                     <div className="_c5x312 _c5m312 _pd3n3lr _ta">

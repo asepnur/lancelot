@@ -20,7 +20,10 @@ const State = {
     name: "",
     phone: "",
     profil: true,
-    basic: false
+    basic: false,
+    password: "",
+    old_password: "",
+    password_confirmation: ""
 }
 class User extends Component {
     constructor() {
@@ -94,9 +97,25 @@ class User extends Component {
             .className = "_active"
         this.handleGetProfil()
     }
-    handleChangePassword = (dispatcherRequest, dispatcherLoading) => {
+    handleChangePassword = (e) => {
+        e.preventDefault()
+        const {dispatcherRequest, dispatcherLoading} = this.props
         dispatcherLoading(10, false)
-
+        if (this.state.old_password === "") {
+            dispatcherLoading(10, true)
+            dispatcherRequest(true, 401, 'Old password can not be empty')
+            return
+        }
+        if (this.state.password === "" || this.state.old_password === "") {
+            dispatcherLoading(10, true)
+            dispatcherRequest(true, 401, 'Password or confirmation password can not be empty')
+            return
+        }
+        if (this.state.password !== this.state.password_confirmation) {
+            dispatcherLoading(10, true)
+            dispatcherRequest(true, 401, 'Password and confirmation password does not match')
+            return
+        }
         let formData = new FormData()
         formData.append('id', this.state.id)
         formData.append('email', this.state.email)
@@ -104,21 +123,21 @@ class User extends Component {
         formData.append('password', this.state.password)
         formData.append('password_confirmation', this.state.password_confirmation)
 
-        fetch('/api/v1/user/changepassword', {
-            method: 'POST',
-            credentials: 'include',
-            crossDomain: true,
-            body: formData
+        axios.post(`/api/v1/user/changepassword`, formData, {
+            validateStatus: (status) => {
+                return status < 500
+            }
         }).then((res) => {
-            return res.json()
-        }).then((data) => {
-            if (data.code === 200) {
+            if (res.status === 200) {
                 dispatcherLoading(100, false)
-                dispatcherRequest(true, 200, '')
+                dispatcherRequest(true, 200, 'Your password has been changed')
             } else {
                 dispatcherLoading(10, true)
-                dispatcherRequest(this.props.is_logged_in, 401, data.error)
+                dispatcherRequest(true, 401, res.data.error[0])
             }
+        }).catch((err) => {
+            dispatcherLoading(10, true)
+            dispatcherRequest(true, 401, 'Error connection')
         })
     }
     handleUpdate = (e) => {
@@ -168,7 +187,7 @@ class User extends Component {
         }).then((data) => {
             if (data.code === 200) {
                 dispatcherLoading(100, false)
-                dispatcherRequest(true, 200, '')
+                dispatcherRequest(true, 200, 'Your Profile Updated !')
             } else {
                 dispatcherLoading(10, true)
                 dispatcherRequest(this.props.is_logged_in, 401, data.error)
@@ -220,7 +239,13 @@ class User extends Component {
                                         data={data}
                                         profil={this.state.profil}
                                         handleUpdate={this.handleUpdate}/>
-                                    <Basic data={data} basic={this.state.basic}/>
+                                    <Basic
+                                        old_password={this.state.old_password}
+                                        password={this.state.password}
+                                        password_confirmation={this.state.password_confirmation}
+                                        data={data}
+                                        basic={this.state.basic}
+                                        handleChangePassword={this.handleChangePassword}/>
                                 </div>
                                 <Newsbar/>
                             </div>
@@ -325,7 +350,8 @@ class Profil extends Component {
 }
 const Basic = (props) => {
     return (
-        <div
+        <form
+            onSubmit={props.handleChangePassword}
             className="_se3usr"
             style={props.basic
             ? {
@@ -358,7 +384,12 @@ const Basic = (props) => {
             <div className="_ro">
                 <div className="_c5x316 _c5m36 ">
                     <label className="_ct3xb" htmlFor="password">Change password</label>
-                    <input type="password" name="old_password" placeholder="Old password"/>
+                    <input
+                        type="password"
+                        onChange={props.data.handleChange}
+                        name="old_password"
+                        value={props.old_password}
+                        placeholder="Old password"/>
                 </div>
             </div>
             <div className="_ro">
@@ -367,7 +398,7 @@ const Basic = (props) => {
                     type="password"
                     name="password"
                     placeholder="New Password"
-                    onChangeState={props.handleChange}
+                    onChangeState={props.data.handleChange}
                     value={props.password}/>
                 <InputContent
                     classWraper="_c5x36 _c5m36 "
@@ -382,7 +413,7 @@ const Basic = (props) => {
                     <button className="_bt5m3b">Save</button>
                 </div>
             </div>
-        </div>
+        </form>
     )
 }
 /*----------------------------------------------------------------

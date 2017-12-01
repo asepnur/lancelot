@@ -107,7 +107,7 @@ class Login extends Component {
       }).then((res) => {
          if (res.status === 200) {
             dispatcherLoading(100, false)
-            dispatcherRequest(true, 200, '')
+            dispatcherRequest(true, 0, '')
          } else {
             dispatcherLoading(10, true)
             dispatcherRequest(false, 401, res.data.error[0])
