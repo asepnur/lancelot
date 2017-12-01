@@ -23,14 +23,15 @@ const State = {
     basic: false,
     password: "",
     old_password: "",
-    password_confirmation: ""
+    password_confirmation: "",
+    file: "",
+    change_image: false
 }
 class User extends Component {
     constructor() {
         super()
         this.state = {
             ...State
-
         }
     }
     /*------------------------------------------------------------
@@ -171,32 +172,37 @@ class User extends Component {
             dispatcherRequest(true, 401, 'Error connection')
         })
     }
-    handleUpload = (value, dispatcherRequest, dispatcherLoading) => {
-        dispatcherLoading(10, false)
-
-        let formData = new FormData()
-        formData.append('file', value)
-
-        fetch('/api/v1/image/profile', {
-            method: 'POST',
-            credentials: 'include',
-            crossDomain: true,
-            body: formData
-        }).then((res) => {
-            return res.json()
-        }).then((data) => {
-            if (data.code === 200) {
-                dispatcherLoading(100, false)
-                dispatcherRequest(true, 200, 'Your Profile Updated !')
-            } else {
-                dispatcherLoading(10, true)
-                dispatcherRequest(this.props.is_logged_in, 401, data.error)
-            }
-        })
-    }
     handleChange = (e) => {
         this.setState({
             [e.target.name]: e.target.value
+        })
+    }
+    handleChangeImg = () => {
+        document
+            .getElementById("upload")
+            .click()
+    }
+    handleUploadImg = (e) => {
+        const {dispatcherRequest, dispatcherLoading} = this.props
+        let formData = new FormData()
+        formData.append('foo', 'bar');
+        formData.append('file', document.getElementById('upload').files[0]);
+        axios.post(`/api/v1/image/profile`, formData, {
+            validateStatus: (status) => {
+                return status < 500
+            }
+        }).then((res) => {
+            if (res.status === 200) {
+                dispatcherLoading(100, false)
+                this.setState({change_image: !this.state.change_image})
+                dispatcherRequest(true, 200, 'Profile Updated')
+            } else {
+                dispatcherLoading(10, true)
+                dispatcherRequest(true, 401, res.data.error[0])
+            }
+        }).catch((err) => {
+            dispatcherLoading(10, true)
+            dispatcherRequest(true, 401, 'Error connection')
         })
     }
     render() {
@@ -210,7 +216,9 @@ class User extends Component {
             line_id: this.state.line_id,
             name: this.state.name,
             phone: this.state.phone,
-            handleChange: this.handleChange
+            handleChange: this.handleChange,
+            handleChangeImg: this.handleChangeImg,
+            handleUploadImg: this.handleUploadImg
         }
         const {is_logged_in} = this.props
         return (is_logged_in
@@ -238,7 +246,8 @@ class User extends Component {
                                     <Profil
                                         data={data}
                                         profil={this.state.profil}
-                                        handleUpdate={this.handleUpdate}/>
+                                        handleUpdate={this.handleUpdate}
+                                        change_image={this.state.change_image}/>
                                     <Basic
                                         old_password={this.state.old_password}
                                         password={this.state.password}
@@ -278,8 +287,20 @@ class Profil extends Component {
                 </div>
                 <div className="_ro">
                     <div className="_c5x33 _c5m31">
-                        <img className="_i3pr _i3ci" src="/img/image.png" alt="profil"/>
-                        <i className="fa fa-camera _icx" aria-hidden="true"></i>
+                        <img className="_i3pr _i3ci" src={this.props.change_image?this.props.data.img_t:this.props.data.img} alt="profil"/>
+                        <i
+                            className="fa fa-camera _icx"
+                            aria-hidden="true"
+                            onClick={this.props.data.handleChangeImg}></i>
+                        <input
+                            type="file"
+                            id="upload"
+                            name="file"
+                            onChange={this.props.data.handleUploadImg}
+                            value={this.props.data.file}
+                            style={{
+                            display: "none"
+                        }}/>
                     </div>
                 </div>
                 <div className="_ro">
