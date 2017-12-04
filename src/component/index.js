@@ -89,3 +89,5 @@ export {default as NavbarAdmin}
 from './section/NavbarAdmin'
 export {default as Navbar}
 from './section/Navbar'
+export {default as InformationDetail}
+from './section/InformationDetail'

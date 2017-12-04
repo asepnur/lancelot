@@ -7,7 +7,7 @@ import {Redirect} from 'react-router-dom'
 import axios from 'axios'
 
 import {actorRequest} from '../../action/action'
-import {Navbar, Newsbar, LayoutUser} from '../index.js'
+import {Navbar, Newsbar, LayoutUser, InformationDetail} from '../index.js'
 
 class Information extends Component {
     constructor() {
@@ -91,7 +91,7 @@ class Information extends Component {
                             </div>
                         </div>
                     </div>
-                    <Detail modal_detail={this.state.modal_detail} handleClose={this.handleClose}/>
+                    <InformationDetail modal_detail={this.state.modal_detail} handleClose={this.handleClose} />
                 </LayoutUser>
             : <Redirect to={`/login`}/>);
     }
@@ -113,31 +113,6 @@ const Content = (props) => {
             </div>
         </div>
     )))
-}
-const Detail = (props) => {
-    return (
-        <div className="_md" style={props.modal_detail?{display:"block"}:{display:"none"}}>
-            <i className="fa fa-window-close" aria-hidden="true" onClick={props.handleClose}></i>
-            <div className="__x" onClick={props.handleClose}></div>
-            <div className="_ro">
-                <div className="_c5x312 _c5m36 _c5m3o3">
-                    <div className="_cn _md5inf">
-                        <img src="/img/course.png" alt="informations_image"/>
-                        <div className="_c5x312 _pd3n3lr">
-                            <h1>Lorem Ipsum Dolor Sit Amet</h1>
-                            <p>11 November 2017</p>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-                                dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                                sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    )
 }
 /*----------------------------------------------------------------
                             DISPATCHER

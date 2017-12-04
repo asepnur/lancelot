@@ -7,14 +7,15 @@ import {connect} from 'react-redux'
 import ReactDOM from 'react-dom'
 import axios from 'axios'
 
-import {Navbar, Newsbar, LayoutUser, InputContent} from '../index.js'
+import {Navbar, Newsbar, LayoutUser, InputContent, InformationDetail} from '../index.js'
 
 class Home extends Component {
     constructor() {
         super()
         this.state = {
             today: [],
-            assignment: []
+            assignment: [],
+            modal_detail : false
         }
     }
     /*----------------------------------------------------------------
@@ -27,6 +28,22 @@ class Home extends Component {
     /*----------------------------------------------------------------
                             HANDLER FUNCTION
 ------------------------------------------------------------------*/
+    handleDetail = (id) => {
+        axios.get(`api/v1/information/` + 6, {
+            validateStatus: (status) => {
+                return status === 200
+            }
+        }).then((res) => {
+            if (res.data.code === 200) {
+                this.setState({detail: res.data.data, modal_detail: true})
+            }
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+    handleClose = () =>{
+        this.setState({modal_detail: false})
+    }
     handleGetScheduleToday = () => {
         axios.get(`/api/v1/course/149/today`, {
             validateStatus: (status) => {
@@ -61,18 +78,44 @@ class Home extends Component {
         dom(modal).style.display = 'block'
         // dom(advance_content).style.display = 'none'
     }
-    renderMain = (today, assignment) => {
-        return (
+    renderMain = (today, assignment, modal_detail) => {
+        
+    }
+    /*----------------------------------------------------------------
+                            RENDER COMPONENT
+------------------------------------------------------------------*/
+    render() {
+        const {is_logged_in} = this.props
+        const assignment = this.state.assignment
+        const today = this.state.today
+        const modal_detail = this.state.modal_detail
+        const handler = {
+            handleClickUpload: this.handleClickUpload,
+            handleGetAssignment: this.handleGetAssignment,
+            handleGetScheduleToday: this.handleGetScheduleToday,
+            handleClose: this.handleClose,
+            handleDetail: this.handleDetail
+        }
+        return (is_logged_in
+            ? <RenderMain handler={handler} assignment={assignment} today={today} modal_detail={modal_detail} />
+            : <Redirect to={`/login`}/>)
+    }
+}
+/*----------------------------------------------------------------
+                            ELEMENT FUNCTION
+------------------------------------------------------------------*/
+const RenderMain = (props) =>{
+    return(
             <LayoutUser>
-                <Navbar match={this.props.match} active_navbar={"home"}/>
+                <Navbar match={props.match} active_navbar={"home"}/>
                 <div className="_ro _ma3mn">
                     <div className="_cn3w">
                         <div className="_ro">
                             <div className="_c5m38 _pd5n _pd3cl _pd5m3n">
                                 <div className="_he3b">Assignment</div>
-                                <Assignment data={assignment} handleClickUpload={this.handleClickUpload}/>
+                                <Assignment data={props.assignment} handleClickUpload={props.handler.handleClickUpload}/>
                                 <div className="_pg">
-                                    <div>
+                                    <div>   
                                         <p>1 of 2 Page</p>
                                     </div>
                                     <div>
@@ -85,9 +128,9 @@ class Home extends Component {
                                     </div>
                                 </div>
                                 <div className="_he3b">Schedule Today</div>
-                                <Today data={today}/>
+                                <Today data={props.today}/>
                             </div>
-                            <Newsbar/>
+                            <Newsbar handleDetail={props.handler.handleDetail} />
                         </div>
                     </div>
                 </div>
@@ -120,12 +163,12 @@ class Home extends Component {
                                             type="text"
                                             name="subject"
                                             placeholder="Lorem Ipsum"
-                                            onChangeState={this.onChangeState}/>
+                                            onChangeState={props.handler.onChangeState}/>
                                         <InputContent
                                             type="text"
                                             name="description"
                                             placeholder="Description"
-                                            onChangeState={this.onChangeState}/>
+                                            onChangeState={props.handler.onChangeState}/>
                                     </div>
                                 </div>
                                 <div className="_ro">
@@ -153,25 +196,10 @@ class Home extends Component {
                         </div>
                     </div>
                 </div>
+                <InformationDetail modal_detail={props.modal_detail} handleClose={props.handler.handleClose} />
             </LayoutUser>
         )
-    }
-    /*----------------------------------------------------------------
-                            RENDER COMPONENT
-------------------------------------------------------------------*/
-    render() {
-        const {is_logged_in} = this.props
-        const assignment = this.state.assignment
-        const today = this.state.today
-
-        return (is_logged_in
-            ? this.renderMain(today, assignment)
-            : <Redirect to={`/login`}/>)
-    }
 }
-/*----------------------------------------------------------------
-                            ELEMENT FUNCTION
-------------------------------------------------------------------*/
 export const Assignment = (props) => {
     return (props.data.length === 0
         ? <table className="_se3msg">

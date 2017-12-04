@@ -23,7 +23,7 @@ class Newsbar extends Component {
         return (
             <div className="_c5m34 _c5x312 _pd3cr">
                 <div className="_he3b">Last News</div>
-                <Content data={this.state.data}/>
+                <Content data={this.state.data} handleDetail={this.props.handleDetail}/>
             </div>
 
         )
@@ -39,12 +39,13 @@ const Content = (props)=>{
                 <tr key={i}>
                 <td><img src="/img/course.png" alt="informations"/></td>
                 <td>
-                    <p>{data.title}</p>
+                    <p onClick={props.handleDetail}>{data.title}</p>
+                    <p>@Mobile Computing</p>
                     <p>{data.description}</p>
                     <p className="_pd3m3t">{data.date}</p>
                 </td>
                 <td>
-                    <i className="fa fa-angle-double-right _ic __wr" aria-hidden="true"></i>
+                    <i className="fa fa-angle-double-right _ic __wr" aria-hidden="true" onClick={props.handleDetail}></i>
                 </td>
             </tr>
             ))

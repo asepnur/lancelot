@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {Redirect} from 'react-router-dom'
+import {Redirect, Link} from 'react-router-dom'
 import ReactDOM from 'react-dom'
 import axios from 'axios'
 
@@ -181,7 +181,7 @@ const ListActivity = (props) => {
                                 <i className="fa fa-pencil-square-o _ic __wr" aria-hidden="true"></i>
                             </td>
                             <td>
-                                <i className="fa fa-angle-double-right _ic __wr" aria-hidden="true"></i>
+                                <Link to={"/assignment/"+data.id}><i className="fa fa-angle-double-right _ic __wr" aria-hidden="true"></i></Link>
                             </td>
                         </tr>
                     ))}

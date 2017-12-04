@@ -162,7 +162,7 @@ class User extends Component {
         }).then((res) => {
             if (res.status === 200) {
                 dispatcherLoading(100, false)
-                dispatcherRequest(true, 200, '')
+                dispatcherRequest(true, 200, 'Profil Updated')
             } else {
                 dispatcherLoading(10, true)
                 dispatcherRequest(true, 401, res.data.error[0])
@@ -184,6 +184,7 @@ class User extends Component {
     }
     handleUploadImg = (e) => {
         const {dispatcherRequest, dispatcherLoading} = this.props
+        dispatcherLoading(10, false)
         let formData = new FormData()
         formData.append('foo', 'bar');
         formData.append('file', document.getElementById('upload').files[0]);
@@ -230,7 +231,7 @@ class User extends Component {
                                 <div className="_c5m38 _c5x312 _pd5n _pd3cl _pd5m3n ">
                                     <div className="_he3b _pd3l3b">User Setting</div>
                                     <div className="_c5x312 _c5m312 _pd3n3lr _ta">
-                                        <ul className="_ta5l3b">
+                                        <ul className="_ta5l3w">
                                             <li id="tab_profil" onClick={this.handleActiveTab}>
                                                 <i className="fa fa-user" aria-hidden="true"></i>
                                                 <a className="">
@@ -298,6 +299,7 @@ class Profil extends Component {
                             name="file"
                             onChange={this.props.data.handleUploadImg}
                             value={this.props.data.file}
+                            accept='image/*'
                             style={{
                             display: "none"
                         }}/>
@@ -425,7 +427,7 @@ const Basic = (props) => {
                     classWraper="_c5x36 _c5m36 "
                     type="password"
                     name="password_confirmation"
-                    placeholder="Password Confirmation"
+                    placeholder="Confirmation"
                     onChangeState={props.data.handleChange}
                     value={props.password_confirmation}/>
             </div>

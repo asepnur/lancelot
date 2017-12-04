@@ -10,12 +10,13 @@ import {GoogleCharts} from 'google-charts';
 
 import {Assignment} from './Home'
 import {actorRequest} from '../../action/action'
-import {Navbar, Newsbar, LayoutUser} from '../index.js'
+import {Navbar, Newsbar, LayoutUser, InformationDetail} from '../index.js'
 
 class CourseDetail extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            modal_detail: false,
             id: this.props.match.params.id,
             assignment: [],
             attendance: {},
@@ -50,6 +51,23 @@ class CourseDetail extends Component {
     /*----------------------------------------------------------------
                             HANDLER FUNCTION
     ------------------------------------------------------------------*/
+    handleDetail = (id) => {
+        this.setState({modal_detail: true})
+        axios.get(`api/v1/information/` + 6, {
+            validateStatus: (status) => {
+                return status === 200
+            }
+        }).then((res) => {
+            if (res.data.code === 200) {
+                this.setState({detail: res.data.data, modal_detail: true})
+            }
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+    handleClose = () =>{
+        this.setState({modal_detail: false})
+    }
     handleActive = (e) => {
         const tagID = e.currentTarget.id
         const id = [
@@ -349,9 +367,12 @@ class CourseDetail extends Component {
                                 <Grade/>
                             </div>
                         </div>
-                        <Newsbar/>
+                        <Newsbar handleDetail={this.handleDetail}/>
                     </div>
                 </div>
+                <InformationDetail
+                        modal_detail={this.state.modal_detail}
+                        handleClose={this.handleClose}/>
             </LayoutUser>
         )
     }

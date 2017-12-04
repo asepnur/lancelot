@@ -8,7 +8,7 @@ import {Redirect, Link} from 'react-router-dom'
 import axios from 'axios'
 
 import {actorRequest} from '../../action/action'
-import {Navbar, Newsbar, LayoutUser} from '../index.js'
+import {Navbar, Newsbar, LayoutUser, InformationDetail} from '../index.js'
 
 class Course extends Component {
     constructor() {
@@ -20,7 +20,7 @@ class Course extends Component {
             last: []
         }
     }
-/*----------------------------------------------------------------
+    /*----------------------------------------------------------------
                         LIFE CYCLE
 ------------------------------------------------------------------*/
     componentDidMount() {
@@ -42,9 +42,25 @@ class Course extends Component {
         })
 
     }
-/*----------------------------------------------------------------
+    /*----------------------------------------------------------------
                             HANDLE FUNCTION
 ------------------------------------------------------------------*/
+    handleDetail = (id) => {
+        axios.get(`api/v1/information/` + 6, {
+            validateStatus: (status) => {
+                return status === 200
+            }
+        }).then((res) => {
+            if (res.data.code === 200) {
+                this.setState({detail: res.data.data, modal_detail: true})
+            }
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+    handleClose = () => {
+        this.setState({modal_detail: false})
+    }
     handleActiveTab = (e) => {
         const tagID = e.currentTarget.id
         const id = ["tab_all", "tab_last", "tab_current"]
@@ -119,7 +135,7 @@ class Course extends Component {
     handleRedirect = () => {
         window.location = '/admin/course'
     }
-/*----------------------------------------------------------------
+    /*----------------------------------------------------------------
                             RENDER COMPONENT
 ------------------------------------------------------------------*/
     render() {
@@ -127,13 +143,13 @@ class Course extends Component {
         const data = this.state.data
         return (is_logged_in
             ? <LayoutUser>
-                    <Navbar match={this.props.match} active_navbar={"course"}/>
+                    <Navbar match={this.props.match} active_navbar={"course"} />
                     <div className="_ro _ma3mn">
                         <div className="_cn">
                             <div className="_ro">
                                 <div className="_c5m38 _c5x312 _pd5n _pd3cl _pd5m3n ">
                                     <div className="_he3b _pd3l3b">My Course</div>
-                                    <div className="_c5x312 _c5m312 _pd3n3lr _ta ">
+                                    <div className="_c5x312 _c5m312 _d3n3lr _ta ">
                                         <ul className="_ta5l3b">
                                             <li id="tab_last" onClick={this.handleActiveTab}>
                                                 <i className="fa fa-history" aria-hidden="true"></i>
@@ -164,17 +180,20 @@ class Course extends Component {
                                     </div>
                                     <ListCourse data={data}/>
                                 </div>
-                                <Newsbar/>
+                                <Newsbar handleDetail={this.handleDetail}/>
                             </div>
                         </div>
                     </div>
+                    <InformationDetail
+                        modal_detail={this.state.modal_detail}
+                        handleClose={this.handleClose}/>
                 </LayoutUser>
             : <Redirect to={`/login`}/>);
     }
 }
 
 /*----------------------------------------------------------------
-                            ELEMENT 
+                            ELEMENT
 ------------------------------------------------------------------*/
 const ListCourse = (props) => {
     return props.data.length === 0

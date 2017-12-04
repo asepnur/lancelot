@@ -9,13 +9,13 @@ import {connect} from 'react-redux'
 import {actorRequest} from '../../action/action'
 
 class Navbar extends Component {
-/*----------------------------------------------------------------
+      /*----------------------------------------------------------------
                         LIFE CYCLE
 ------------------------------------------------------------------*/
       componentDidMount() {
             this.handleActiveMenu()
       }
-/*----------------------------------------------------------------
+      /*----------------------------------------------------------------
                         HANDLER FUNTION
 ------------------------------------------------------------------*/
       handlerSignOut = (dispatcherRequest) => {
@@ -54,7 +54,7 @@ class Navbar extends Component {
                               .className = ""
             }, this)
       }
-/*----------------------------------------------------------------
+      /*----------------------------------------------------------------
                             RENDER COMPONENT
 ------------------------------------------------------------------*/
       render() {
@@ -82,7 +82,7 @@ class Navbar extends Component {
                                                                   </Link>
                                                             </li>
                                                             <li id="assignment">
-                                                                  <Link to={'/myactivity'}>
+                                                                  <Link to={'/assignment'}>
                                                                         <i className="fa fa-tasks" aria-hidden="true"></i>
                                                                   </Link>
                                                             </li>
@@ -93,7 +93,7 @@ class Navbar extends Component {
                                                             </li>
                                                             <li id="admin" className="_n3a">
                                                                   <Link to={'/'}>
-                                                                        <i className="fa fa-users" aria-hidden="true"></i>
+                                                                        <i class="fa fa-wrench" aria-hidden="true"></i>
                                                                   </Link>
                                                             </li>
                                                       </div>

@@ -10,8 +10,8 @@ class Schedule extends Component {
                 <div className="_cn">
                     <div className="_ro _ma3mn">
                         <div className="_c5m38 _pd5n _pd3cl _pd5m3n">
-                            <div class="_he3b">Schedule</div>
-                            <table class="_se _se3s">
+                            <div className="_he3b">Schedule</div>
+                            <table className="_se _se3s">
                                 <tbody>
                                     <tr>
                                         <td>
@@ -19,14 +19,14 @@ class Schedule extends Component {
                                                 <span> At </span>
                                                 10.30-12.00</p>
                                             <p>
-                                                <i class="fa fa-bookmark" aria-hidden="true"></i>
+                                                <i className="fa fa-bookmark" aria-hidden="true"></i>
                                                 &nbsp;Algoritma Pemrograman</p>
                                             <p>
-                                                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                <i className="fa fa-map-marker" aria-hidden="true"></i>
                                                 &nbsp;Laboratorium Pemrograman/ UDJT12</p>
                                         </td>
                                         <td>
-                                            <i class="fa fa-angle-double-right _ic __wr" aria-hidden="true"></i>
+                                            <i className="fa fa-angle-double-right _ic __wr" aria-hidden="true"></i>
                                         </td>
                                     </tr>
                                     <tr>
@@ -35,14 +35,14 @@ class Schedule extends Component {
                                                 <span> At </span>
                                                 10.30-12.00</p>
                                             <p>
-                                                <i class="fa fa-bookmark" aria-hidden="true"></i>
+                                                <i className="fa fa-bookmark" aria-hidden="true"></i>
                                                 &nbsp;Algoritma Pemrograman</p>
                                             <p>
-                                                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                <i className="fa fa-map-marker" aria-hidden="true"></i>
                                                 &nbsp;Laboratorium Pemrograman/ UDJT12</p>
                                         </td>
                                         <td>
-                                            <i class="fa fa-angle-double-right _ic __wr" aria-hidden="true"></i>
+                                            <i className="fa fa-angle-double-right _ic __wr" aria-hidden="true"></i>
                                         </td>
                                     </tr>
                                     <tr>
@@ -51,14 +51,14 @@ class Schedule extends Component {
                                                 <span> At </span>
                                                 10.30-12.00</p>
                                             <p>
-                                                <i class="fa fa-bookmark" aria-hidden="true"></i>
+                                                <i className="fa fa-bookmark" aria-hidden="true"></i>
                                                 &nbsp;Algoritma Pemrograman</p>
                                             <p>
-                                                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                <i className="fa fa-map-marker" aria-hidden="true"></i>
                                                 &nbsp;Laboratorium Pemrograman/ UDJT12</p>
                                         </td>
                                         <td>
-                                            <i class="fa fa-angle-double-right _ic __wr" aria-hidden="true"></i>
+                                            <i className="fa fa-angle-double-right _ic __wr" aria-hidden="true"></i>
                                         </td>
                                     </tr>
                                 </tbody>

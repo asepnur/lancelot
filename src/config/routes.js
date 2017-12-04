@@ -74,11 +74,11 @@ export const routes = [
         component: Schedule,
         exact: false
     }, {
-        path: '/myactivity',
+        path: '/assignment',
         component: MyActivity,
         exact: true
     }, {
-        path: '/myactivity/detail/:id',
+        path: '/assignment/:id',
         component: AssignmentDetail,
         exact: true
     }, {
