@@ -93,7 +93,7 @@ class Navbar extends Component {
                                                             </li>
                                                             <li id="admin" className="_n3a">
                                                                   <Link to={'/'}>
-                                                                        <i class="fa fa-wrench" aria-hidden="true"></i>
+                                                                        <i className="fa fa-wrench" aria-hidden="true"></i>
                                                                   </Link>
                                                             </li>
                                                       </div>

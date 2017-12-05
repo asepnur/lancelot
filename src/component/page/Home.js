@@ -15,7 +15,7 @@ class Home extends Component {
         this.state = {
             today: [],
             assignment: [],
-            modal_detail : false
+            modal_detail: false
         }
     }
     /*----------------------------------------------------------------
@@ -41,7 +41,7 @@ class Home extends Component {
             console.log(err)
         })
     }
-    handleClose = () =>{
+    handleClose = () => {
         this.setState({modal_detail: false})
     }
     handleGetScheduleToday = () => {
@@ -78,9 +78,7 @@ class Home extends Component {
         dom(modal).style.display = 'block'
         // dom(advance_content).style.display = 'none'
     }
-    renderMain = (today, assignment, modal_detail) => {
-        
-    }
+    renderMain = (today, assignment, modal_detail) => {}
     /*----------------------------------------------------------------
                             RENDER COMPONENT
 ------------------------------------------------------------------*/
@@ -97,108 +95,116 @@ class Home extends Component {
             handleDetail: this.handleDetail
         }
         return (is_logged_in
-            ? <RenderMain handler={handler} assignment={assignment} today={today} modal_detail={modal_detail} />
+            ? <RenderMain
+                    handler={handler}
+                    assignment={assignment}
+                    today={today}
+                    modal_detail={modal_detail}/>
             : <Redirect to={`/login`}/>)
     }
 }
 /*----------------------------------------------------------------
                             ELEMENT FUNCTION
 ------------------------------------------------------------------*/
-const RenderMain = (props) =>{
-    return(
-            <LayoutUser>
-                <Navbar match={props.match} active_navbar={"home"}/>
-                <div className="_ro _ma3mn">
-                    <div className="_cn3w">
-                        <div className="_ro">
-                            <div className="_c5m38 _pd5n _pd3cl _pd5m3n">
-                                <div className="_he3b">Assignment</div>
-                                <Assignment data={props.assignment} handleClickUpload={props.handler.handleClickUpload}/>
-                                <div className="_pg">
-                                    <div>   
-                                        <p>1 of 2 Page</p>
-                                    </div>
-                                    <div>
-                                        <a href="">
-                                            <i className="fa fa-angle-left" aria-hidden="true"></i>
-                                            &nbsp;previous</a>
-                                        <a href="">next&nbsp;
-                                            <i className="fa fa-angle-right" aria-hidden="true"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div className="_he3b">Schedule Today</div>
-                                <Today data={props.today}/>
-                            </div>
-                            <Newsbar handleDetail={props.handler.handleDetail} />
-                        </div>
-                    </div>
-                </div>
-                <div className="_md" id="_md">
-                    <div className="__x"></div>
+const RenderMain = (props) => {
+    return (
+        <LayoutUser>
+            <Navbar match={props.match} active_navbar={"home"}/>
+            <div className="_ro _ma3mn">
+                <div className="_cn3w">
                     <div className="_ro">
-                        <div className="_c5x312 _c5m36 _c5m3o3">
-                            <div className="_cn _md5cu">
-                                <div className="_ro">
-                                    <div className="_c5x312">
-                                        <h1 className="_he3nb">Lorem Ipsum</h1>
-                                        <p className="_me3c">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                                        </p>
-                                    </div>
+                        <div className="_c5m38 _pd5n _pd3cl _pd5m3n">
+                            <div className="_he3b">Assignment</div>
+                            <Assignment
+                                data={props.assignment}
+                                handleClickUpload={props.handler.handleClickUpload}/>
+                            <div className="_pg">
+                                <div>
+                                    <p>1 of 2 Page</p>
                                 </div>
-                                <div className="_ro">
-                                    <div className="_c5x312">
-                                        <div className="_md5i">
-                                            <input type="file" name="file"/>
-                                            <img className="_i3ce" src="/img/icon/blue/upload.png" alt="upload logo"/>
-                                            <p className="_me3c">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="_ro">
-                                    <div className="_c5x312">
-                                        <label className="_me3b _bd" htmlFor="Subjet">Subject</label>
-                                        <InputContent
-                                            type="text"
-                                            name="subject"
-                                            placeholder="Lorem Ipsum"
-                                            onChangeState={props.handler.onChangeState}/>
-                                        <InputContent
-                                            type="text"
-                                            name="description"
-                                            placeholder="Description"
-                                            onChangeState={props.handler.onChangeState}/>
-                                    </div>
-                                </div>
-                                <div className="_ro">
-                                    <div className="_c5x312">
-                                        <input className="_bt5m3b" type="button" name="submit" value="SUBMIT"/>
-                                    </div>
+                                <div>
+                                    <a href="">
+                                        <i className="fa fa-angle-left" aria-hidden="true"></i>
+                                        &nbsp;previous</a>
+                                    <a href="">next&nbsp;
+                                        <i className="fa fa-angle-right" aria-hidden="true"></i>
+                                    </a>
                                 </div>
                             </div>
+                            <div className="_he3b">Schedule Today</div>
+                            <Today data={props.today}/>
                         </div>
+                        <Newsbar handleDetail={props.handler.handleDetail}/>
                     </div>
                 </div>
-                <div className="_md5s _dn">
-                    <div className="__x"></div>
-                    <div className="_ro">
-                        <div className="_c5x312 _c5m36 _c5m3o3">
-                            <div className="_cn _md5cu">
-                                <div className="_ro">
-                                    <div className="_c5x312">
-                                        <h1 className="_he3nb">Congratulation</h1>
+            </div>
+            <div className="_md" id="_md">
+                <div className="__x"></div>
+                <div className="_ro">
+                    <div className="_c5x312 _c5m36 _c5m3o3">
+                        <div className="_cn _md5cu">
+                            <div className="_ro">
+                                <div className="_c5x312">
+                                    <h1 className="_he3nb">Lorem Ipsum</h1>
+                                    <p className="_me3c">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="_ro">
+                                <div className="_c5x312">
+                                    <div className="_md5i">
+                                        <input type="file" name="file"/>
+                                        <img className="_i3ce" src="/img/icon/blue/upload.png" alt="upload logo"/>
                                         <p className="_me3c">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
                                         </p>
                                     </div>
                                 </div>
                             </div>
+                            <div className="_ro">
+                                <div className="_c5x312">
+                                    <label className="_me3b _bd" htmlFor="Subjet">Subject</label>
+                                    <InputContent
+                                        type="text"
+                                        name="subject"
+                                        placeholder="Lorem Ipsum"
+                                        onChangeState={props.handler.onChangeState}/>
+                                    <InputContent
+                                        type="text"
+                                        name="description"
+                                        placeholder="Description"
+                                        onChangeState={props.handler.onChangeState}/>
+                                </div>
+                            </div>
+                            <div className="_ro">
+                                <div className="_c5x312">
+                                    <input className="_bt5m3b" type="button" name="submit" value="SUBMIT"/>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <InformationDetail modal_detail={props.modal_detail} handleClose={props.handler.handleClose} />
-            </LayoutUser>
-        )
+            </div>
+            <div className="_md5s _dn">
+                <div className="__x"></div>
+                <div className="_ro">
+                    <div className="_c5x312 _c5m36 _c5m3o3">
+                        <div className="_cn _md5cu">
+                            <div className="_ro">
+                                <div className="_c5x312">
+                                    <h1 className="_he3nb">Congratulation</h1>
+                                    <p className="_me3c">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <InformationDetail
+                modal_detail={props.modal_detail}
+                handleClose={props.handler.handleClose}/>
+        </LayoutUser>
+    )
 }
 export const Assignment = (props) => {
     return (props.data.length === 0
@@ -271,34 +277,24 @@ const Today = (props) => {
             </table>
         : <table className="_se3s">
             <tbody>
-                <tr>
-                    <td>
-                        <p>10.30-12.00</p>
-                        <p>
-                            <i className="fa fa-bookmark" aria-hidden="true"></i>
-                            Algoritma Pemrograman</p>
-                        <p>
-                            <i className="fa fa-map-marker" aria-hidden="true"></i>
-                            Laboratorium Pemrograman/ UDJT12</p>
-                    </td>
-                    <td>
-                        <i className="fa fa-angle-double-right _ic __wr" aria-hidden="true"></i>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <p>10.30-12.00</p>
-                        <p>
-                            <i className="fa fa-bookmark" aria-hidden="true"></i>
-                            Algoritma Pemrograman</p>
-                        <p>
-                            <i className="fa fa-map-marker" aria-hidden="true"></i>
-                            Laboratorium Pemrograman/ UDJT12</p>
-                    </td>
-                    <td>
-                        <i className="fa fa-angle-double-right _ic __wr" aria-hidden="true"></i>
-                    </td>
-                </tr>
+                {props
+                    .data
+                    .map((val, i) => (
+                        <tr key={i}>
+                            <td>
+                                <p>{val.time}</p>
+                                <p>
+                                    <i className="fa fa-bookmark _ma3r" aria-hidden="true"></i>
+                                    {val.name}</p>
+                                <p>
+                                    <i className="fa fa-map-marker _ma3r" aria-hidden="true"></i>
+                                    {val.place}</p>
+                            </td>
+                            <td>
+                                <i className="fa fa-angle-double-right _ic __wr" aria-hidden="true"></i>
+                            </td>
+                        </tr>
+                    ))}
             </tbody>
         </table>
 }

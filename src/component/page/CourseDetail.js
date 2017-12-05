@@ -20,7 +20,11 @@ class CourseDetail extends Component {
             id: this.props.match.params.id,
             assignment: [],
             attendance: {},
-            download: [],
+            download: {
+                page: 0,
+                total_page: 0,
+                tutorials: []
+            },
             assitant: [],
             grade: [],
             about: {},
@@ -120,6 +124,9 @@ class CourseDetail extends Component {
             case "tab_download":
                 content_active.download = true
                 this.setState({content_active: content_active})
+                if (this.state.assitant.length === 0) {
+                    this.handleGetDownload()
+                }
                 break
             case "tab_grade":
                 content_active.grade = true
@@ -128,6 +135,9 @@ class CourseDetail extends Component {
             case "tab_about":
                 content_active.about = true
                 this.setState({content_active: content_active})
+                if (this.state.assitant.length === 0) {
+                    this.handleGetAbout()
+                }
                 break
             default:
                 break
@@ -208,18 +218,18 @@ class CourseDetail extends Component {
         })
     }
     handleGetAbout = () => {
-        axios.get(`/api/v1/course/` + this.state.id + `/assistant?payload=student`, {
+        axios.get(`/api/v1/course/${this.state.id}`, {
             validateStatus: (status) => {
                 return status === 200
             }
         }).then((res) => {
-            this.setState({assitant: res.data.data})
+            this.setState({about: res.data.data})
         }).catch((err) => {
             console.log(err)
         })
     }
     handleGetDownload = () => {
-        axios.get(`/api/v1/course/` + this.state.id + `/assistant?payload=student`, {
+        axios.get(`/api/v1/tutorial?pg=1&ttl=10&schedule_id=${this.state.id}&payload=student`, {
             validateStatus: (status) => {
                 return status === 200
             }
@@ -315,7 +325,7 @@ class CourseDetail extends Component {
                                     ? 'block'
                                     : 'none'
                             }}>
-                                <About />
+                                <About data={this.state.about} />
                             </div>
                             <div
                                 className="_c5x312 _c5m312 _pd3n3lr __ass"
@@ -344,7 +354,7 @@ class CourseDetail extends Component {
                                     ? 'block'
                                     : 'none'
                             }}>
-                                <Download />
+                                <Download data={this.state.download}/>
                             </div>
                             <div
                                 className="_c5x312 _c5m312 _pd3n3lr __ast"
@@ -459,35 +469,49 @@ const Attendance = (props) => {
     }
 }
 const Download = (props) => {
-    return (
-        <div className="_c5x312 _c5m34 _pd3n3lr3x">
-        <div className="_se3lc ">
-            <div>
-                <img src="/img/image.png" alt=""/>
-                <p>Asep Nur Muhammad</p>
-                <p>Asistan Pemrograman Web</p>
-                <button className="_bt5xs3b">Download</button>
+    let {
+        data: {
+            tutorials
+        }
+    } = props
+    
+    tutorials = tutorials === undefined ? []: tutorials
+    
+    return tutorials.length === 0
+        ? 'kosong'
+        : tutorials.map(val => (
+            <div key={val.id} className="_c5x312 _c5m34 _pd3n3lr3x">
+                <div className="_se3lc ">
+                    <div>
+                        <img src={val.image_url} alt=""/>
+                        <p>{val.name}</p>
+                        <p>{val.description}</p>
+                        <a href={val.file_url}>
+                            <button className="_bt5xs3b">Download</button>
+                        </a>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    )
+        ))
 }
 const About =(props) =>{
+    const {
+        data: {
+            description,
+            name
+        }
+    } = props
+    
     return (
         <div className="_se _se3a">
         <div className="_ro">
             <div className="_c5x312 _c5m312">
                 <div className="_c5x312 _c5m312 _he5co ">
-                    <h4 className="_ma3l3b">ALGORITMA PEMROGRAMAN</h4>
+                    <h4 className="_ma3l3b">{name}</h4>
                 </div>
                 <div className="_c5x312 _c5m312">
                     <p className="_d5ab _ma3n3lr">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                        incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis
-                        nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                        incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis
-                        nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                        {description}
                     </p>
                 </div>
             </div>
