@@ -143,7 +143,7 @@ class Course extends Component {
         const data = this.state.data
         return (is_logged_in
             ? <LayoutUser>
-                    <Navbar match={this.props.match} active_navbar={"course"} />
+                    <Navbar match={this.props.match} active_navbar={"course"}/>
                     <div className="_ro _ma3mn">
                         <div className="_cn">
                             <div className="_ro">
@@ -226,9 +226,16 @@ const ListCourse = (props) => {
                             <p>{data.name}</p>
                             <p>{data.description}
                             </p>
-                            <Link to={"/course/" + data.id}>
-                                <button className="_bt5xs3b">View Detail</button>
-                            </Link>
+                            {data.status === 'enrolled'
+                                ? (
+                                    <Link to={"/course/" + data.id}>
+                                        <button className="_bt5xs3b">View Detail</button>
+                                    </Link>
+                                )
+                                : data.status === 'unenrolled'
+                                    ? <button className="_bt5xs3g">Enroll</button>
+                                    : <button className="_bt5xs3r">Waiting</button>
+}
                         </div>
                     </div>
                 </div>
