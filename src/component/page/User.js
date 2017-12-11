@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom'
 import {connect} from 'react-redux'
 import axios from 'axios'
 
-import {Navbar, Newsbar, LayoutUser, InputContent} from '../index.js'
+import {Navbar, Newsbar, LayoutUser, InputContent, LoadingAnim} from '../index.js'
 import {actorRequest, loadingRequest} from '../../action/action'
 const State = {
     about_me: "",
@@ -25,8 +25,10 @@ const State = {
     old_password: "",
     password_confirmation: "",
     file: "",
-    change_image: false
+    change_image: false,
+    is_loaded: false
 }
+
 class User extends Component {
     constructor() {
         super()
@@ -84,7 +86,8 @@ class User extends Component {
                     img_t: res.data.data.img_t,
                     line_id: res.data.data.line_id,
                     name: res.data.data.name,
-                    phone: res.data.data.phone
+                    phone: res.data.data.phone,
+                    is_loaded: true
                 })
             }
         }).catch((err) => {
@@ -221,7 +224,9 @@ class User extends Component {
             handleChangeImg: this.handleChangeImg,
             handleUploadImg: this.handleUploadImg
         }
+
         const {is_logged_in} = this.props
+        const is_loaded = this.state.is_loaded
         return (is_logged_in
             ? <LayoutUser>
                     <Navbar match={this.props.match} active_navbar={"user"}/>
@@ -244,18 +249,34 @@ class User extends Component {
                                             </li>
                                         </ul>
                                     </div>
-                                    <Profil
-                                        data={data}
-                                        profil={this.state.profil}
-                                        handleUpdate={this.handleUpdate}
-                                        change_image={this.state.change_image}/>
-                                    <Basic
-                                        old_password={this.state.old_password}
-                                        password={this.state.password}
-                                        password_confirmation={this.state.password_confirmation}
-                                        data={data}
-                                        basic={this.state.basic}
-                                        handleChangePassword={this.handleChangePassword}/>
+                                    {
+                                        !is_loaded ? (
+                                            <table className="_se3msg3l">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <LoadingAnim color_left="#333" color_right="#333"/>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        ) : (
+                                            <div>
+                                                <Profil
+                                                    data={data}
+                                                    profil={this.state.profil}
+                                                    handleUpdate={this.handleUpdate}
+                                                    change_image={this.state.change_image}/>
+                                                <Basic
+                                                    old_password={this.state.old_password}
+                                                    password={this.state.password}
+                                                    password_confirmation={this.state.password_confirmation}
+                                                    data={data}
+                                                    basic={this.state.basic}
+                                                    handleChangePassword={this.handleChangePassword}/>
+                                            </div>
+                                        )
+                                    }
                                 </div>
                                 <Newsbar/>
                             </div>
