@@ -370,7 +370,7 @@ class CourseDetail extends Component {
                                     ? 'block'
                                     : 'none'
                             }}>
-                                <Attendance data={this.state.attendance} />
+                                <Attendance data={this.state.attendance} is_loaded={this.state.is_loaded.attendance}/>
                             </div>
                             <div
                                 className="_c5x312 _c5m312 _pd3n3lr __dow"
@@ -528,8 +528,23 @@ const Grade = props => {
     )
 }
 const Attendance = props => {
-    if ((props.data.present === 0 && props.data.absent === 0) || (props.data.present === undefined && props.data.absent === undefined) ){
-        return (
+    const {
+        data,
+        is_loaded
+    } = props
+
+    return (
+        !is_loaded ? (
+            <table className="_se3msg">
+                <tbody>
+                    <tr>
+                        <td>
+                            <LoadingAnim color_left="#333" color_right="#333"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        ) : (data.present === 0 && data.absent === 0) || (data.present === undefined && data.absent === undefined) ? (
             <table className="_se3msg">
                 <tbody>
                     <tr>
@@ -548,15 +563,13 @@ const Attendance = props => {
                         </td>
                     </tr>
                 </tbody>
-            </table>   
-        )
-    }else{
-        return (
+            </table>
+        ) : (
             <div className="_se">
                 <div id="attendance"></div>
             </div>
         )
-    }
+    )
 }
 const Download = props => {
     let {
