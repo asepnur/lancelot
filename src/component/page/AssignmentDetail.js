@@ -13,8 +13,17 @@ class AssignmentDetail extends Component {
     constructor() {
         super()
         this.state = {
-            assignment: {},
-            file: {}
+            assignment: {
+                id: "",
+                name: "",
+                description: "",
+                button_type: "",
+                due_date: "",
+                file_name: "",
+                score: "",
+                status: "",
+                uploaded_status: ""
+            }
         }
     }
 /*----------------------------------------------------------------
@@ -36,7 +45,7 @@ handlerGetAssignmentDetail = (id)=>{
         }
     }).then((res) => {
         if (res.data.code === 200) {
-            this.setState({assignment: res.data.data.Assignment, file: res.data.data.File})
+            this.setState({assignment: res.data.data})
         }
     }).catch((err) => {
         console.log(err)
@@ -62,7 +71,7 @@ handlerGetAssignmentDetail = (id)=>{
                                                     <Link to={"/assignment"}>My Assignment</Link>
                                                 </li>
                                                 <li className="_active">
-                                                    <a href="">{this.state.assignment.Name}</a>
+                                                    <Link to="#">{this.state.assignment.name}</Link>
                                                 </li>
                                             </ul>
                                         </div>
@@ -72,15 +81,8 @@ handlerGetAssignmentDetail = (id)=>{
                                     <div className="_se3da">
                                         <div className="_ro">
                                             <div className="_c5x312 _c5m38">
-                                                <h2 className="_he3m _pd3l3tb">{this.state.assignment.Name}</h2>
-                                                <p className="_ct3nor _pd3l3t">Lorem ipsum dolor sit amet, consectetur
-                                                    adipiscing elit. Etiam non sagittis tortor. Mauris mattis sem vitae tellus
-                                                    fringilla lacinia. Etiam suscipit leo ac ligula pretium, nec aliquet purus
-                                                    dapibus. Ut consectetur libero metus, sit amet interdum justo egestas in.
-                                                    Suspendisse velit leo, venenatis at elementum eu, venenatis non mi. Aliquam
-                                                    dignissim dignissim erat, at tincidunt nisi commodo nec. Pellentesque nec elit
-                                                    interdum, accumsan ligula nec, vehicula ex. Nam et ultricies sus, quis varius
-                                                    elit.</p>
+                                                <h2 className="_he3m _pd3l3tb">{this.state.assignment.name}</h2>
+                                                <p className="_ct3nor _pd3l3t">{this.state.assignment.description}</p>
                                             </div>
                                             <div className="_c5x312 _c5m34">
                                                 <table className="_tb3asi">
@@ -91,14 +93,14 @@ handlerGetAssignmentDetail = (id)=>{
                                                     </thead>
                                                     <tbody>
                                                         <tr>
-                                                            <td>90</td>
+                                                            <td>{this.state.assignment.score}</td>
                                                         </tr>
                                                         <tr>
                                                             <td>
                                                                 <i className="fa fa-clock-o" aria-hidden="true"></i>
                                                             </td>
                                                             <td>
-                                                                {this.state.assignment.DueDate}</td>
+                                                                {this.state.assignment.due_date}</td>
                                                         </tr>
                                                         <tr>
                                                             <td>
@@ -112,7 +114,7 @@ handlerGetAssignmentDetail = (id)=>{
                                                                 <i className="fa fa-file-pdf-o" aria-hidden="true"></i>
                                                             </td>
                                                             <td>
-                                                                My File Submission</td>
+                                                                {this.state.assignment.file_name}</td>
                                                         </tr>
                                                         <tr>
                                                             <td>

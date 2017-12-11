@@ -14,10 +14,6 @@ class MyActivity extends Component {
             data: [],
             submitted: [],
             not_submitted: [],
-            all: [],
-            is_submitted_loaded: false,
-            is_not_submitted_loaded: false,
-            is_all_loaded: false,
             is_loaded: false
         }
     }
@@ -25,17 +21,29 @@ class MyActivity extends Component {
         let not_submitted = document.getElementById('tab_not_submitted')
         let dom = ReactDOM.findDOMNode
         dom(not_submitted).className = "_active"
-        axios.get(`/api/v1/assignment?schedule_id=149&pg=1&ttl=10`, {
+        axios.get(`/api/v1/assignment`, {
             validateStatus: (status) => {
                 return status === 200
             }
         }).then((res) => {
-            this.setState({
-                not_submitted: res.data.data,
-                data: res.data.data, 
-                is_loaded: true,
-                is_not_submitted_loaded: true
+            let submitted = [],
+                not_submitted = []
+
+            res.data.data.forEach(val => {
+                if (val.submitted) {
+                    submitted.push(val)
+                } else {
+                    not_submitted.push(val)
+                }
             })
+
+            this.setState({
+                submitted: submitted,
+                not_submitted: not_submitted,
+                data: not_submitted,
+                is_loaded: true
+            })
+
         }).catch((err) => {
             console.log(err)
         })
@@ -53,74 +61,20 @@ class MyActivity extends Component {
                     .findDOMNode(dom)
                     .className = ""
         }, this)
-
+        
         switch (tagID) {
             case "tab_submitted":
-                if (!this.state.is_submitted_loaded){
-                    this.setState({is_loaded: false})
-                    axios.get(`/api/v1/assignment?schedule_id=149&pg=1&ttl=10`, {
-                        validateStatus: (status) => {
-                            return status === 200
-                        }
-                    }).then((res) => {
-                        this.setState({
-                            submitted: res.data.data,
-                            data: res.data.data, 
-                            is_loaded: true,
-                            is_submitted_loaded: true
-                        })
-
-                    }).catch((err) => {
-                        console.log(err)
-                    })
-                } else {
-                    this.setState({data: this.state.submitted, is_loaded: this.state.is_submitted_loaded})
-                }
-                
+                this.setState({data: this.state.submitted, is_loaded: this.state.is_loaded})
                 break
             case "tab_not_submitted":
-                if(!this.state.is_not_submitted_loaded){
-                    this.setState({is_loaded: false})
-                     axios.get(`/api/v1/assignment?schedule_id=149&pg=1&ttl=10`, {
-                        validateStatus: (status) => {
-                            return status === 200
-                        }
-                    }).then((res) => {
-                        this.setState({
-                            not_submitted: res.data.data,
-                            data: res.data.data, 
-                            is_loaded: true,
-                            is_not_submitted_loaded: true
-                        })
-                    }).catch((err) => {
-                        console.log(err)
-                    })
-                } else {
-                    this.setState({data: this.state.not_submitted, is_loaded: this.state.is_not_submitted_loaded})
-                }
+                this.setState({data: this.state.not_submitted, is_loaded: this.state.is_loaded})
                 break
             case "tab_all":
-                if(!this.state.is_all_loaded){
-                    this.setState({is_loaded: false})
-                    axios.get(`/api/v1/assignment?schedule_id=149&pg=1&ttl=10`, {
-                        validateStatus: (status) => {
-                            return status === 200
-                        }
-                    }).then((res) => {
-                        this.setState({
-                            all: res.data.data,
-                            data: res.data.data, 
-                            is_loaded: true,
-                            is_all_loaded: true
-                        })
-                    }).catch((err) => {
-                        console.log(err)
-                    })
-                } else {
-                    this.setState({data: this.state.all, is_loaded: this.state.is_all_loaded})
-                }
+                const all = []
+                all.push(...this.state.not_submitted)
+                all.push(...this.state.submitted)
+                this.setState({data: all, is_loaded: this.state.is_loaded})
                 break;
-
             default:
                 break;
         }
@@ -210,7 +164,7 @@ const ListActivity = props => {
                         .map((data, i) => (
                             <tr key={i}>
                                 <td>
-                                    <i className="fa fa-circle _i3a" aria-hidden="true"></i>
+                                    <i className={data.submitted ? 'fa fa-circle _i3a' : 'fa fa-circle _i3b'} aria-hidden="true"></i>
                                 </td>
                                 <td>{data.due_date}</td>
                                 <td>{data.name}
