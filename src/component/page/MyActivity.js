@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom'
 import axios from 'axios'
 
 import {actorRequest} from '../../action/action'
-import {Navbar, Newsbar, LayoutUser} from '../index.js'
+import {Navbar, Newsbar, LayoutUser, LoadingAnim} from '../index.js'
 
 class MyActivity extends Component {
     constructor() {
@@ -14,7 +14,11 @@ class MyActivity extends Component {
             data: [],
             submitted: [],
             not_submitted: [],
-            all: []
+            all: [],
+            is_submitted_loaded: false,
+            is_not_submitted_loaded: false,
+            is_all_loaded: false,
+            is_loaded: false
         }
     }
     componentDidMount() {
@@ -26,10 +30,12 @@ class MyActivity extends Component {
                 return status === 200
             }
         }).then((res) => {
-            res.data.code === 200
-                ? this.setState({not_submitted: res.data.data})
-                : this.setState({not_submitted: []})
-            this.setState({data: this.state.not_submitted})
+            this.setState({
+                not_submitted: res.data.data,
+                data: res.data.data, 
+                is_loaded: true,
+                is_not_submitted_loaded: true
+            })
         }).catch((err) => {
             console.log(err)
         })
@@ -50,59 +56,76 @@ class MyActivity extends Component {
 
         switch (tagID) {
             case "tab_submitted":
-                if (this.state.submitted.length === 0){
-                    axios.get(`/api/v1/assignment/149?pg=1&ttl=10`, {
+                if (!this.state.is_submitted_loaded){
+                    this.setState({is_loaded: false})
+                    axios.get(`/api/v1/assignment?schedule_id=149&pg=1&ttl=10`, {
                         validateStatus: (status) => {
                             return status === 200
                         }
                     }).then((res) => {
-                        res.data.code === 200
-                            ? this.setState({submitted: res.data.data})
-                            : this.setState({submitted: []})
-                        this.setState({data: this.state.submitted})
+                        this.setState({
+                            submitted: res.data.data,
+                            data: res.data.data, 
+                            is_loaded: true,
+                            is_submitted_loaded: true
+                        })
+
                     }).catch((err) => {
                         console.log(err)
                     })
+                } else {
+                    this.setState({data: this.state.submitted, is_loaded: this.state.is_submitted_loaded})
                 }
-                this.setState({data: this.state.submitted})
+                
                 break
             case "tab_not_submitted":
-                if(this.state.not_submitted.length === 0){
-                     axios.get(`/api/v1/assignment/149?pg=1&ttl=10`, {
+                if(!this.state.is_not_submitted_loaded){
+                    this.setState({is_loaded: false})
+                     axios.get(`/api/v1/assignment?schedule_id=149&pg=1&ttl=10`, {
                         validateStatus: (status) => {
                             return status === 200
                         }
                     }).then((res) => {
-                        res.data.code === 200
-                            ? this.setState({not_submitted: res.data.data})
-                            : this.setState({not_submitted: []})
+                        this.setState({
+                            not_submitted: res.data.data,
+                            data: res.data.data, 
+                            is_loaded: true,
+                            is_not_submitted_loaded: true
+                        })
                     }).catch((err) => {
                         console.log(err)
                     })
+                } else {
+                    this.setState({data: this.state.not_submitted, is_loaded: this.state.is_not_submitted_loaded})
                 }
-                this.setState({data: this.state.not_submitted})
                 break
             case "tab_all":
-                if(this.state.all.length === 0){
-                    axios.get(`/api/v1/assignment/149?pg=1&ttl=10`, {
+                if(!this.state.is_all_loaded){
+                    this.setState({is_loaded: false})
+                    axios.get(`/api/v1/assignment?schedule_id=149&pg=1&ttl=10`, {
                         validateStatus: (status) => {
                             return status === 200
                         }
                     }).then((res) => {
-                        res.data.code === 200
-                            ? this.setState({all: res.data.data})
-                            : this.setState({all: []})
+                        this.setState({
+                            all: res.data.data,
+                            data: res.data.data, 
+                            is_loaded: true,
+                            is_all_loaded: true
+                        })
                     }).catch((err) => {
                         console.log(err)
                     })
+                } else {
+                    this.setState({data: this.state.all, is_loaded: this.state.is_all_loaded})
                 }
-                this.setState({data: this.state.all})
                 break;
 
             default:
                 break;
         }
     }
+
     render() {
         const {is_logged_in} = this.props
         const data = this.state.data
@@ -118,21 +141,21 @@ class MyActivity extends Component {
                                     <ul className="_ta5l3b ">
                                         <li id="tab_submitted" onClick={this.handleActiveTab}>
                                             <i className="fa fa-check-square" aria-hidden="true"></i>
-                                            <a href=" ">
-                                                &nbsp;Submitted</a>
+                                            <Link to="#">
+                                                &nbsp;Submitted</Link>
                                         </li>
                                         <li id="tab_not_submitted" onClick={this.handleActiveTab}>
                                             <i className="fa fa-window-close" aria-hidden="true"></i>
-                                            <a href="">
-                                                &nbsp;Not Submitted</a>
+                                            <Link to="#">
+                                                &nbsp;Not Submitted</Link>
                                         </li>
                                         <li id="tab_all" onClick={this.handleActiveTab}>
                                             <i className="fa fa-list" aria-hidden="true"></i>
-                                            <a href=" ">
-                                                &nbsp;All</a>
+                                            <Link to="#">
+                                                &nbsp;All</Link>
                                         </li>
                                     </ul>
-                                    <ListActivity data={data}/>
+                                    <ListActivity data={data} is_loaded={this.state.is_loaded}/>
                                 </div>
                             </div>
                             <Newsbar/>
@@ -142,51 +165,68 @@ class MyActivity extends Component {
             : <Redirect to={`/login`}/>)
     }
 }
-const ListActivity = (props) => {
+const ListActivity = props => {
+    const {
+        is_loaded,
+        data
+    } = props
 
-    return (props.data.length === 0
-        ? <table className="_se3msg3l">
+    return (
+        !is_loaded ? (
+            <table className="_se3msg3l">
                 <tbody>
                     <tr>
                         <td>
-
-                            <i className="fa fa-thumb-tack" aria-hidden="true"></i>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p className="_head">Ooops... No Assignments yet in this Category</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p className="_main">Find in another Category</p>
+                            <LoadingAnim color_left="#333" color_right="#333"/>
                         </td>
                     </tr>
                 </tbody>
             </table>
-        : <table className="_se3a">
-            <tbody>
-                {props
-                    .data
-                    .map((data, i) => (
-                        <tr key={i}>
-                            <td>
-                                <i className="fa fa-circle _i3a" aria-hidden="true"></i>
-                            </td>
-                            <td>{data.due_date}</td>
-                            <td>{data.name}
-                            </td>
-                            <td>
-                                <i className="fa fa-pencil-square-o _ic __wr" aria-hidden="true"></i>
-                            </td>
-                            <td>
-                                <Link to={"/assignment/"+data.id}><i className="fa fa-angle-double-right _ic __wr" aria-hidden="true"></i></Link>
-                            </td>
-                        </tr>
-                    ))}
-            </tbody>
-        </table>)
+        ) : data.length === 0 ? (
+            <table className="_se3msg3l">
+                <tbody>
+                    <tr>
+                        <td>
+                            <i className="fa fa-book" aria-hidden="true"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p className="_head">Horaay! You have no assignment</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p className="_main">Have a good day</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        ) : (
+            <table className="_se3a">
+                <tbody>
+                    {props
+                        .data
+                        .map((data, i) => (
+                            <tr key={i}>
+                                <td>
+                                    <i className="fa fa-circle _i3a" aria-hidden="true"></i>
+                                </td>
+                                <td>{data.due_date}</td>
+                                <td>{data.name}
+                                </td>
+                                <td>
+                                    <i className="fa fa-pencil-square-o _ic __wr" aria-hidden="true"></i>
+                                </td>
+                                <td>
+                                    <Link to={"/assignment/"+data.id}><i className="fa fa-angle-double-right _ic __wr" aria-hidden="true"></i></Link>
+                                </td>
+                            </tr>
+                        ))}
+                </tbody>
+            </table>
+        )
+    )
 }
 const mapStatetoProps = (state) => {
     return {is_logged_in: state.is_logged_in, request_status: state.request_status, error_message: state.error_message}

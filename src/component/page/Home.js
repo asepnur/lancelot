@@ -130,7 +130,8 @@ const RenderMain = (props) => {
                                 data={props.assignment}
                                 handleClickUpload={props.handler.handleClickUpload}
                                 is_loaded={props.is_assignment_loaded}/>
-                            <div className="_pg">
+                            {/* dicomment dulu belum ada paginationnya
+                                <div className="_pg">
                                 <div>
                                     <p>1 of 2 Page</p>
                                 </div>
@@ -142,7 +143,7 @@ const RenderMain = (props) => {
                                         <i className="fa fa-angle-right" aria-hidden="true"></i>
                                     </a>
                                 </div>
-                            </div>
+                            </div> */}
                             <div className="_he3b">Schedule Today</div>
                             <Today
                                 data={props.today}

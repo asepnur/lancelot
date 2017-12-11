@@ -138,9 +138,6 @@ class Course extends Component {
         }
 
     }
-    handleRedirect = () => {
-        window.location = '/admin/course'
-    }
     /*----------------------------------------------------------------
                             RENDER COMPONENT
 ------------------------------------------------------------------*/
@@ -171,16 +168,6 @@ class Course extends Component {
                                                 <i className="fa fa-list" aria-hidden="true"></i>
                                                 <Link to="#">
                                                     &nbsp;All</Link>
-                                            </li>
-                                            <li
-                                                onClick={e => {
-                                                e.preventDefault();
-                                                this.handleRedirect()
-                                            }}
-                                                id="tab_manage">
-                                                <i className="fa fa-cog" aria-hidden="true"></i>
-                                                <Link to="#">
-                                                    &nbsp;Manage</Link>
                                             </li>
                                         </ul>
                                     </div>
