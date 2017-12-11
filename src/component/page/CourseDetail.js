@@ -141,6 +141,9 @@ class CourseDetail extends Component {
             case "tab_grade":
                 content_active.grade = true
                 this.setState({content_active: content_active})
+                if (!this.state.is_loaded.grade) {
+                    this.handleGetGrade()
+                }
                 break
             case "tab_about":
                 content_active.about = true
@@ -191,7 +194,7 @@ class CourseDetail extends Component {
                             HANDLE REQUEST
     ------------------------------------------------------------------*/
     handleGetAssignment = () => {
-        axios.get(`/api/v1/assignment?schedule_id=`+this.props.match.params.id+`&pg=1&ttl=10`, {
+        axios.get(`/api/v1/assignment-schedule?id=${this.props.match.params.id}`, {
             validateStatus: (status) => {
                 return status === 200
             }
@@ -259,12 +262,15 @@ class CourseDetail extends Component {
         })
     }
     handleGetGrade = () => {
-        axios.get(`/api/v1/course/` + this.state.id + `/assistant?payload=student`, {
+        axios.get(`/api/v1/grade/${this.state.id}`, {
             validateStatus: (status) => {
                 return status === 200
             }
         }).then((res) => {
-            this.setState({grade: res.data.data})
+            const is_loaded = this.state.is_loaded
+            is_loaded.grade = true
+
+            this.setState({grade: res.data.data, is_loaded: is_loaded})
         }).catch((err) => {
             console.log(err)
         })
@@ -393,7 +399,7 @@ class CourseDetail extends Component {
                                     ? 'block'
                                     : 'none'
                             }}>
-                                <Grade/>
+                                <Grade data={this.state.grade} is_loaded={this.state.is_loaded.grade}/>
                             </div>
                         </div>
                         <Newsbar handleDetail={this.handleDetail}/>
@@ -470,29 +476,55 @@ const Assistant = props => {
     )
 }
 
-const Grade = (props) => {
-    return (
-        <table className="_se3o">
-            <thead>
-                <tr>
-                    <th>Tugas</th>
-                    <th>QUIS</th>
-                    <th>UTS</th>
-                    <th>UAS</th>
-                    <th>Final Score</th>
-                </tr>
-            </thead>
+const Grade = props => {
+    const {
+        data: {
+            assignment,
+            attendance,
+            mid,
+            final,
+            quiz,
+            total
+        },
+        is_loaded
+    } = props
 
-            <tbody>
-                <tr>
-                    <td>90</td>
-                    <td>75</td>
-                    <td>85</td>
-                    <td>70</td>
-                    <td>80</td>
-                </tr>
-            </tbody>
-        </table>
+    return (
+        !is_loaded ? (
+            <table className="_se3msg">
+                <tbody>
+                    <tr>
+                        <td>
+                            <LoadingAnim color_left="#333" color_right="#333"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        ) : (
+            <table className="_se3o">
+                <thead>
+                    <tr>
+                        <th>Attendance</th>
+                        <th>Assignment</th>
+                        <th>Quiz</th>
+                        <th>Mid</th>
+                        <th>Final</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>{attendance}</td>
+                        <td>{assignment}</td>
+                        <td>{quiz}</td>
+                        <td>{mid}</td>
+                        <td>{final}</td>
+                        <td>{total}</td>
+                    </tr>
+                </tbody>
+            </table>
+        )
     )
 }
 const Attendance = props => {
