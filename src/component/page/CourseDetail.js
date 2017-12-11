@@ -10,7 +10,7 @@ import {GoogleCharts} from 'google-charts';
 
 import {Assignment} from './Home'
 import {actorRequest} from '../../action/action'
-import {Navbar, Newsbar, LayoutUser, InformationDetail} from '../index.js'
+import {Navbar, Newsbar, LayoutUser, InformationDetail, LoadingAnim} from '../index.js'
 
 class CourseDetail extends Component {
     constructor(props) {
@@ -30,6 +30,14 @@ class CourseDetail extends Component {
             about: {},
             content_active: {
                 assignment: true,
+                attendance: false,
+                download: false,
+                assitant: false,
+                grade: false,
+                about: false
+            },
+            is_loaded: {
+                assignment: false,
                 attendance: false,
                 download: false,
                 assitant: false,
@@ -105,37 +113,42 @@ class CourseDetail extends Component {
             case "tab_assignment":
                 content_active.assignment = true
                 this.setState({content_active: content_active})
+                if (!this.state.is_loaded.assignment) {
+                    this.handleGetAssignment()
+                }
                 break
             case "tab_attendance":
                 content_active.attendance = true
                 this.setState({content_active: content_active})
-                console.log(this.state.attendance.present)
-                if (this.state.attendance.present === undefined ){
+                if (!this.state.is_loaded.attendance){
                     this.handleGetAttendance(this.handleChart)
                 }
                 break
             case "tab_assistant":
                 content_active.assitant = true
                 this.setState({content_active: content_active})
-                if (this.state.assitant.length === 0) {
+                if (!this.state.is_loaded.assistant) {
                     this.handleGetAssistant()
                 }
                 break
             case "tab_download":
                 content_active.download = true
                 this.setState({content_active: content_active})
-                if (this.state.assitant.length === 0) {
+                if (!this.state.is_loaded.download) {
                     this.handleGetDownload()
                 }
                 break
             case "tab_grade":
                 content_active.grade = true
                 this.setState({content_active: content_active})
+                if (!this.state.is_loaded.grade) {
+                    this.handleGetGrade()
+                }
                 break
             case "tab_about":
                 content_active.about = true
                 this.setState({content_active: content_active})
-                if (this.state.assitant.length === 0) {
+                if (!this.state.is_loaded.about) {
                     this.handleGetAbout()
                 }
                 break
@@ -181,12 +194,14 @@ class CourseDetail extends Component {
                             HANDLE REQUEST
     ------------------------------------------------------------------*/
     handleGetAssignment = () => {
-        axios.get(`/api/v1/assignment?schedule_id=`+this.props.match.params.id+`&pg=1&ttl=10`, {
+        axios.get(`/api/v1/assignment-schedule?id=${this.props.match.params.id}`, {
             validateStatus: (status) => {
                 return status === 200
             }
         }).then((res) => {
-            this.setState({assignment: res.data.data})
+            const is_loaded = this.state.is_loaded
+            is_loaded.assignment = true
+            this.setState({assignment: res.data.data, is_loaded: is_loaded})
         }).catch((err) => {
             console.log(err)
         })
@@ -197,7 +212,9 @@ class CourseDetail extends Component {
                 return status === 200
             }
         }).then((res) => {
-            this.setState({assitant: res.data.data})
+            const is_loaded = this.state.is_loaded
+            is_loaded.assistant = true
+            this.setState({assitant: res.data.data, is_loaded: is_loaded})
         }).catch((err) => {
             console.log(err)
         })
@@ -208,11 +225,12 @@ class CourseDetail extends Component {
                 return status === 200
             }
         }).then((res) => {
-            if (res.data.code === 200){
-                const present = res.data.data.present
-                const absent = res.data.data.absent
-                this.setState({attendance: res.data.data}, callback(present, absent))
-            }
+            const present = res.data.data.present
+            const absent = res.data.data.absent
+            const is_loaded = this.state.is_loaded
+            is_loaded.attendance = true
+
+            this.setState({attendance: res.data.data}, callback(present, absent), is_loaded: is_loaded)
         }).catch((err) => {
             console.log(err)
         })
@@ -223,7 +241,9 @@ class CourseDetail extends Component {
                 return status === 200
             }
         }).then((res) => {
-            this.setState({about: res.data.data})
+            const is_loaded = this.state.is_loaded
+            is_loaded.about = true
+            this.setState({about: res.data.data, is_loaded: is_loaded})
         }).catch((err) => {
             console.log(err)
         })
@@ -234,18 +254,23 @@ class CourseDetail extends Component {
                 return status === 200
             }
         }).then((res) => {
-            this.setState({download: res.data.data})
+            const is_loaded = this.state.is_loaded
+            is_loaded.download = true
+            this.setState({download: res.data.data, is_loaded: is_loaded})
         }).catch((err) => {
             console.log(err)
         })
     }
     handleGetGrade = () => {
-        axios.get(`/api/v1/course/` + this.state.id + `/assistant?payload=student`, {
+        axios.get(`/api/v1/grade/${this.state.id}`, {
             validateStatus: (status) => {
                 return status === 200
             }
         }).then((res) => {
-            this.setState({grade: res.data.data})
+            const is_loaded = this.state.is_loaded
+            is_loaded.grade = true
+
+            this.setState({grade: res.data.data, is_loaded: is_loaded})
         }).catch((err) => {
             console.log(err)
         })
@@ -325,7 +350,7 @@ class CourseDetail extends Component {
                                     ? 'block'
                                     : 'none'
                             }}>
-                                <About data={this.state.about} />
+                                <About data={this.state.about} is_loaded={this.state.is_loaded.about}/>
                             </div>
                             <div
                                 className="_c5x312 _c5m312 _pd3n3lr __ass"
@@ -335,7 +360,7 @@ class CourseDetail extends Component {
                                     ? 'block'
                                     : 'none'
                             }}>
-                                <Assignment data={this.state.assignment}/>
+                                <Assignment data={this.state.assignment} is_loaded={this.state.is_loaded.assignment}/>
                             </div>
                             <div
                                 className="_c5x312 _c5m312 _pd3n3lr __att"
@@ -345,7 +370,7 @@ class CourseDetail extends Component {
                                     ? 'block'
                                     : 'none'
                             }}>
-                                <Attendance data={this.state.attendance} />
+                                <Attendance data={this.state.attendance} is_loaded={this.state.is_loaded.attendance}/>
                             </div>
                             <div
                                 className="_c5x312 _c5m312 _pd3n3lr __dow"
@@ -354,7 +379,7 @@ class CourseDetail extends Component {
                                     ? 'block'
                                     : 'none'
                             }}>
-                                <Download data={this.state.download}/>
+                                <Download data={this.state.download} is_loaded={this.state.is_loaded.download}/>
                             </div>
                             <div
                                 className="_c5x312 _c5m312 _pd3n3lr __ast"
@@ -364,7 +389,7 @@ class CourseDetail extends Component {
                                     ? 'block'
                                     : 'none'
                             }}>
-                                <Assistant data={this.state.assitant}/>
+                                <Assistant data={this.state.assitant} is_loaded={this.state.is_loaded.assistant}/>
                             </div>
                             <div
                                 className="_c5x312 _c5m312 _pd3n3lr __grd"
@@ -374,7 +399,7 @@ class CourseDetail extends Component {
                                     ? 'block'
                                     : 'none'
                             }}>
-                                <Grade/>
+                                <Grade data={this.state.grade} is_loaded={this.state.is_loaded.grade}/>
                             </div>
                         </div>
                         <Newsbar handleDetail={this.handleDetail}/>
@@ -390,11 +415,46 @@ class CourseDetail extends Component {
 /*----------------------------------------------------------------
                             FUNCTION ELEMENT
 ------------------------------------------------------------------*/
-const Assistant = (props) => {
-    return props.data.length === 0
-        ? <div>kosong</div>
-        : props
-            .data
+const Assistant = props => {
+    
+    const {
+        data,
+        is_loaded,
+    } = props
+
+    return (
+        !is_loaded ? (
+            <table className="_se3msg">
+                <tbody>
+                    <tr>
+                        <td>
+                            <LoadingAnim color_left="#333" color_right="#333"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        ) : data.length === 0 ? (
+            <table className="_se3msg">
+                <tbody>
+                    <tr>
+                        <td>
+                            <i className="fa fa-smile-o" aria-hidden="true"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p className="_head">Nothing To Report!</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p className="_main">Have a nice day</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        ) : (
+            data
             .map((data, i) => (
                 <div className="_c5x312 _c5m34 _pd3n3lr3x" key={i}>
                     <div className="_se3lc ">
@@ -412,111 +472,200 @@ const Assistant = (props) => {
                     </div>
                 </div>
             ))
-}
-
-const Grade = (props) => {
-    return (
-        <table className="_se3o">
-            <thead>
-                <tr>
-                    <th>Tugas</th>
-                    <th>QUIS</th>
-                    <th>UTS</th>
-                    <th>UAS</th>
-                    <th>Final Score</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <tr>
-                    <td>90</td>
-                    <td>75</td>
-                    <td>85</td>
-                    <td>70</td>
-                    <td>80</td>
-                </tr>
-            </tbody>
-        </table>
+        )
     )
 }
-const Attendance = (props) => {
-    if ((props.data.present === 0 && props.data.absent === 0) || (props.data.present === undefined && props.data.absent === undefined) ){
-        return <table className="_se3msg">
-        <tbody>
-            <tr>
-                <td>
-                    <i className="fa fa-smile-o" aria-hidden="true"></i>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p className="_head">Nothing To Report!</p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p className="_main">Have a nice day Rifki Muhammad</p>
-                </td>
-            </tr>
-        </tbody>
-    </table>   
-    }else{
-        return (
+
+const Grade = props => {
+    const {
+        data: {
+            assignment,
+            attendance,
+            mid,
+            final,
+            quiz,
+            total
+        },
+        is_loaded
+    } = props
+
+    return (
+        !is_loaded ? (
+            <table className="_se3msg">
+                <tbody>
+                    <tr>
+                        <td>
+                            <LoadingAnim color_left="#333" color_right="#333"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        ) : (
+            <table className="_se3o">
+                <thead>
+                    <tr>
+                        <th>Attendance</th>
+                        <th>Assignment</th>
+                        <th>Quiz</th>
+                        <th>Mid</th>
+                        <th>Final</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>{attendance}</td>
+                        <td>{assignment}</td>
+                        <td>{quiz}</td>
+                        <td>{mid}</td>
+                        <td>{final}</td>
+                        <td>{total}</td>
+                    </tr>
+                </tbody>
+            </table>
+        )
+    )
+}
+const Attendance = props => {
+    const {
+        data,
+        is_loaded
+    } = props
+
+    return (
+        !is_loaded ? (
+            <table className="_se3msg">
+                <tbody>
+                    <tr>
+                        <td>
+                            <LoadingAnim color_left="#333" color_right="#333"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        ) : (data.present === 0 && data.absent === 0) || (data.present === undefined && data.absent === undefined) ? (
+            <table className="_se3msg">
+                <tbody>
+                    <tr>
+                        <td>
+                            <i className="fa fa-smile-o" aria-hidden="true"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p className="_head">Nothing To Report!</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p className="_main">Have a nice day Rifki Muhammad</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        ) : (
             <div className="_se">
                 <div id="attendance"></div>
             </div>
         )
-    }
+    )
 }
-const Download = (props) => {
+const Download = props => {
     let {
         data: {
             tutorials
-        }
+        },
+        is_loaded
     } = props
     
     tutorials = tutorials === undefined ? []: tutorials
-    
-    return tutorials.length === 0
-        ? 'kosong'
-        : tutorials.map(val => (
-            <div key={val.id} className="_c5x312 _c5m34 _pd3n3lr3x">
-                <div className="_se3lc ">
-                    <div>
-                        <img src={val.image_url} alt=""/>
-                        <p>{val.name}</p>
-                        <p>{val.description}</p>
-                        <a href={val.file_url}>
-                            <button className="_bt5xs3b">Download</button>
-                        </a>
+
+    return (
+        !is_loaded ? (
+            <table className="_se3msg">
+                <tbody>
+                    <tr>
+                        <td>
+                            <LoadingAnim color_left="#333" color_right="#333"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        ) : tutorials.length === 0 ? (
+            <table className="_se3msg">
+                <tbody>
+                    <tr>
+                        <td>
+                            <i className="fa fa-smile-o" aria-hidden="true"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p className="_head">Nothing To Report!</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p className="_main">Have a nice day</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        ) : (
+            tutorials.map(val => (
+                <div key={val.id} className="_c5x312 _c5m34 _pd3n3lr3x">
+                    <div className="_se3lc ">
+                        <div>
+                            <img src={val.image_url} alt=""/>
+                            <p>{val.name}</p>
+                            <p>{val.description}</p>
+                            <a href={val.file_url}>
+                                <button className="_bt5xs3b">Download</button>
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        ))
+            ))
+        )
+    )
 }
 const About =(props) =>{
     const {
         data: {
             description,
             name
-        }
+        },
+        is_loaded
     } = props
     
     return (
-        <div className="_se _se3a">
-        <div className="_ro">
-            <div className="_c5x312 _c5m312">
-                <div className="_c5x312 _c5m312 _he5co ">
-                    <h4 className="_ma3l3b">{name}</h4>
-                </div>
-                <div className="_c5x312 _c5m312">
-                    <p className="_d5ab _ma3n3lr">
-                        {description}
-                    </p>
+        !is_loaded ? (
+            <table className="_se3msg">
+                <tbody>
+                    <tr>
+                        <td>
+                            <LoadingAnim color_left="#333" color_right="#333"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        ) : (
+            <div className="_se _se3a">
+                <div className="_ro">
+                    <div className="_c5x312 _c5m312">
+                        <div className="_c5x312 _c5m312 _he5co ">
+                            <h4 className="_ma3l3b">{name}</h4>
+                        </div>
+                        <div className="_c5x312 _c5m312">
+                            <p className="_d5ab _ma3n3lr">
+                                {description}
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
+        )
     )
 }
 /*----------------------------------------------------------------

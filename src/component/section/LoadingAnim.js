@@ -1,9 +1,16 @@
 import React from 'react'
 
-const LoadingAnim = () => {
+const LoadingAnim = props => {
+
+    const {
+        color_left,
+        color_middle,
+        color_right
+    } = props
+
     return (
         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="48px" height="60px" viewBox="0 0 24 30">
-            <rect x="0" y="13" width="4" height="5" fill="#fff">
+            <rect x="0" y="13" width="4" height="5" fill={color_left ? color_left : '#fff'}>
                 <animate
                     attributeName="height"
                     attributeType="XML"
@@ -19,7 +26,7 @@ const LoadingAnim = () => {
                     dur="0.6s"
                     repeatCount="indefinite"/>
             </rect>
-            <rect x="10" y="13" width="4" height="5" fill="#333">
+            <rect x="10" y="13" width="4" height="5" fill={color_middle ? color_middle : '#333'}>
                 <animate
                     attributeName="height"
                     attributeType="XML"
@@ -35,7 +42,7 @@ const LoadingAnim = () => {
                     dur="0.6s"
                     repeatCount="indefinite"/>
             </rect>
-            <rect x="20" y="13" width="4" height="5" fill="#fff">
+            <rect x="20" y="13" width="4" height="5" fill={color_right ? color_right : '#fff'}>
                 <animate
                     attributeName="height"
                     attributeType="XML"

@@ -8,7 +8,7 @@ import {Redirect, Link} from 'react-router-dom'
 import axios from 'axios'
 
 import {actorRequest} from '../../action/action'
-import {Navbar, Newsbar, LayoutUser, InformationDetail} from '../index.js'
+import {Navbar, Newsbar, LayoutUser, InformationDetail, LoadingAnim} from '../index.js'
 
 class Course extends Component {
     constructor() {
@@ -17,7 +17,11 @@ class Course extends Component {
             data: [],
             all: [],
             current: [],
-            last: []
+            last: [],
+            is_all_loaded: false,
+            is_current_loaded: false,
+            is_last_loaded: false,
+            is_loaded: false
         }
     }
     /*----------------------------------------------------------------
@@ -34,13 +38,12 @@ class Course extends Component {
             }
         }).then((res) => {
             res.data.code === 200
-                ? this.setState({current: res.data.data})
-                : this.setState({current: []})
-            this.setState({data: this.state.current})
+                ? this.setState({current: res.data.data, is_current_loaded: true})
+                : this.setState({current: [], is_current_loaded: true})
+            this.setState({data: this.state.current, is_loaded: true})
         }).catch((err) => {
             console.log(err)
         })
-
     }
     /*----------------------------------------------------------------
                             HANDLE FUNCTION
@@ -77,54 +80,57 @@ class Course extends Component {
 
         switch (tagID) {
             case "tab_all":
-                if (this.state.all.length === 0) {
+                if (!this.state.is_all_loaded) {
+                    this.setState({is_loaded: false})
                     axios.get(`/api/v1/course?payload=all`, {
                         validateStatus: (status) => {
                             return status === 200
                         }
                     }).then((res) => {
                         if (res.data.code === 200) {
-                            this.setState({all: res.data.data, data: res.data.data})
+                            this.setState({all: res.data.data, data: res.data.data, is_all_loaded: true, is_loaded: true})
                         }
                     }).catch((err) => {
                         console.log(err)
                     })
                 } else {
-                    this.setState({data: this.state.all})
+                    this.setState({data: this.state.all, is_loaded: this.state.is_all_loaded})
                 }
                 break
             case "tab_last":
-                if (this.state.last.length === 0) {
+                if (!this.state.is_last_loaded) {
+                    this.setState({is_loaded: false})
                     axios.get(`/api/v1/course?payload=last`, {
                         validateStatus: (status) => {
                             return status === 200
                         }
                     }).then((res) => {
                         if (res.data.code === 200) {
-                            this.setState({last: res.data.data, data: res.data.data})
+                            this.setState({last: res.data.data, data: res.data.data, is_last_loaded: true, is_loaded: true})
                         }
                     }).catch((err) => {
                         console.log(err)
                     })
                 } else {
-                    this.setState({data: this.state.last})
+                    this.setState({data: this.state.last, is_loaded: this.state.is_last_loaded})
                 }
                 break
             case "tab_current":
-                if (this.state.current.length === 0) {
+                if (!this.state.is_current_loaded) {
+                    this.setState({is_loaded: false})
                     axios.get(`/api/v1/course?payload=current`, {
                         validateStatus: (status) => {
                             return status === 200
                         }
                     }).then((res) => {
                         if (res.data.code === 200) {
-                            this.setState({current: res.data.data, data: res.data.data})
+                            this.setState({current: res.data.data, data: res.data.data, is_current_loaded: true, is_loaded: true})
                         }
                     }).catch((err) => {
                         console.log(err)
                     })
                 } else {
-                    this.setState({data: this.state.current})
+                    this.setState({data: this.state.current, is_loaded: this.state.is_current_loaded})
                 }
                 break
             default:
@@ -132,15 +138,12 @@ class Course extends Component {
         }
 
     }
-    handleRedirect = () => {
-        window.location = '/admin/course'
-    }
     /*----------------------------------------------------------------
                             RENDER COMPONENT
 ------------------------------------------------------------------*/
     render() {
         const {is_logged_in} = this.props
-        const data = this.state.data
+        const {data, is_loaded} = this.state
         return (is_logged_in
             ? <LayoutUser>
                     <Navbar match={this.props.match} active_navbar={"course"}/>
@@ -166,19 +169,9 @@ class Course extends Component {
                                                 <Link to="#">
                                                     &nbsp;All</Link>
                                             </li>
-                                            <li
-                                                onClick={e => {
-                                                e.preventDefault();
-                                                this.handleRedirect()
-                                            }}
-                                                id="tab_manage">
-                                                <i className="fa fa-cog" aria-hidden="true"></i>
-                                                <Link to="#">
-                                                    &nbsp;Manage</Link>
-                                            </li>
                                         </ul>
                                     </div>
-                                    <ListCourse data={data}/>
+                                    <ListCourse data={data} is_loaded={is_loaded}/>
                                 </div>
                                 <Newsbar handleDetail={this.handleDetail}/>
                             </div>
@@ -195,13 +188,28 @@ class Course extends Component {
 /*----------------------------------------------------------------
                             ELEMENT
 ------------------------------------------------------------------*/
-const ListCourse = (props) => {
-    return props.data.length === 0
-        ? <table className="_se3msg3l">
+const ListCourse = props => {
+    const {
+        data,
+        is_loaded
+    } = props
+    console.log(data)
+    return (
+        !is_loaded ? (
+            <table className="_se3msg3l">
                 <tbody>
                     <tr>
                         <td>
-
+                            <LoadingAnim color_left="#333" color_right="#333"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        ) : data.length === 0 ? (
+            <table className="_se3msg3l">
+                <tbody>
+                    <tr>
+                        <td>
                             <i className="fa fa-book" aria-hidden="true"></i>
                         </td>
                     </tr>
@@ -217,9 +225,8 @@ const ListCourse = (props) => {
                     </tr>
                 </tbody>
             </table>
-        : props
-            .data
-            .map((data) => (
+        ) : (
+            data.map(data => (
                 <div className="_c5x312 _c5m34 _pd3n3lr3x" key={data.id}>
                     <div className="_se3lc">
                         <div>
@@ -240,6 +247,8 @@ const ListCourse = (props) => {
                     </div>
                 </div>
             ))
+        )
+    )
 }
 /*----------------------------------------------------------------
                             DISPATCHER

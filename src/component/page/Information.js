@@ -7,7 +7,7 @@ import {Redirect} from 'react-router-dom'
 import axios from 'axios'
 
 import {actorRequest} from '../../action/action'
-import {Navbar, Newsbar, LayoutUser, InformationDetail} from '../index.js'
+import {Navbar, Newsbar, LayoutUser, InformationDetail, LoadingAnim} from '../index.js'
 
 class Information extends Component {
     constructor() {
@@ -16,7 +16,8 @@ class Information extends Component {
         this.state = {
             information: [],
             detail:{},
-            modal_detail : false
+            modal_detail : false,
+            is_loaded: false
         }
     }
 /*----------------------------------------------------------------
@@ -35,7 +36,7 @@ class Information extends Component {
             }
         }).then((res) => {
             if (res.data.code === 200) {
-                this.setState({information: res.data.data.last})
+                this.setState({information: res.data.data.last, is_loaded: true})
             }
         }).catch((err) => {
             console.log(err)
@@ -72,20 +73,37 @@ class Information extends Component {
                                     <div className="_ro _pd3l3l">
                                         <h1 className="_he3b">Information</h1>
                                     </div>
-                                    <Content data={this.state.information} detail={this.handleDetail} />
-                                    <div className="_pg">
-                                        <div className="_pd3m3l">
-                                            <p>1 of 2 Page</p>
-                                        </div>
-                                        <div className="_pd3m3r">
-                                            <a href="">
-                                                <i className="fa fa-angle-left" aria-hidden="true"></i>
-                                                &nbsp;previous</a>
-                                            <a href="">next&nbsp;
-                                                <i className="fa fa-angle-right" aria-hidden="true"></i>
-                                            </a>
-                                        </div>
-                                    </div>
+                                    {
+                                        !this.state.is_loaded ? (
+                                            <table className="_se3msg">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <LoadingAnim color_left="#333" color_right="#333"/>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        ) : (
+                                            <div>
+                                                <Content data={this.state.information} detail={this.handleDetail} />
+                                                <div className="_pg">
+                                                    <div className="_pd3m3l">
+                                                        <p>1 of 2 Page</p>
+                                                    </div>
+                                                    <div className="_pd3m3r">
+                                                        <a href="">
+                                                            <i className="fa fa-angle-left" aria-hidden="true"></i>
+                                                            &nbsp;previous</a>
+                                                        <a href="">next&nbsp;
+                                                            <i className="fa fa-angle-right" aria-hidden="true"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )
+                                    }
+                                    
                                 </div>
                                 <Newsbar/>
                             </div>

@@ -1,11 +1,13 @@
 import React, {Component} from 'react'
 import axios from 'axios'
+import {LoadingAnim} from '../index.js'
 
 class Newsbar extends Component {
     constructor(){
         super()
         this.state = {
-            data:[]
+            data:[],
+            is_loaded: false
         }
     }
     componentDidMount(){
@@ -14,7 +16,7 @@ class Newsbar extends Component {
                 return status === 200
             }
         }).then((res) => {
-            this.setState({data: res.data.data.last})
+            this.setState({data: res.data.data.last, is_loaded: true})
         }).catch((err) => {
             console.log(err)
         })
@@ -22,10 +24,21 @@ class Newsbar extends Component {
     render() {
         return (
             <div className="_c5m34 _c5x312 _pd3cr">
-                <div className="_he3b">Last News</div>
-                <Content data={this.state.data} handleDetail={this.props.handleDetail}/>
+            <div className="_he3b">Last News</div>
+            {
+                !this.state.is_loaded ? (
+                    <table className="_se3msg3l">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <LoadingAnim color_left="#333" color_right="#333"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                ) : <Content data={this.state.data} handleDetail={this.props.handleDetail}/>
+            }
             </div>
-
         )
     }
 }

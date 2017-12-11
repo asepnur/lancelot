@@ -7,7 +7,7 @@ import {connect} from 'react-redux'
 import ReactDOM from 'react-dom'
 import axios from 'axios'
 
-import {Navbar, Newsbar, LayoutUser, InputContent, InformationDetail} from '../index.js'
+import {Navbar, Newsbar, LayoutUser, InputContent, InformationDetail, LoadingAnim} from '../index.js'
 
 class Home extends Component {
     constructor() {
@@ -15,6 +15,9 @@ class Home extends Component {
         this.state = {
             today: [],
             assignment: [],
+            is_assignment_loaded: false,
+            is_schedule_loaded: false,
+            is_information_loaded: false,
             modal_detail: false
         }
     }
@@ -45,27 +48,29 @@ class Home extends Component {
         this.setState({modal_detail: false})
     }
     handleGetScheduleToday = () => {
+        // please fix the backend
         axios.get(`/api/v1/course/149/today`, {
             validateStatus: (status) => {
                 return status === 200
             }
         }).then((res) => {
             res.data.code === 200
-                ? this.setState({today: res.data.data})
-                : this.setState({today: []})
+                ? this.setState({today: res.data.data, is_schedule_loaded: true})
+                : this.setState({today: [], is_schedule_loaded: true})
         }).catch((err) => {
             console.log(err)
         })
     }
     handleGetAssignment = () => {
+        // please fix the url
         axios.get(`/api/v1/assignment?schedule_id=149&pg=1&ttl=10`, {
             validateStatus: (status) => {
                 return status === 200
             }
         }).then((res) => {
             res.data.code === 200
-                ? this.setState({assignment: res.data.data})
-                : this.setState({assignment: []})
+                ? this.setState({assignment: res.data.data, is_assignment_loaded: true})
+                : this.setState({assignment: [], is_assignment_loaded: true})
         }).catch((err) => {
             console.log(err)
         })
@@ -85,6 +90,9 @@ class Home extends Component {
     render() {
         const {is_logged_in} = this.props
         const assignment = this.state.assignment
+        const is_assignment_loaded = this.state.is_assignment_loaded
+        const is_information_loaded = this.state.is_information_loaded
+        const is_schedule_loaded = this.state.is_schedule_loaded
         const today = this.state.today
         const modal_detail = this.state.modal_detail
         const handler = {
@@ -98,6 +106,9 @@ class Home extends Component {
             ? <RenderMain
                     handler={handler}
                     assignment={assignment}
+                    is_assignment_loaded={is_assignment_loaded}
+                    is_information_loaded={is_information_loaded}
+                    is_schedule_loaded={is_schedule_loaded}
                     today={today}
                     modal_detail={modal_detail}/>
             : <Redirect to={`/login`}/>)
@@ -117,8 +128,10 @@ const RenderMain = (props) => {
                             <div className="_he3b">Assignment</div>
                             <Assignment
                                 data={props.assignment}
-                                handleClickUpload={props.handler.handleClickUpload}/>
-                            <div className="_pg">
+                                handleClickUpload={props.handler.handleClickUpload}
+                                is_loaded={props.is_assignment_loaded}/>
+                            {/* dicomment dulu belum ada paginationnya
+                                <div className="_pg">
                                 <div>
                                     <p>1 of 2 Page</p>
                                 </div>
@@ -130,9 +143,11 @@ const RenderMain = (props) => {
                                         <i className="fa fa-angle-right" aria-hidden="true"></i>
                                     </a>
                                 </div>
-                            </div>
+                            </div> */}
                             <div className="_he3b">Schedule Today</div>
-                            <Today data={props.today}/>
+                            <Today
+                                data={props.today}
+                                is_loaded={props.is_schedule_loaded}/>
                         </div>
                         <Newsbar handleDetail={props.handler.handleDetail}/>
                     </div>
@@ -207,8 +222,26 @@ const RenderMain = (props) => {
     )
 }
 export const Assignment = (props) => {
-    return (props.data.length === 0
-        ? <table className="_se3msg">
+    const  {
+        data,
+        is_loaded,
+        handleClickUpload
+    } = props
+
+    return (
+        !is_loaded ? (
+            <table className="_se3msg">
+                <tbody>
+                    <tr>
+                        <td>
+                            <LoadingAnim color_left="#333" color_right="#333"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        ) : data.length === 0
+        ? (
+            <table className="_se3msg">
                 <tbody>
                     <tr>
                         <td>
@@ -227,36 +260,55 @@ export const Assignment = (props) => {
                     </tr>
                 </tbody>
             </table>
-        : <table className="_se3a">
-            <tbody>
-                {props
-                    .data
-                    .map((data, i) => (
-                        <tr key={i}>
-                            <td>
-                                <i className="fa fa-circle _i3a" aria-hidden="true"></i>
-                            </td>
-                            <td>{data.due_date}</td>
-                            <td>{data.name}</td>
-                            <td>
-                                <i
-                                    className="fa fa-pencil-square-o _ic __wr"
-                                    aria-hidden="true"
-                                    onClick={props.handleClickUpload}></i>
-                            </td>
-                            <td>
-                                <i className="fa fa-angle-double-right _ic __wr" aria-hidden="true"></i>
-                            </td>
-                        </tr>
-                    ))
-}
-
-            </tbody>
-        </table>)
+        ) 
+        : (
+            <table className="_se3a">
+                <tbody>
+                    {props
+                        .data
+                        .map((data, i) => (
+                            <tr key={i}>
+                                <td>
+                                    <i className="fa fa-circle _i3a" aria-hidden="true"></i>
+                                </td>
+                                <td>{data.due_date}</td>
+                                <td>{data.name}</td>
+                                <td>
+                                    <i
+                                        className="fa fa-pencil-square-o _ic __wr"
+                                        aria-hidden="true"
+                                        onClick={handleClickUpload}></i>
+                                </td>
+                                <td>
+                                    <i className="fa fa-angle-double-right _ic __wr" aria-hidden="true"></i>
+                                </td>
+                            </tr>
+                        ))
+                    }
+                </tbody>
+            </table>
+        )
+    )
 }
 const Today = (props) => {
-    return props.data.length === 0
-        ? <table className="_se3msg">
+    const  {
+        data,
+        is_loaded
+    } = props
+
+    return (
+        !is_loaded ? (
+            <table className="_se3msg">
+                <tbody>
+                    <tr>
+                        <td>
+                            <LoadingAnim color_left="#333" color_right="#333"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        ) : data.length === 0 ? (
+            <table className="_se3msg">
                 <tbody>
                     <tr>
                         <td>
@@ -275,28 +327,31 @@ const Today = (props) => {
                     </tr>
                 </tbody>
             </table>
-        : <table className="_se3s">
-            <tbody>
-                {props
-                    .data
-                    .map((val, i) => (
-                        <tr key={i}>
-                            <td>
-                                <p>{val.time}</p>
-                                <p>
-                                    <i className="fa fa-bookmark _ma3r" aria-hidden="true"></i>
-                                    {val.name}</p>
-                                <p>
-                                    <i className="fa fa-map-marker _ma3r" aria-hidden="true"></i>
-                                    {val.place}</p>
-                            </td>
-                            <td>
-                                <i className="fa fa-angle-double-right _ic __wr" aria-hidden="true"></i>
-                            </td>
-                        </tr>
-                    ))}
-            </tbody>
-        </table>
+        ) : (
+            <table className="_se3s">
+                <tbody>
+                    {props
+                        .data
+                        .map((val, i) => (
+                            <tr key={i}>
+                                <td>
+                                    <p>{val.time}</p>
+                                    <p>
+                                        <i className="fa fa-bookmark _ma3r" aria-hidden="true"></i>
+                                        {val.name}</p>
+                                    <p>
+                                        <i className="fa fa-map-marker _ma3r" aria-hidden="true"></i>
+                                        {val.place}</p>
+                                </td>
+                                <td>
+                                    <i className="fa fa-angle-double-right _ic __wr" aria-hidden="true"></i>
+                                </td>
+                            </tr>
+                        ))}
+                </tbody>
+            </table>
+        )
+    )
 }
 /*----------------------------------------------------------------
                             DISPATCHER
