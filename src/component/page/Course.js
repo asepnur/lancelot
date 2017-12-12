@@ -193,7 +193,7 @@ const ListCourse = props => {
         data,
         is_loaded
     } = props
-    console.log(data)
+
     return (
         !is_loaded ? (
             <table className="_se3msg3l">

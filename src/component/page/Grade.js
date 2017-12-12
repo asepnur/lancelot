@@ -108,7 +108,7 @@ const Content = props => {
                         .map((data, i) => (
                             <tr key={i}>
                                 <td>{i+1}</td>
-                                <td>{data.name}</td>
+                                <td>{data.course_name}</td>
                                 <td>{data.attendance}</td>
                                 <td>{data.assignment}</td>
                                 <td>{data.quiz}</td>
