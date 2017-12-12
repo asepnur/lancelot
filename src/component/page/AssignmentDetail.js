@@ -22,7 +22,8 @@ class AssignmentDetail extends Component {
                 file_name: "",
                 score: "",
                 status: "",
-                uploaded_status: ""
+                uploaded_status: "",
+                uploaded_file: []
             }
         }
     }
@@ -109,13 +110,18 @@ handlerGetAssignmentDetail = (id)=>{
                                                             <td>
                                                                 - </td>
                                                         </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <i className="fa fa-file-pdf-o" aria-hidden="true"></i>
-                                                            </td>
-                                                            <td>
-                                                                {this.state.assignment.file_name}</td>
-                                                        </tr>
+                                                        {
+                                                            this.state.assignment.uploaded_file.map((val, i) => (
+                                                                <tr key={i}>
+                                                                    <td>
+                                                                        <i className="fa fa-file-pdf-o" aria-hidden="true"></i>
+                                                                    </td>
+                                                                    <td>
+                                                                        <a href={val.url} target="_blank">{val.name}</a></td>
+                                                                </tr>
+                                                            ))
+                                                        }
+                                                        
                                                         <tr>
                                                             <td>
                                                                 <button className="_bt3m">

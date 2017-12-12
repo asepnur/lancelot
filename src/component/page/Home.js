@@ -49,7 +49,7 @@ class Home extends Component {
     }
     handleGetScheduleToday = () => {
         // please fix the backend
-        axios.get(`/api/v1/course/149/today`, {
+        axios.get(`/api/v1/course/today`, {
             validateStatus: (status) => {
                 return status === 200
             }
