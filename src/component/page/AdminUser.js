@@ -1,7 +1,6 @@
-// ------------------------------------------------------------------------------
-// ------------------;                                          Admin Users
-// -----------------------------------------------------------------------------
-// - -----------------;
+/* ------------------------------------------------------------------------------
+                                          Admin Users
+---------------------------------------------------------------------------------*/
 import React, {Component} from 'react'
 import {Link, Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
@@ -9,7 +8,6 @@ import ReactDOM from 'react-dom'
 
 import {actorRequest} from '../../action/action'
 import {Navbar, LayoutUser} from '../index.js'
-
 
 class AdminUser extends Component {
     constructor() {
@@ -80,7 +78,10 @@ class AdminUser extends Component {
         window.location = '/admin/users/create';
     }
     handleDelete = (dispatcherRequest, id) => {
-        const index = this.state.data.findIndex((val) => val.id === id)
+        const index = this
+            .state
+            .data
+            .findIndex((val) => val.id === id)
         fetch('/api/admin/v1/user/' + id + '/delete', {
             method: 'POST',
             credentials: 'include',
@@ -89,13 +90,21 @@ class AdminUser extends Component {
             return res.json()
         }).then((data) => {
             data.code === 200
-                ? dispatcherRequest(true, 200, '') && this.state.data.splice(index, 1) && this.setState({data: this.state.data})
+                ? dispatcherRequest(true, 200, '') && this
+                    .state
+                    .data
+                    .splice(index, 1) && this.setState({data: this.state.data})
                 : dispatcherRequest(true, 401, data.error)
         })
     }
     handleChangeStatus = (id, status) => {
-        const value = status === 'active' ? 'inactive' : 'active'
-        const index = this.state.data.findIndex((val) => val.id === id)
+        const value = status === 'active'
+            ? 'inactive'
+            : 'active'
+        const index = this
+            .state
+            .data
+            .findIndex((val) => val.id === id)
         const dt = this.state.data
         dt[index].status = value
         this.setState({data: dt})
@@ -113,12 +122,16 @@ class AdminUser extends Component {
             if (data.code !== 200) {
                 dt[index].status = status
                 this.setState({data: dt})
-                this.props.dispatcherRequest(true, 401, data.error)
+                this
+                    .props
+                    .dispatcherRequest(true, 401, data.error)
             }
         }).catch(() => {
             dt[index].status = status
             this.setState({data: dt})
-            this.props.dispatcherRequest(true, 401, 'Connection error')
+            this
+                .props
+                .dispatcherRequest(true, 401, 'Connection error')
         })
     }
     // -----------------------------------------------------------------------------
@@ -175,13 +188,7 @@ class AdminUser extends Component {
 // -----------------------------------------------------------------------------
 
 const Users = props => {
-    const  {
-        data,
-        handleToCreateUser,
-        handleDelete,
-        handleChangeStatus,
-        dispatcherRequest
-    } = props
+    const {data, handleToCreateUser, handleDelete, handleChangeStatus, dispatcherRequest} = props
 
     return (
         <div className="_ro __tab1">
@@ -212,36 +219,38 @@ const Users = props => {
                             <table className="_tb3g">
                                 <tbody>
                                     {data.map((data) => (
-                                            <tr key={data.id}>
-                                                <td>{data.email}</td>
-                                                <td>
-                                                    <div>
-                                                        <label className="switch">
-                                                            <input
-                                                                type="checkbox"
-                                                                checked={data.status === 'active' ? true : false}
-                                                                onChange={e => handleChangeStatus(data.id, data.status)}/>
-                                                            <span className="slider round"></span>
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div align="center">
-                                                        <Link to={'/admin/users/update/' + data.id}>
-                                                            <i className="fa fa-pencil-square _ic3mb _ma3lr" aria-hidden="true"></i>
-                                                        </Link>
-                                                        <Link
-                                                            to={'#'}
-                                                            onClick={e => {
-                                                            e.preventDefault();
-                                                            handleDelete(dispatcherRequest, data.id)
-                                                        }}>
-                                                            <i className="fa fa-window-close _ic3mr _ma3lr" aria-hidden="true"></i>
-                                                        </Link>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        ))}
+                                        <tr key={data.id}>
+                                            <td>{data.email}</td>
+                                            <td>
+                                                <div>
+                                                    <label className="switch">
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={data.status === 'active'
+                                                            ? true
+                                                            : false}
+                                                            onChange={e => handleChangeStatus(data.id, data.status)}/>
+                                                        <span className="slider round"></span>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div align="center">
+                                                    <Link to={'/admin/users/update/' + data.id}>
+                                                        <i className="fa fa-pencil-square _ic3mb _ma3lr" aria-hidden="true"></i>
+                                                    </Link>
+                                                    <Link
+                                                        to={'#'}
+                                                        onClick={e => {
+                                                        e.preventDefault();
+                                                        handleDelete(dispatcherRequest, data.id)
+                                                    }}>
+                                                        <i className="fa fa-window-close _ic3mr _ma3lr" aria-hidden="true"></i>
+                                                    </Link>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
                                 </tbody>
                             </table>
                         </div>
@@ -252,8 +261,8 @@ const Users = props => {
     )
 }
 
-// ------------------------------------------------------------------------------
-//                                    Roles Menu
+// -----------------------------------------------------------------------------
+// -                                    Roles Menu
 // ------------------------------------------------------------------------------
 const Roles = (props) => {
     return (
@@ -313,8 +322,8 @@ const Roles = (props) => {
     )
 }
 
-// ------------------------------------------------------------------------------
-//                            state and dispatch to props
+// -----------------------------------------------------------------------------
+// -                            state and dispatch to props
 // ------------------------------------------------------------------------------
 const mapStatetoProps = (state) => {
     return {is_logged_in: state.is_logged_in, request_status: state.request_status, error_message: state.error_message}

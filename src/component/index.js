@@ -71,8 +71,10 @@ export {default as AdminManageAssignment}
 from './page/AdminManageAssignment'
 
 /*----------------------------
-            PAGE
+            SECTION
 ------------------------------*/
+export {default as UploadFile}
+from './section/UploadFile'
 export {default as LoadingAnim}
 from './section/LoadingAnim'
 export {default as LoadingBar}

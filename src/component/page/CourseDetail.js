@@ -58,6 +58,7 @@ class CourseDetail extends Component {
 
         if (this.props.match.params.id !== undefined) {
             this.handleGetAssignment()
+            this.handleGetAbout()
         }
     }
     /*----------------------------------------------------------------
@@ -294,7 +295,7 @@ class CourseDetail extends Component {
                                                 <Link to="/course">My Course</Link>
                                             </li>
                                             <li className="_active">
-                                                <a href="">Algortma Pemrograman</a>
+                                                <a href="">{this.state.about.name}</a>
                                             </li>
                                         </ul>
                                     </div>
