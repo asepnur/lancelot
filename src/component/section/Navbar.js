@@ -8,14 +8,14 @@ import {connect} from 'react-redux'
 import axios from 'axios'
 import dateformat from 'dateformat'
 
-import {actorRequest} from '../../action/action'
+import {actorRequest, updateTime} from '../../action/action'
 
 class Navbar extends Component {
-    
+
     constructor() {
         super()
         this.state = {
-            time_now: 0,
+            time_now: 0
         }
     }
 
@@ -23,30 +23,28 @@ class Navbar extends Component {
         this.handleActiveMenu()
         this.handleTimeLoad()
     }
-    
+    componentWillUnmount() {
+        clearInterval(this.handleTimeChange)
+    }
+
     handleTimeLoad = () => {
+        const {dispatcherTime} = this.props
         axios.get(`/api/v1/util/time`, {
             validateStatus: (status) => {
                 return status === 200
             }
         }).then((res) => {
             let time_now = res.data.data * 1000
-            this.setState({time_now: time_now})
-            // please fix this. i dont know how to fix this.
-            // change to global variable or using redux if dont want an error maybe will solve the problem
-            this.handleTimeChange()
+            dispatcherTime(time_now)
         }).catch((err) => {
             console.log(err)
         })
     }
 
-    handleTimeChange = () => {
-        setInterval(() => {
-            this.setState({
-                time_now: this.state.time_now + 1000
-            })
-        }, 1000)
-    }
+    handleTimeChange = setInterval(() => {
+        const {dispatcherTime, time_now} = this.props
+        dispatcherTime(time_now + 1000)
+    }, 1000)
 
     handlerSignOut = (dispatcherRequest) => {
         fetch('/api/v1/user/signout', {
@@ -88,7 +86,7 @@ class Navbar extends Component {
                             RENDER COMPONENT
 ------------------------------------------------------------------*/
     render() {
-        const {is_logged_in} = this.props
+        const {is_logged_in, time_now} = this.props
 
         return (is_logged_in
             ? <div className="_ro">
@@ -153,7 +151,7 @@ class Navbar extends Component {
                             </nav>
                         </div>
                         <div className="_c5x3o1 _c5x39">
-                            <p className="_me5ts _pd3cr">{dateformat(this.state.time_now, 'HH.MM.ss | dddd, mmmm dd, yyyy')}</p>
+                            <p className="_me5ts _pd3cr">{dateformat(time_now, 'HH.MM.ss | dddd, mmmm dd, yyyy')}</p>
                         </div>
                     </div>
                 </div>
@@ -164,11 +162,12 @@ class Navbar extends Component {
                             DISPATCHER
 ------------------------------------------------------------------*/
 const mapStatetoProps = (state) => {
-    return {is_logged_in: state.is_logged_in, modules_access: state.modules_access}
+    return {is_logged_in: state.is_logged_in, modules_access: state.modules_access, time_now: state.time_now}
 }
 const mapDispatchtoProps = (dispatch) => {
     return {
-        dispatcherRequest: (is_logged_in, request_status, error_message) => dispatch(actorRequest(is_logged_in, request_status, error_message))
+        dispatcherRequest: (is_logged_in, request_status, error_message) => dispatch(actorRequest(is_logged_in, request_status, error_message)),
+        dispatcherTime: (time_now) => dispatch(updateTime(time_now))
     }
 }
 export default connect(mapStatetoProps, mapDispatchtoProps)(Navbar)

@@ -108,10 +108,13 @@ class AssignmentDetail extends Component {
             if (res.status === 200) {
                 dispatcherLoading(100, false)
                 this.setState({
-                    change_image: !this.state.change_image
+                    change_image: !this.state.change_image,
+                    showUpload: false
                 })
-                dispatcherRequest(true, 200, 'file uploaded')
+                dispatcherRequest(true, 200, 'Data Added Successfully')
+                this.handlerGetAssignmentDetail(this.state.assignment.id)
             } else {
+                this.setState({showUpload: false})
                 dispatcherLoading(10, true)
                 dispatcherRequest(true, 401, res.data.error[0])
             }
@@ -120,10 +123,8 @@ class AssignmentDetail extends Component {
             dispatcherRequest(true, 401, 'Error connection')
         })
     }
-    handleDeleteFile = () =>{
-        this.setState({
-            uploaded: false
-        })
+    handleDeleteFile = () => {
+        this.setState({uploaded: false, file_id: '', file: ''})
     }
     /*------------------------------------------------------------
                         RENDER PAGE
@@ -134,7 +135,7 @@ class AssignmentDetail extends Component {
             toggleUpload: this.handleToggleUpload,
             onUploadFile: this.onUploadFile,
             change: this.handleChange,
-            deleteFile: this.handleDeleteFile,
+            deleteFile: this.handleDeleteFile
         }
         const dataUpload = {
             file: this.state.file,
@@ -209,7 +210,7 @@ class AssignmentDetail extends Component {
                                                                         <i className="fa fa-file-pdf-o" aria-hidden="true"></i>
                                                                     </td>
                                                                     <td>
-                                                                        <a href={val.url} target="_blank">{val.name}</a>
+                                                                        <a href={"http://47.74.149.190" + val.url} target="_blank">{val.name}</a>
                                                                     </td>
                                                                 </tr>
                                                             ))
@@ -218,7 +219,10 @@ class AssignmentDetail extends Component {
                                                             ? <tr>
                                                                     <td>
                                                                         <button className="_bt3m" onClick={this.handleToggleUpload}>
-                                                                            {this.state.assignment.button_type}</button>
+                                                                            {this.state.assignment.uploaded_status
+                                                                                ? "Update"
+                                                                                : this.state.assignment.button_type}
+                                                                        </button>
                                                                     </td>
                                                                 </tr>
                                                             : null}

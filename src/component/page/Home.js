@@ -63,7 +63,7 @@ class Home extends Component {
     }
     handleGetAssignment = () => {
         // please fix the url
-        axios.get(`/api/v1/assignment?schedule_id=149&pg=1&ttl=10`, {
+        axios.get(`/api/v1/assignment`, {
             validateStatus: (status) => {
                 return status === 200
             }

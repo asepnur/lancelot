@@ -25,3 +25,9 @@ export const loadingRequest = (loading_progress, is_loading_error) => {
         is_loading_error
     }
 }
+export const updateTime = (time_now) =>{
+    return{
+        type: 'TIME',
+        time_now,
+    }
+}

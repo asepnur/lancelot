@@ -22,8 +22,12 @@ class UploadFile extends Component {
                             <div className="_ro">
                                 <div className="_c5x312">
                                     <h1 className="_he3nb">FILE</h1>
-                                    <p className="_me3c">Upload your file bellow
-                                    </p>
+                                    {this.props.data.uploaded
+                                        ? <div align="center">
+                                                <button className="a" onClick={this.props.handle.deleteFile}>Delete File</button>
+                                            </div>
+                                        : <p className="_me3c">Upload your file bellow</p>}
+
                                 </div>
                             </div>
                             <div className="_ro">
@@ -43,11 +47,15 @@ class UploadFile extends Component {
                                                     </p>
                                                 </div>
                                             : this.props.data.uploaded
-                                                ? <img
+                                                ? <div><img
                                                         className="_i3ce"
-                                                        onClick={this.props.handle.deleteFile}
                                                         src="/img/icon/blue/pdf-file-format-symbol.png"
-                                                        alt="upload logo"/>
+                                                        alt="logo"/>
+                                                        <p className="_me3c">{document
+                                                                .getElementById('upload')
+                                                                .files[0]
+                                                                .name}</p>
+                                                    </div>
                                                 : <img className="_i3ce" src="/img/icon/blue/upload.png" alt="upload logo"/>}
                                     </div>
                                 </div>

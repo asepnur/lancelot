@@ -29,20 +29,18 @@ class MyActivity extends Component {
             let submitted = [],
                 not_submitted = []
 
-            res.data.data.forEach(val => {
-                if (val.submitted) {
-                    submitted.push(val)
-                } else {
-                    not_submitted.push(val)
-                }
-            })
+            res
+                .data
+                .data
+                .forEach(val => {
+                    if (val.submitted) {
+                        submitted.push(val)
+                    } else {
+                        not_submitted.push(val)
+                    }
+                })
 
-            this.setState({
-                submitted: submitted,
-                not_submitted: not_submitted,
-                data: not_submitted,
-                is_loaded: true
-            })
+            this.setState({submitted: submitted, not_submitted: not_submitted, data: not_submitted, is_loaded: true})
 
         }).catch((err) => {
             console.log(err)
@@ -51,7 +49,7 @@ class MyActivity extends Component {
     handleActiveTab = (e) => {
         const tagID = e.currentTarget.id
         const id = ["tab_submitted", "tab_not_submitted", "tab_all"]
-        id.forEach(function(val) {
+        id.forEach(function (val) {
             let dom = document.getElementById(val)
             val === tagID
                 ? ReactDOM
@@ -61,7 +59,7 @@ class MyActivity extends Component {
                     .findDOMNode(dom)
                     .className = ""
         }, this)
-        
+
         switch (tagID) {
             case "tab_submitted":
                 this.setState({data: this.state.submitted, is_loaded: this.state.is_loaded})
@@ -120,13 +118,10 @@ class MyActivity extends Component {
     }
 }
 const ListActivity = props => {
-    const {
-        is_loaded,
-        data
-    } = props
+    const {is_loaded, data} = props
 
-    return (
-        !is_loaded ? (
+    return (!is_loaded
+        ? (
             <table className="_se3msg3l">
                 <tbody>
                     <tr>
@@ -136,51 +131,60 @@ const ListActivity = props => {
                     </tr>
                 </tbody>
             </table>
-        ) : data.length === 0 ? (
-            <table className="_se3msg3l">
-                <tbody>
-                    <tr>
-                        <td>
-                            <i className="fa fa-book" aria-hidden="true"></i>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p className="_head">Horaay! You have no assignment</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p className="_main">Have a good day</p>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        ) : (
-            <table className="_se3a">
-                <tbody>
-                    {props
-                        .data
-                        .map((data, i) => (
-                            <tr key={i}>
-                                <td>
-                                    <i className={data.submitted ? 'fa fa-circle _i3a' : 'fa fa-circle _i3b'} aria-hidden="true"></i>
-                                </td>
-                                <td>{data.due_date}</td>
-                                <td>{data.name}
-                                </td>
-                                <td>
-                                    <i className="fa fa-pencil-square-o _ic __wr" aria-hidden="true"></i>
-                                </td>
-                                <td>
-                                    <Link to={"/assignment/"+data.id}><i className="fa fa-angle-double-right _ic __wr" aria-hidden="true"></i></Link>
-                                </td>
-                            </tr>
-                        ))}
-                </tbody>
-            </table>
         )
-    )
+        : data.length === 0
+            ? (
+                <table className="_se3msg3l">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <i className="fa fa-book" aria-hidden="true"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p className="_head">Horaay! You have no assignment</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p className="_main">Have a good day</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            )
+            : (
+                <table className="_se3a">
+                    <tbody>
+                        {props
+                            .data
+                            .map((data, i) => (
+                                <tr key={i}>
+                                    <td>
+                                        <i
+                                            className={data.submitted
+                                            ? 'fa fa-circle _i3a'
+                                            : 'fa fa-circle _i3b'}
+                                            aria-hidden="true"></i>
+                                    </td>
+                                    <td>{data.due_date}</td>
+                                    <td>
+                                        <Link to={'/assignment/' + data.id}>{data.name}</Link>
+                                    </td>
+                                    <td>
+                                        <i className="fa fa-pencil-square-o _ic __wr" aria-hidden="true"></i>
+                                    </td>
+                                    <td>
+                                        <Link to={"/assignment/" + data.id}>
+                                            <i className="fa fa-angle-double-right _ic __wr" aria-hidden="true"></i>
+                                        </Link>
+                                    </td>
+                                </tr>
+                            ))}
+                    </tbody>
+                </table>
+            ))
 }
 const mapStatetoProps = (state) => {
     return {is_logged_in: state.is_logged_in, request_status: state.request_status, error_message: state.error_message}
