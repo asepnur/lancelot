@@ -26,6 +26,7 @@ class MyActivity extends Component {
                 return status === 200
             }
         }).then((res) => {
+            console.log(res.data.data)
             let submitted = [],
                 not_submitted = []
 
@@ -33,10 +34,10 @@ class MyActivity extends Component {
                 .data
                 .data
                 .forEach(val => {
-                    if (val.submitted) {
-                        submitted.push(val)
-                    } else {
+                    if (val.status === "unsubmitted") {
                         not_submitted.push(val)
+                    } else {
+                        submitted.push(val)
                     }
                 })
 
@@ -163,9 +164,9 @@ const ListActivity = props => {
                                 <tr key={i}>
                                     <td>
                                         <i
-                                            className={data.submitted
-                                            ? 'fa fa-circle _i3a'
-                                            : 'fa fa-circle _i3b'}
+                                            className={data.status ==="submitted"
+                                            ? 'fa fa-circle _ic3b'
+                                            : 'fa fa-circle _ic3g'}
                                             aria-hidden="true"></i>
                                     </td>
                                     <td>{data.due_date}</td>

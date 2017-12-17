@@ -199,22 +199,6 @@ const RenderMain = (props) => {
                     </div>
                 </div>
             </div>
-            <div className="_md5s _dn">
-                <div className="__x"></div>
-                <div className="_ro">
-                    <div className="_c5x312 _c5m36 _c5m3o3">
-                        <div className="_cn _md5cu">
-                            <div className="_ro">
-                                <div className="_c5x312">
-                                    <h1 className="_he3nb">Congratulation</h1>
-                                    <p className="_me3c">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <InformationDetail
                 modal_detail={props.modal_detail}
                 handleClose={props.handler.handleClose}/>

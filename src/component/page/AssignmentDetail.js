@@ -14,23 +14,12 @@ class AssignmentDetail extends Component {
         super()
         this.state = {
             showUpload: false,
-            file_id: '',
             file: '',
             description: '',
             isUploading: false,
             uploaded: false,
-            assignment: {
-                id: "",
-                name: "",
-                description: "",
-                button_type: "",
-                due_date: "",
-                file_name: "",
-                score: "",
-                status: "",
-                uploaded_status: "",
-                uploaded_file: []
-            }
+            asg: {},
+            submitted_file: []
         }
     }
     /*------------------------------------------------------------
@@ -57,7 +46,7 @@ class AssignmentDetail extends Component {
             }
         }).then((res) => {
             if (res.data.code === 200) {
-                this.setState({assignment: res.data.data})
+                this.setState({assignment: res.data.data, asg: res.data.data, submitted_file: res.data.data.submitted_file})
             }
         }).catch((err) => {
             console.log(err)
@@ -75,32 +64,48 @@ class AssignmentDetail extends Component {
         formData.append('id', this.state.assignment.id);
         formData.append('role', "student");
         formData.append('file', document.getElementById('upload').files[0]);
-        this.setState({isUploading: true})
-        axios.post(`/api/v1/file`, formData, {
-            validateStatus: (status) => {
-                return status < 500
-            }
-        }).then((res) => {
-            if (res.status === 200) {
+        if (document.getElementById('upload').files[0] !== undefined) {
+            this.setState({isUploading: true})
+            axios.post(`/api/v1/file`, formData, {
+                validateStatus: (status) => {
+                    return status < 500
+                }
+            }).then((res) => {
                 this.setState({
-                    change_image: !this.state.change_image
+                    isUploading: false
                 })
-                this.setState({file_id: res.data.data, isUploading: false, uploaded: true})
-            } else {
-                dispatcherRequest(true, 401, res.data.error[0])
-            }
-        }).catch((err) => {
-            dispatcherRequest(true, 401, 'Error connection')
-        })
+                if (res.status === 200) {
+                    this.setState({
+                        change_image: !this.state.change_image
+                    })
+                    let new_submitted_files = this
+                        .state
+                        .submitted_file
+                        .slice()
+                    new_submitted_files.push({name: res.data.data.name, id: res.data.data.id, url_thumbnail: res.data.data.url_thumbnail})
+                    this.setState({submitted_file: new_submitted_files})
+                } else {
+                    dispatcherRequest(true, 401, res.data.error[0])
+                }
+            }).catch((err) => {
+                dispatcherRequest(true, 401, 'Error connection')
+                this.setState({
+                    isUploading: false
+                })
+            })
+        }
     }
     handleUploadAssignment = () => {
         const {dispatcherRequest, dispatcherLoading} = this.props
         dispatcherLoading(10, false)
         let formData = new FormData()
-        formData.append('assignment_id', this.state.assignment.id);
-        formData.append('description', this.state.assignment.description);
-        formData.append('file_id', this.state.file_id);
-        axios.post(`/api/v1/assignment`, formData, {
+        formData.append('description', this.state.assignment.description)
+        let id = []
+        this.state.submitted_file.forEach((data) =>{
+            id.push(data.id)
+        })
+        formData.append('file_id', id.join("~"))
+        axios.put(`/api/v1/assignment/` + this.state.assignment.id, formData, {
             validateStatus: (status) => {
                 return status < 500
             }
@@ -123,8 +128,13 @@ class AssignmentDetail extends Component {
             dispatcherRequest(true, 401, 'Error connection')
         })
     }
-    handleDeleteFile = () => {
-        this.setState({uploaded: false, file_id: '', file: ''})
+    handleDeleteFile = (id) => {
+        let new_list = this
+            .state
+            .submitted_file
+            .filter((data) => (data.id !== id))
+        
+        this.setState({submitted_file: new_list})
     }
     /*------------------------------------------------------------
                         RENDER PAGE
@@ -138,7 +148,7 @@ class AssignmentDetail extends Component {
             deleteFile: this.handleDeleteFile
         }
         const dataUpload = {
-            file: this.state.file,
+            file: this.state.submitted_file,
             showUpload: this.state.showUpload,
             description: this.state.description,
             isUploading: this.state.isUploading,
@@ -160,7 +170,7 @@ class AssignmentDetail extends Component {
                                                     <Link to={"/assignment"}>My Assignment</Link>
                                                 </li>
                                                 <li className="_active">
-                                                    <Link to="#">{this.state.assignment.name}</Link>
+                                                    <Link to="#">{this.state.asg.name}</Link>
                                                 </li>
                                             </ul>
                                         </div>
@@ -170,62 +180,102 @@ class AssignmentDetail extends Component {
                                     <div className="_se3da">
                                         <div className="_ro">
                                             <div className="_c5x312 _c5m38">
-                                                <h2 className="_he3m _pd3l3tb">{this.state.assignment.name}</h2>
-                                                <p className="_ct3nor _pd3l3t">{this.state.assignment.description}</p>
+                                                <h2 className="_he3b _pd3l3tb">{this.state.asg.name}</h2>
+                                                <p className="_ct3nor _pd3l3t">{this.state.asg.description}</p>
                                             </div>
                                             <div className="_c5x312 _c5m34">
                                                 <table className="_tb3asi">
                                                     <thead>
                                                         <tr>
-                                                            <th>Info Assignment</th>
+                                                            <th>Assignment Source Info</th>
                                                         </tr>
+                                                        <tr>
+                                                            <th>
+                                                                <i className="fa fa-calendar-plus-o" aria-hidden="true"></i>
+                                                            </th>
+                                                            <th>
+                                                                {this.state.asg.updated_at}</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>
+                                                                <i className="fa fa-clock-o" aria-hidden="true"></i>
+                                                            </th>
+                                                            <th>{this.state.asg.due_date}</th>
+                                                        </tr>
+                                                        {this.state.asg.assignment_file !== undefined && this.state.asg.assignment_file.length !== 0
+                                                            ? this
+                                                                .state
+                                                                .asg
+                                                                .assignment_file
+                                                                .map((data, i) => (
+                                                                    <tr key={i}>
+                                                                        <th>
+                                                                            <i className="fa fa-file-pdf-o" aria-hidden="true"></i>
+                                                                        </th>
+                                                                        <th>
+                                                                            {data.name}</th>
+                                                                    </tr>
+                                                                ))
+                                                            : <tr>
+                                                                <th>
+                                                                    <i className="fa fa-file-pdf-o" aria-hidden="true"></i>
+                                                                </th>
+                                                                <th>
+                                                                    No file Source</th>
+                                                            </tr>
+}
                                                     </thead>
                                                     <tbody>
                                                         <tr>
-                                                            <td>{this.state.assignment.score}</td>
+                                                            <td>Assignment User Info</td>
                                                         </tr>
                                                         <tr>
                                                             <td>
-                                                                <i className="fa fa-clock-o" aria-hidden="true"></i>
+                                                                <i className="fa fa-trophy" aria-hidden="true"></i>
                                                             </td>
                                                             <td>
-                                                                {this.state.assignment.due_date}</td>
+                                                                {this.state.asg.score}
+                                                            </td>
                                                         </tr>
                                                         <tr>
                                                             <td>
                                                                 <i className="fa fa-calendar" aria-hidden="true"></i>
                                                             </td>
                                                             <td>
-                                                                -
+                                                                {this.state.asg.submitted_date}
                                                             </td>
                                                         </tr>
-
-                                                        {this
-                                                            .state
-                                                            .assignment
-                                                            .uploaded_file
-                                                            .map((val, i) => (
-                                                                <tr key={i}>
-                                                                    <td>
-                                                                        <i className="fa fa-file-pdf-o" aria-hidden="true"></i>
-                                                                    </td>
-                                                                    <td>
-                                                                        <a href={"http://47.74.149.190" + val.url} target="_blank">{val.name}</a>
-                                                                    </td>
-                                                                </tr>
-                                                            ))
-}
-                                                        {this.state.assignment.status === "must_upload"
-                                                            ? <tr>
-                                                                    <td>
-                                                                        <button className="_bt3m" onClick={this.handleToggleUpload}>
-                                                                            {this.state.assignment.uploaded_status
-                                                                                ? "Update"
-                                                                                : this.state.assignment.button_type}
-                                                                        </button>
-                                                                    </td>
-                                                                </tr>
+                                                        {this.state.asg.submitted_file !== undefined && this.state.asg.submitted_file !== []
+                                                            ? this
+                                                                .state
+                                                                .assignment
+                                                                .submitted_file
+                                                                .map((val, i) => (
+                                                                    <tr key={i}>
+                                                                        <td>
+                                                                            <i className="fa fa-file-pdf-o" aria-hidden="true"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <a href={"http://47.74.149.190" + val.url} target="_blank">{val.name}</a>
+                                                                        </td>
+                                                                    </tr>
+                                                                ))
                                                             : null}
+                                                        <tr>
+                                                            <td>
+
+                                                                {this.state.asg.status === "submitted"
+                                                                    ? <button className="_bt3b" onClick={this.handleToggleUpload}>
+                                                                            Update</button>
+                                                                    : this.state.asg.status === "unsubmitted"
+                                                                        ? <button className="_bt3b" onClick={this.handleToggleUpload}>
+                                                                                Add</button>
+                                                                        : this.state.asg.status === "overdue"
+                                                                            ? <button className="_bt3r">
+                                                                                    Overdue</button>
+                                                                            : null}
+                                                            </td>
+                                                        </tr>
                                                     </tbody>
                                                 </table>
                                             </div>

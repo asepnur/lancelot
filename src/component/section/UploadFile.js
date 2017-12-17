@@ -17,17 +17,12 @@ class UploadFile extends Component {
             }}>
                 <div className="__x" onClick={this.props.handle.toggleUpload}></div>
                 <div className="_ro">
-                    <div className="_c5x312 _c5m36 _c5m3o3">
+                    <div className="_c5x312 _c5m36 _c5m3o3 _pd3n3lr">
                         <div className="_cn _md5cu">
                             <div className="_ro">
                                 <div className="_c5x312">
                                     <h1 className="_he3nb">FILE</h1>
-                                    {this.props.data.uploaded
-                                        ? <div align="center">
-                                                <button className="a" onClick={this.props.handle.deleteFile}>Delete File</button>
-                                            </div>
-                                        : <p className="_me3c">Upload your file bellow</p>}
-
+                                        <p className="_me3c">Upload your file bellow</p>
                                 </div>
                             </div>
                             <div className="_ro">
@@ -41,6 +36,7 @@ class UploadFile extends Component {
                                             disabled={this.props.data.uploaded
                                             ? true
                                             : false}
+                                            onDrop={this.props.handle.onUploadFile}
                                             onChange={this.props.handle.onUploadFile}/> {this.props.data.isUploading
                                             ? <div align="center"><LoadingAnim color_left="#333" color_right="#333"/>
                                                     <p className="_me3c">Uploading your file ...
@@ -58,6 +54,34 @@ class UploadFile extends Component {
                                                     </div>
                                                 : <img className="_i3ce" src="/img/icon/blue/upload.png" alt="upload logo"/>}
                                     </div>
+                                    {this.props.data.file.length !== 0
+                                        ? <div className="_md5i">
+                                                <div className="_md5i5f">
+                                                    {this.props.data.file !== undefined && this.props.data.file.length !== 0
+                                                        ? this
+                                                            .props
+                                                            .data
+                                                            .file
+                                                            .map((data, i) => (
+                                                                <div className="_ro" key={i}>
+                                                                    <div className="_c5x33 _c5m32">
+                                                                        <img className="_i3" src={data.url_thumbnail} alt="upload logo"/>
+                                                                    </div>
+                                                                    <div className="_c5x39 _c5m310">
+                                                                        <p>{data.name}</p>
+                                                                        <button type="button" onClick={()=>{
+                                                                            this.props.handle.deleteFile(data.id)
+                                                                        }}>Delete</button>
+                                                                    </div>
+                                                                </div>
+                                                            ))
+                                                        : null
+}
+                                                </div>
+                                            </div>
+
+                                        : null
+}
                                 </div>
                             </div>
                             <div className="_ro">

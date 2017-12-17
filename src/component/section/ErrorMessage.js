@@ -22,11 +22,20 @@ class ErrorMessage extends Component {
                     : '-75px'
             }}>
                 <span>
-                    <p>
-                        <i className="fa fa-exclamation-triangle _ma3m3lr" aria-hidden="true"></i>
+                    <p
+                        style={{
+                        color: request_status === 200
+                            ? "#217fbd"
+                            : request_status === 0
+                                ? "black"
+                                : "red"
+                    }}>
+                        {request_status === 400
+                            ? <i className="fa fa-exclamation-triangle _ma3m3lr" aria-hidden="true"></i>
+                            : <i className="fa fa-check" aria-hidden="true"></i>}
                         {error_message}
                         <i
-                            className="fa fa-times _ma3m3lr"
+                            className="fa fa-times-circle _ma3m3lr"
                             aria-hidden="true"
                             onClick={e => {
                             e.preventDefault();

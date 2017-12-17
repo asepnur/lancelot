@@ -25,7 +25,7 @@ class CourseDetail extends Component {
                 total_page: 0,
                 tutorials: []
             },
-            assitant: [],
+            assistant: [],
             grade: [],
             about: {},
             content_active: {
@@ -50,7 +50,6 @@ class CourseDetail extends Component {
                             LIFE CYCLE
     ------------------------------------------------------------------*/
     componentDidMount() {
-
         let dom = document.getElementById("tab_assignment")
         ReactDOM
             .findDOMNode(dom)
@@ -195,7 +194,7 @@ class CourseDetail extends Component {
                             HANDLE REQUEST
     ------------------------------------------------------------------*/
     handleGetAssignment = () => {
-        axios.get(`/api/v1/assignment-schedule?id=${this.props.match.params.id}`, {
+        axios.get(`/api/v1/assignment/?schedule_id=${this.props.match.params.id}`, {
             validateStatus: (status) => {
                 return status === 200
             }
@@ -231,7 +230,7 @@ class CourseDetail extends Component {
             const is_loaded = this.state.is_loaded
             is_loaded.attendance = true
 
-            this.setState({attendance: res.data.data}, callback(present, absent), is_loaded: is_loaded)
+            this.setState({attendance: res.data.data, is_loaded: is_loaded}, callback(present, absent))
         }).catch((err) => {
             console.log(err)
         })
@@ -390,7 +389,7 @@ class CourseDetail extends Component {
                                     ? 'block'
                                     : 'none'
                             }}>
-                                <Assistant data={this.state.assitant} is_loaded={this.state.is_loaded.assistant}/>
+                                <Assistant data={this.state.assistant} is_loaded={this.state.is_loaded.assistant}/>
                             </div>
                             <div
                                 className="_c5x312 _c5m312 _pd3n3lr __grd"
