@@ -2763,8 +2763,7 @@ html {
     width: 100%;
     font-size: 1em; }
     ._se3o thead {
-      padding: 5px;
-      background-color: #2095b3;
+      background-color: #217fbd;
       border-top-left-radius: 5px;
       border-top-right-radius: 5px; }
       ._se3o thead tr {
@@ -2790,7 +2789,7 @@ html {
         ._se3o thead tr th {
           color: #FFFFFF;
           font-weight: bold;
-          background-color: #2095b3;
+          background-color: #217fbd;
           padding: 10px;
           font-size: 1em;
           -webkit-box-flex: 2;
@@ -2836,10 +2835,10 @@ html {
       -ms-align-items: center;
       align-items: center; }
       ._se3o tbody tr td {
-        font-size: 1.6em;
+        font-size: 1.1em;
         text-align: center;
         color: #000000;
-        padding: 10px;
+        padding: 5px;
         -webkit-box-flex: 2;
         -moz-box-flex: 2;
         -webkit-flex: 2;

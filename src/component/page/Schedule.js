@@ -79,17 +79,22 @@ class Schedule extends Component {
                                                 .map(val => (
                                                     <tr key={val.id}>
                                                         <td>
-                                                            <p>{val.day}
+                                                            <p><Link to={`/course/${val.id}`} >{val.day}
                                                                 <span>
                                                                 &nbsp;<i className="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
                                                                 </span>
-                                                                {val.time}</p>
+                                                                {val.time}</Link></p>
                                                             <p>
+                                                            <Link to={`/course/${val.id}`} >
                                                                 <i className="fa fa-bookmark" aria-hidden="true"></i>
-                                                                &nbsp;{val.name}</p>
+                                                                &nbsp;{val.name}
+                                                                </Link>
+                                                                </p>
                                                             <p>
+                                                            <Link to={`/course/${val.id}`} >
                                                                 <i className="fa fa-map-marker" aria-hidden="true"></i>
-                                                                &nbsp;{val.place}</p>
+                                                                &nbsp;{val.place}
+                                                                </Link></p>
                                                         </td>
                                                         <td>
                                                             <Link to={`/course/${val.id}`} >

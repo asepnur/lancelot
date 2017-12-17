@@ -14,6 +14,8 @@ class MyActivity extends Component {
             data: [],
             submitted: [],
             not_submitted: [],
+            overdue:[],
+            graded:[],
             is_loaded: false
         }
     }
@@ -26,9 +28,10 @@ class MyActivity extends Component {
                 return status === 200
             }
         }).then((res) => {
-            console.log(res.data.data)
             let submitted = [],
-                not_submitted = []
+                not_submitted = [],
+                overdue = [],
+                graded = []
 
             res
                 .data
@@ -36,12 +39,16 @@ class MyActivity extends Component {
                 .forEach(val => {
                     if (val.status === "unsubmitted") {
                         not_submitted.push(val)
-                    } else {
+                    } else if(val.status === "submitted") {
                         submitted.push(val)
+                    } else if(val.status === "overdue") {
+                        overdue.push(val)
+                    } else {
+                        graded.push(val)
                     }
                 })
 
-            this.setState({submitted: submitted, not_submitted: not_submitted, data: not_submitted, is_loaded: true})
+            this.setState({submitted: submitted, not_submitted: not_submitted, graded: graded, overdue:overdue, data: not_submitted, is_loaded: true})
 
         }).catch((err) => {
             console.log(err)
@@ -49,7 +56,7 @@ class MyActivity extends Component {
     }
     handleActiveTab = (e) => {
         const tagID = e.currentTarget.id
-        const id = ["tab_submitted", "tab_not_submitted", "tab_all"]
+        const id = ["tab_submitted", "tab_not_submitted", "tab_all","tab_overdue","tab_graded"]
         id.forEach(function (val) {
             let dom = document.getElementById(val)
             val === tagID
@@ -74,6 +81,12 @@ class MyActivity extends Component {
                 all.push(...this.state.submitted)
                 this.setState({data: all, is_loaded: this.state.is_loaded})
                 break;
+            case "tab_overdue":
+                this.setState({data: this.state.overdue, is_loaded: this.state.is_loaded})
+                break;
+            case "tab_graded":
+                this.setState({data: this.state.graded, is_loaded: this.state.is_loaded})
+                break;
             default:
                 break;
         }
@@ -92,15 +105,25 @@ class MyActivity extends Component {
                                 <div className="_he3b _pd3l3b">My Assignments</div>
                                 <div className="_c5x312 _c5m312 _pd3n3lr _ta ">
                                     <ul className="_ta5l3b ">
+                                        <li id="tab_not_submitted" onClick={this.handleActiveTab}>
+                                            <i className="fa fa-window-close" aria-hidden="true"></i>
+                                            <Link to="#">
+                                                &nbsp;Not Submitted</Link>
+                                        </li>
                                         <li id="tab_submitted" onClick={this.handleActiveTab}>
                                             <i className="fa fa-check-square" aria-hidden="true"></i>
                                             <Link to="#">
                                                 &nbsp;Submitted</Link>
                                         </li>
-                                        <li id="tab_not_submitted" onClick={this.handleActiveTab}>
-                                            <i className="fa fa-window-close" aria-hidden="true"></i>
+                                        <li id="tab_overdue" onClick={this.handleActiveTab}>
+                                        <i className="fa fa-calendar-o" aria-hidden="true"></i>
                                             <Link to="#">
-                                                &nbsp;Not Submitted</Link>
+                                                &nbsp;Overdue</Link>
+                                        </li>
+                                        <li id="tab_graded" onClick={this.handleActiveTab}>
+                                        <i className="fa fa-trophy" aria-hidden="true"></i>
+                                            <Link to="#">
+                                                &nbsp;Graded</Link>
                                         </li>
                                         <li id="tab_all" onClick={this.handleActiveTab}>
                                             <i className="fa fa-list" aria-hidden="true"></i>
@@ -164,9 +187,11 @@ const ListActivity = props => {
                                 <tr key={i}>
                                     <td>
                                         <i
-                                            className={data.status ==="submitted"
+                                            className={data.status ==="submitted" || data.status==="done"
                                             ? 'fa fa-circle _ic3b'
-                                            : 'fa fa-circle _ic3g'}
+                                            : data.status === "unsubmitted"
+                                                ?'fa fa-circle _i3a'
+                                                : 'fa fa-circle _ic3r'}
                                             aria-hidden="true"></i>
                                     </td>
                                     <td>{data.due_date}</td>
@@ -174,7 +199,9 @@ const ListActivity = props => {
                                         <Link to={'/assignment/' + data.id}>{data.name}</Link>
                                     </td>
                                     <td>
-                                        <i className="fa fa-pencil-square-o _ic __wr" aria-hidden="true"></i>
+                                    {data.is_allow_upload && (data.status ==="submitted" || data.status === "unsubmitted")
+                                            ? <i className="fa fa-pencil-square-o _ic __wr" aria-hidden="true"></i>
+                                            :null}
                                     </td>
                                     <td>
                                         <Link to={"/assignment/" + data.id}>

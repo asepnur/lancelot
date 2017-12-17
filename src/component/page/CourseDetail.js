@@ -32,7 +32,7 @@ class CourseDetail extends Component {
                 assignment: true,
                 attendance: false,
                 download: false,
-                assitant: false,
+                assistant: false,
                 grade: false,
                 about: false
             },
@@ -40,7 +40,7 @@ class CourseDetail extends Component {
                 assignment: false,
                 attendance: false,
                 download: false,
-                assitant: false,
+                assistant: false,
                 grade: false,
                 about: false
             }
@@ -105,7 +105,7 @@ class CourseDetail extends Component {
             assignment: false,
             attendance: false,
             download: false,
-            assitant: false,
+            assistant: false,
             grade: false,
             about: false
         }
@@ -125,7 +125,7 @@ class CourseDetail extends Component {
                 }
                 break
             case "tab_assistant":
-                content_active.assitant = true
+                content_active.assistant = true
                 this.setState({content_active: content_active})
                 if (!this.state.is_loaded.assistant) {
                     this.handleGetAssistant()
@@ -214,7 +214,7 @@ class CourseDetail extends Component {
         }).then((res) => {
             const is_loaded = this.state.is_loaded
             is_loaded.assistant = true
-            this.setState({assitant: res.data.data, is_loaded: is_loaded})
+            this.setState({assistant: res.data.data, is_loaded: is_loaded})
         }).catch((err) => {
             console.log(err)
         })
@@ -262,7 +262,7 @@ class CourseDetail extends Component {
         })
     }
     handleGetGrade = () => {
-        axios.get(`/api/v1/grade/${this.state.id}`, {
+        axios.get(`/api/v1/grade?schedule_id=${this.state.id}`, {
             validateStatus: (status) => {
                 return status === 200
             }
@@ -385,7 +385,7 @@ class CourseDetail extends Component {
                                 className="_c5x312 _c5m312 _pd3n3lr __ast"
                                 id="content_assistant"
                                 style={{
-                                display: this.state.content_active.assitant
+                                display: this.state.content_active.assistant
                                     ? 'block'
                                     : 'none'
                             }}>
@@ -478,14 +478,7 @@ const Assistant = props => {
 
 const Grade = props => {
     const {
-        data: {
-            assignment,
-            attendance,
-            mid,
-            final,
-            quiz,
-            total
-        },
+        data,
         is_loaded
     } = props
 
@@ -500,31 +493,48 @@ const Grade = props => {
                     </tr>
                 </tbody>
             </table>
-        ) : (
-            <table className="_se3o">
-                <thead>
-                    <tr>
-                        <th>Attendance</th>
-                        <th>Assignment</th>
-                        <th>Quiz</th>
-                        <th>Mid</th>
-                        <th>Final</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <tr>
-                        <td>{attendance}</td>
-                        <td>{assignment}</td>
-                        <td>{quiz}</td>
-                        <td>{mid}</td>
-                        <td>{final}</td>
-                        <td>{total}</td>
-                    </tr>
-                </tbody>
-            </table>
-        )
+        ) : data.length === 0
+            ?<table className="_se3msg">
+            <tbody>
+                <tr>
+                    <td>
+                        <i className="fa fa-smile-o" aria-hidden="true"></i>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p className="_head">Nothing To Report!</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p className="_main">Have a nice day</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+            :(
+                <table className="_se3o">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Grade</th>
+                        </tr>
+                    </thead>
+    
+                    <tbody>
+                        {data.map((data, i)=>(
+                            <tr key={i}>
+                            <td>{data.name}</td>
+                            <td>{data.type}</td>
+                            <td>{data.grade}</td>
+                        </tr>
+                        )
+                        )}
+                    </tbody>
+                </table>
+            )
     )
 }
 const Attendance = props => {

@@ -136,9 +136,9 @@ class Home extends Component {
                     .state
                     .asg
                     .slice()
-                list_asg.push({id: res.data.data.id, submitted_file: res.data.data.submitted_file, description:res.data.data.description})
+                list_asg.push({id: res.data.data.id, submitted_file: res.data.data.submitted_file, description:res.data.data.submitted_description})
                 this.setState({asg: list_asg, is_assignment_loaded: true,
-                    description: res.data.data.description,
+                    description: res.data.data.submitted_description,
                     current_submitted_file: res.data.data.submitted_file,
                     current_id: res.data.data.id})
             } else {
@@ -315,6 +315,8 @@ const RenderMain = (props) => {
                 <div className="_cn3w">
                     <div className="_ro">
                         <div className="_c5m38 _pd5n _pd3cl _pd5m3n">
+                            <div className="_he3b">Schedule Today</div>
+                            <Today data={props.today} is_loaded={props.is_schedule_loaded}/>
                             <div className="_he3b">Assignment</div>
                             <Assignment
                                 data={props.assignment}
@@ -333,8 +335,6 @@ const RenderMain = (props) => {
                                     </a>
                                 </div>
                             </div> */}
-                            <div className="_he3b">Schedule Today</div>
-                            <Today data={props.today} is_loaded={props.is_schedule_loaded}/>
                         </div>
                         <Newsbar handleDetail={props.handler.handleDetail}/>
                     </div>
@@ -520,14 +520,16 @@ const Today = (props) => {
                                     <td>
                                         <p>{val.time}</p>
                                         <p>
-                                            <i className="fa fa-bookmark _ma3r" aria-hidden="true"></i>
-                                            {val.name}</p>
+                                        <Link to={`/course/${val.id}`}> <i className="fa fa-bookmark _ma3r" aria-hidden="true"></i>
+                                            {val.name}</Link>
+                                        </p>
                                         <p>
+                                        <Link to={`/course/${val.id}`}>
                                             <i className="fa fa-map-marker _ma3r" aria-hidden="true"></i>
-                                            {val.place}</p>
+                                            {val.place}</Link></p>
                                     </td>
                                     <td>
-                                        <i className="fa fa-angle-double-right _ic __wr" aria-hidden="true"></i>
+                                        <Link to={`/course/${val.id}`}><i className="fa fa-angle-double-right _ic __wr" aria-hidden="true"></i></Link>
                                     </td>
                                 </tr>
                             ))}

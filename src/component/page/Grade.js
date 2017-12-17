@@ -12,12 +12,17 @@ class Grade extends Component {
         }
     }
     componentDidMount() {
+        this.handleGetGrade()
+    }
+    handleGetGrade = ()=>{
         axios.get(`/api/v1/grade`, {
             validateStatus: (status) => {
                 return status === 200
             }
         }).then((res) => {
-            this.setState({data: res.data.data, is_loaded: true})
+            res.data.code === 200
+                ? this.setState({data: [], is_loaded: true})
+                : this.setState({data: [], is_loaded: true})
         }).catch((err) => {
             console.log(err)
         })
@@ -59,7 +64,25 @@ const Content = props => {
                 </tbody>
             </table>
         ) : data.length === 0 ? (
-            'kosong'
+            <table className="_se3msg">
+            <tbody>
+                <tr>
+                    <td>
+                        <i className="fa fa-smile-o" aria-hidden="true"></i>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p className="_head">You do not have this grade yet.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p className="_main">let's do the best</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         ) : (
             <table className="_se3g">
                 <thead>
