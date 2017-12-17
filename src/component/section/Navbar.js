@@ -5,46 +5,15 @@ import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
 import {Link, Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
-import axios from 'axios'
 import dateformat from 'dateformat'
 
-import {actorRequest, updateTime} from '../../action/action'
+import {actorRequest} from '../../action/action'
 
 class Navbar extends Component {
 
-    constructor() {
-        super()
-        this.state = {
-            time_now: 0
-        }
-    }
-
     componentDidMount() {
         this.handleActiveMenu()
-        this.handleTimeLoad()
     }
-    componentWillUnmount() {
-        clearInterval(this.handleTimeChange)
-    }
-
-    handleTimeLoad = () => {
-        const {dispatcherTime} = this.props
-        axios.get(`/api/v1/util/time`, {
-            validateStatus: (status) => {
-                return status === 200
-            }
-        }).then((res) => {
-            let time_now = res.data.data * 1000
-            dispatcherTime(time_now)
-        }).catch((err) => {
-            console.log(err)
-        })
-    }
-
-    handleTimeChange = setInterval(() => {
-        const {dispatcherTime, time_now} = this.props
-        dispatcherTime(time_now + 1000)
-    }, 1000)
 
     handlerSignOut = (dispatcherRequest) => {
         fetch('/api/v1/user/signout', {
@@ -166,8 +135,7 @@ const mapStatetoProps = (state) => {
 }
 const mapDispatchtoProps = (dispatch) => {
     return {
-        dispatcherRequest: (is_logged_in, request_status, error_message) => dispatch(actorRequest(is_logged_in, request_status, error_message)),
-        dispatcherTime: (time_now) => dispatch(updateTime(time_now))
+        dispatcherRequest: (is_logged_in, request_status, error_message) => dispatch(actorRequest(is_logged_in, request_status, error_message))
     }
 }
 export default connect(mapStatetoProps, mapDispatchtoProps)(Navbar)
