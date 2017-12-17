@@ -143,6 +143,7 @@ class AssignmentDetail extends Component {
         const handle = {
             uploadAssignment: this.handleUploadAssignment,
             toggleUpload: this.handleToggleUpload,
+            closeModal: this.handleToggleUpload,
             onUploadFile: this.onUploadFile,
             change: this.handleChange,
             deleteFile: this.handleDeleteFile
@@ -151,8 +152,7 @@ class AssignmentDetail extends Component {
             file: this.state.submitted_file,
             showUpload: this.state.showUpload,
             description: this.state.description,
-            isUploading: this.state.isUploading,
-            uploaded: this.state.uploaded
+            isUploading: this.state.isUploading
         }
         const {is_logged_in} = this.props
         return (is_logged_in

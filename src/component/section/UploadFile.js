@@ -15,14 +15,14 @@ class UploadFile extends Component {
                     ? "block"
                     : "none"
             }}>
-                <div className="__x" onClick={this.props.handle.toggleUpload}></div>
+                <div className="__x" onClick={this.props.handle.closeModal}></div>
                 <div className="_ro">
                     <div className="_c5x312 _c5m36 _c5m3o3 _pd3n3lr">
                         <div className="_cn _md5cu">
                             <div className="_ro">
                                 <div className="_c5x312">
                                     <h1 className="_he3nb">FILE</h1>
-                                        <p className="_me3c">Upload your file bellow</p>
+                                    <p className="_me3c">Upload your file bellow</p>
                                 </div>
                             </div>
                             <div className="_ro">
@@ -33,26 +33,13 @@ class UploadFile extends Component {
                                             id="upload"
                                             name="file"
                                             value={this.props.file}
-                                            disabled={this.props.data.uploaded
-                                            ? true
-                                            : false}
                                             onDrop={this.props.handle.onUploadFile}
                                             onChange={this.props.handle.onUploadFile}/> {this.props.data.isUploading
                                             ? <div align="center"><LoadingAnim color_left="#333" color_right="#333"/>
                                                     <p className="_me3c">Uploading your file ...
                                                     </p>
                                                 </div>
-                                            : this.props.data.uploaded
-                                                ? <div><img
-                                                        className="_i3ce"
-                                                        src="/img/icon/blue/pdf-file-format-symbol.png"
-                                                        alt="logo"/>
-                                                        <p className="_me3c">{document
-                                                                .getElementById('upload')
-                                                                .files[0]
-                                                                .name}</p>
-                                                    </div>
-                                                : <img className="_i3ce" src="/img/icon/blue/upload.png" alt="upload logo"/>}
+                                            : <img className="_i3ce" src="/img/icon/blue/upload.png" alt="upload logo"/>}
                                     </div>
                                     {this.props.data.file.length !== 0
                                         ? <div className="_md5i">
@@ -69,8 +56,13 @@ class UploadFile extends Component {
                                                                     </div>
                                                                     <div className="_c5x39 _c5m310">
                                                                         <p>{data.name}</p>
-                                                                        <button type="button" onClick={()=>{
-                                                                            this.props.handle.deleteFile(data.id)
+                                                                        <button
+                                                                            type="button"
+                                                                            onClick={() => {
+                                                                            this
+                                                                                .props
+                                                                                .handle
+                                                                                .deleteFile(data.id)
                                                                         }}>Delete</button>
                                                                     </div>
                                                                 </div>

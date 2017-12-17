@@ -81,7 +81,7 @@ class Schedule extends Component {
                                                         <td>
                                                             <p>{val.day}
                                                                 <span>
-                                                                    At
+                                                                &nbsp;<i className="fa fa-clock-o" aria-hidden="true"></i>&nbsp;
                                                                 </span>
                                                                 {val.time}</p>
                                                             <p>
