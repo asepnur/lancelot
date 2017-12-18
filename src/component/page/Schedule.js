@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import axios from 'axios'
 
-import {Navbar, Newsbar, LayoutUser, LoadingAnim} from '../index.js'
+import {Navbar, Newsbar, LayoutUser, LoadingAnim, InformationDetail} from '../index.js'
 
 class Schedule extends Component {
 
@@ -10,14 +10,31 @@ class Schedule extends Component {
         super()
         this.state = {
             schedules: [],
-            is_loaded: false
+            is_loaded: false,
+            detail_information:{},
+            modal_detail: false,
         }
     }
 
     componentDidMount() {
         this.handleGetSchedule()
     }
-
+    handleDetail = (id) => {
+        axios.get(`api/v1/information/` + id, {
+            validateStatus: (status) => {
+                return status === 200
+            }
+        }).then((res) => {
+            if (res.data.code === 200) {
+                this.setState({detail_information: res.data.data, modal_detail: true})
+            }
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+    handleClose = () => {
+        this.setState({modal_detail: false})
+    }
     handleGetSchedule = () => {
         axios.get(`api/v1/course?payload=current`, {
             validateStatus: (status) => {
@@ -34,6 +51,10 @@ class Schedule extends Component {
     render() {
         return (
             <LayoutUser>
+                <InformationDetail
+                        data={this.state.detail_information}
+                        modal_detail={this.state.modal_detail}
+                        handleClose={this.handleClose}/>
                 <Navbar match={this.props.match} active_navbar={"schedule"}/>
                 <div className="_cn">
                     <div className="_ro _ma3mn">
@@ -110,7 +131,7 @@ class Schedule extends Component {
                             }
                             
                         </div>
-                        <Newsbar/>
+                        <Newsbar handleDetail={this.handleDetail}/>
                     </div>
                 </div>
 

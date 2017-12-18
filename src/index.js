@@ -4,7 +4,8 @@
 import React from 'react'
 import {Provider} from 'react-redux'
 import ReactDOM from 'react-dom'
-import {Switch, Route, BrowserRouter as Router} from 'react-router-dom'
+import {Switch, Route, Router} from 'react-router-dom'
+import history from './history'
 
 import registerServiceWorker from './registerServiceWorker'
 import {Initialize, store} from './config/index'
@@ -15,7 +16,7 @@ ReactDOM.render(
         <Initialize>
             <LoadingBar/>
             <ErrorMessage />
-            <Router>
+            <Router history={history}>
                 <Switch>
                     {routes.map((route, i) => <Route
                         exact={route.exact}

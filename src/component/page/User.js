@@ -432,6 +432,7 @@ const Basic = (props) => {
                         type="password"
                         onChange={props.data.handleChange}
                         name="old_password"
+                        autoComplete="disable"
                         value={props.old_password}
                         placeholder="Old password"/>
                 </div>
@@ -441,6 +442,7 @@ const Basic = (props) => {
                     classWraper="_c5x36 _c5m36 "
                     type="password"
                     name="password"
+                    autoComplete="disable"
                     placeholder="New Password"
                     onChangeState={props.data.handleChange}
                     value={props.password}/>
@@ -448,6 +450,7 @@ const Basic = (props) => {
                     classWraper="_c5x36 _c5m36 "
                     type="password"
                     name="password_confirmation"
+                    autoComplete="disable"
                     placeholder="Confirmation"
                     onChangeState={props.data.handleChange}
                     value={props.password_confirmation}/>

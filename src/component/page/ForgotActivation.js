@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 
 import {actorRequest} from '../../action/action'
 import {LayoutGuest, InputContent} from '../index.js'
+import history from '../../../src/history'
 
 class ForgotActivation extends Component {
     constructor() {
@@ -36,9 +37,12 @@ class ForgotActivation extends Component {
         }).then((res) => {
             return res.json()
         }).then((data) => {
-            data.code === 200
-                ? dispatcherRequest(false, 201, '')
-                : dispatcherRequest(false, 401, data.error)
+            if (data.code === 200){
+                history.push(`/forgot/${this.state.email}/${this.state.code}`)
+                 dispatcherRequest(false, 200, '')
+            }else{
+                dispatcherRequest(false, 401, data.error)
+            }
 
         })
     }
@@ -46,7 +50,6 @@ class ForgotActivation extends Component {
     render() {
         let url = '/reset/' + this.state.email + '/' + this.state.code
         const {is_logged_in, request_status} = this.props
-
         return (is_logged_in
             ? <Redirect to={'/'}/>
             : request_status === 201

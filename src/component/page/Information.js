@@ -15,34 +15,34 @@ class Information extends Component {
         super()
         this.state = {
             information: [],
-            detail:{},
-            modal_detail : false,
+            detail: {},
+            modal_detail: false,
             is_loaded: false
         }
     }
-/*----------------------------------------------------------------
+    /*----------------------------------------------------------------
                             LIFE CYCLE
 ------------------------------------------------------------------*/
     componentDidMount() {
         this.handlerGetInformation()
     }
-/*----------------------------------------------------------------
+    /*----------------------------------------------------------------
                             FUNCTION HANDLER
 ------------------------------------------------------------------*/
     handlerGetInformation = () => {
-        axios.get(`api/v1/information`, {
+        axios.get(`api/v1/information?pg=1&ttl=100`, {
             validateStatus: (status) => {
                 return status === 200
             }
         }).then((res) => {
             if (res.data.code === 200) {
-                this.setState({information: res.data.data.last, is_loaded: true})
+                this.setState({information: res.data.data, is_loaded: true})
             }
         }).catch((err) => {
             console.log(err)
         })
     }
-    handleDetail = (id) =>{
+    handleDetail = (id) => {
         axios.get(`api/v1/information/` + id, {
             validateStatus: (status) => {
                 return status === 200
@@ -55,10 +55,10 @@ class Information extends Component {
             console.log(err)
         })
     }
-    handleClose = () =>{
+    handleClose = () => {
         this.setState({modal_detail: false})
     }
-/*----------------------------------------------------------------
+    /*----------------------------------------------------------------
                             RENDER COMPONENT
 ------------------------------------------------------------------*/
     render() {
@@ -73,8 +73,8 @@ class Information extends Component {
                                     <div className="_ro _pd3l3l">
                                         <h1 className="_he3b">Information</h1>
                                     </div>
-                                    {
-                                        !this.state.is_loaded ? (
+                                    {!this.state.is_loaded
+                                        ? (
                                             <table className="_se3msg">
                                                 <tbody>
                                                     <tr>
@@ -84,32 +84,23 @@ class Information extends Component {
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                        ) : (
+                                        )
+                                        : (
                                             <div>
-                                                <Content data={this.state.information} detail={this.handleDetail} />
-                                                <div className="_pg">
-                                                    <div className="_pd3m3l">
-                                                        <p>1 of 2 Page</p>
-                                                    </div>
-                                                    <div className="_pd3m3r">
-                                                        <a href="">
-                                                            <i className="fa fa-angle-left" aria-hidden="true"></i>
-                                                            &nbsp;previous</a>
-                                                        <a href="">next&nbsp;
-                                                            <i className="fa fa-angle-right" aria-hidden="true"></i>
-                                                        </a>
-                                                    </div>
-                                                </div>
+                                                <Content data={this.state.information} detail={this.handleDetail}/>
                                             </div>
                                         )
-                                    }
-                                    
+}
+
                                 </div>
                                 <Newsbar/>
                             </div>
                         </div>
                     </div>
-                    <InformationDetail modal_detail={this.state.modal_detail} handleClose={this.handleClose} />
+                    <InformationDetail
+                        data={this.state.detail}
+                        modal_detail={this.state.modal_detail}
+                        handleClose={this.handleClose}/>
                 </LayoutUser>
             : <Redirect to={`/login`}/>);
     }
@@ -122,12 +113,16 @@ const Content = (props) => {
         <div className="_c5x312 _c5m34 _pd3n3lr3x" key={i}>
             <div className="_se3b">
                 <div>
-                    <img src="/img/image.png" alt="informations_image"/>
+                    <img src={`http://47.74.149.190${data.image_thumbnail}`} alt="informations_image"/>
                     <p>{data.date}</p>
                     <p>{data.title},</p>
                     <p>{data.description}</p>
                 </div>
-                <button className="_bt5xs3b __wr" onClick={ (e)=>{ props.detail(6)}}>Read More</button>
+                <button
+                    className="_bt5xs3b __wr"
+                    onClick={(e) => {
+                    props.detail(data.id)
+                }}>Read More</button>
             </div>
         </div>
     )))

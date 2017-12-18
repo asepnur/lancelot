@@ -8,6 +8,7 @@ class InputContent extends Component {
                         type={this.props.type}
                         name={this.props.name}
                         placeholder={this.props.placeholder}
+                        autoComplete={this.props.autoComplete}
                         onChange={this.props.onChangeState}
                         value={this.props.value}
                         disabled={true}/>
@@ -17,6 +18,7 @@ class InputContent extends Component {
                     type={this.props.type}
                     name={this.props.name}
                     placeholder={this.props.placeholder}
+                    autoComplete={this.props.autoComplete}
                     onChange={this.props.onChangeState}
                     value={this.props.value}/>
             </div>)

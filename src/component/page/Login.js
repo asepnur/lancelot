@@ -53,6 +53,7 @@ class Login extends Component {
                            : 'text'}
                            name="password"
                            placeholder="Password"
+                           autoComplete="disable"
                            onChange={this.onChangeState}/>
                         <i onClick={this.onChangeDisplayPassword} className="fa fa-eye"></i>
                      </div>

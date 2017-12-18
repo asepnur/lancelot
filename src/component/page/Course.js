@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom'
 import {Redirect, Link} from 'react-router-dom'
 import axios from 'axios'
 
-import {actorRequest} from '../../action/action'
+import {actorRequest, loadingRequest} from '../../action/action'
 import {Navbar, Newsbar, LayoutUser, InformationDetail, LoadingAnim} from '../index.js'
 
 class Course extends Component {
@@ -21,12 +21,13 @@ class Course extends Component {
             is_all_loaded: false,
             is_current_loaded: false,
             is_last_loaded: false,
-            is_loaded: false
+            is_loaded: false,
+            detail_information:{}
         }
     }
     /*----------------------------------------------------------------
                         LIFE CYCLE
-------------------------------------------------------------------*/
+    ------------------------------------------------------------------*/
     componentDidMount() {
         let current = document.getElementById('tab_current')
         let dom = ReactDOM.findDOMNode
@@ -47,15 +48,15 @@ class Course extends Component {
     }
     /*----------------------------------------------------------------
                             HANDLE FUNCTION
-------------------------------------------------------------------*/
+    ------------------------------------------------------------------*/
     handleDetail = (id) => {
-        axios.get(`api/v1/information/` + 6, {
+        axios.get(`api/v1/information/` + id, {
             validateStatus: (status) => {
                 return status === 200
             }
         }).then((res) => {
             if (res.data.code === 200) {
-                this.setState({detail: res.data.data, modal_detail: true})
+                this.setState({detail_information: res.data.data, modal_detail: true})
             }
         }).catch((err) => {
             console.log(err)
@@ -63,6 +64,47 @@ class Course extends Component {
     }
     handleClose = () => {
         this.setState({modal_detail: false})
+    }
+    handleToggleEnrolled = (id, status) => {
+        const {dispatcherRequest, dispatcherLoading} = this.props
+        let payload = "cancel"
+        let message = "Cancelling course successfully"
+        if (status === "unenrolled") {
+            payload = "enroll"
+            message = "Enrolling course successfully"
+        }
+        dispatcherLoading(10, false)
+        axios.post(`/api/v1/course/` + id + `/enrollment?payload=` + payload, {
+            validateStatus: (status) => {
+                return status < 500
+            }
+        }).then((res) => {
+            dispatcherLoading(100, false)
+            this.setState({isUploading: false})
+            if (res.status === 200) {
+                this.handleGetAll()
+                dispatcherRequest(true, 200, message)
+            } else {
+                dispatcherRequest(true, 401, message)
+            }
+        }).catch((err) => {
+            dispatcherRequest(true, 401, 'Error connection')
+            this.setState({isUploading: false})
+        })
+    }
+    handleGetAll = () => {
+        this.setState({is_loaded: false})
+        axios.get(`/api/v1/course?payload=all`, {
+            validateStatus: (status) => {
+                return status === 200
+            }
+        }).then((res) => {
+            if (res.data.code === 200) {
+                this.setState({all: res.data.data, data: res.data.data, is_all_loaded: true, is_loaded: true})
+            }
+        }).catch((err) => {
+            console.log(err)
+        })
     }
     handleActiveTab = (e) => {
         const tagID = e.currentTarget.id
@@ -81,18 +123,7 @@ class Course extends Component {
         switch (tagID) {
             case "tab_all":
                 if (!this.state.is_all_loaded) {
-                    this.setState({is_loaded: false})
-                    axios.get(`/api/v1/course?payload=all`, {
-                        validateStatus: (status) => {
-                            return status === 200
-                        }
-                    }).then((res) => {
-                        if (res.data.code === 200) {
-                            this.setState({all: res.data.data, data: res.data.data, is_all_loaded: true, is_loaded: true})
-                        }
-                    }).catch((err) => {
-                        console.log(err)
-                    })
+                    this.handleGetAll()
                 } else {
                     this.setState({data: this.state.all, is_loaded: this.state.is_all_loaded})
                 }
@@ -140,10 +171,13 @@ class Course extends Component {
     }
     /*----------------------------------------------------------------
                             RENDER COMPONENT
-------------------------------------------------------------------*/
+    ------------------------------------------------------------------*/
     render() {
         const {is_logged_in} = this.props
         const {data, is_loaded} = this.state
+        const handle = {
+            toggleEnrolled: this.handleToggleEnrolled
+        }
         return (is_logged_in
             ? <LayoutUser>
                     <Navbar match={this.props.match} active_navbar={"course"}/>
@@ -171,13 +205,14 @@ class Course extends Component {
                                             </li>
                                         </ul>
                                     </div>
-                                    <ListCourse data={data} is_loaded={is_loaded}/>
+                                    <ListCourse data={data} is_loaded={is_loaded} handle={handle}/>
                                 </div>
                                 <Newsbar handleDetail={this.handleDetail}/>
                             </div>
                         </div>
                     </div>
                     <InformationDetail
+                        data={this.state.detail_information}
                         modal_detail={this.state.modal_detail}
                         handleClose={this.handleClose}/>
                 </LayoutUser>
@@ -189,13 +224,10 @@ class Course extends Component {
                             ELEMENT
 ------------------------------------------------------------------*/
 const ListCourse = props => {
-    const {
-        data,
-        is_loaded
-    } = props
+    const {data, is_loaded, handle} = props
 
-    return (
-        !is_loaded ? (
+    return (!is_loaded
+        ? (
             <table className="_se3msg3l">
                 <tbody>
                     <tr>
@@ -205,28 +237,30 @@ const ListCourse = props => {
                     </tr>
                 </tbody>
             </table>
-        ) : data.length === 0 ? (
-            <table className="_se3msg3l">
-                <tbody>
-                    <tr>
-                        <td>
-                            <i className="fa fa-book" aria-hidden="true"></i>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p className="_head">Ooops... No course yet in this Category</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p className="_main">Find in another Category</p>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        ) : (
-            data.map(data => (
+        )
+        : data.length === 0
+            ? (
+                <table className="_se3msg3l">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <i className="fa fa-book" aria-hidden="true"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p className="_head">Ooops... No course yet in this Category</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p className="_main">Find in another Category</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            )
+            : (data.map(data => (
                 <div className="_c5x312 _c5m34 _pd3n3lr3x" key={data.id}>
                     <div className="_se3lc">
                         <div>
@@ -240,15 +274,26 @@ const ListCourse = props => {
                                     </Link>
                                 )
                                 : data.status === 'unenrolled'
-                                    ? <button className="_bt5xs3g" >Enroll</button>
-                                    : <button className="_bt5xs3r">Waiting</button>
+                                    ? <button
+                                            className="_bt5xs3g"
+                                            onClick={() => {
+                                            handle.toggleEnrolled(data.id, data.status)
+                                        }}>Enroll</button>
+                                    : <input
+                                        type="button"
+                                        className="_bt5xs3r"
+                                        value="Waiting"
+                                        onMouseOver={(e) => {
+                                        e.target.value = "Cancel"
+                                    }}
+                                        onClick={() => {
+                                        handle.toggleEnrolled(data.id, data.status)
+                                    }}/>
 }
                         </div>
                     </div>
                 </div>
-            ))
-        )
-    )
+            ))))
 }
 /*----------------------------------------------------------------
                             DISPATCHER
@@ -258,7 +303,8 @@ const mapStatetoProps = (state) => {
 }
 const mapDispatchtoProps = (dispatch) => {
     return {
-        dispatcherRequest: (is_logged_in, request_status, error_message) => dispatch(actorRequest(is_logged_in, request_status, error_message))
+        dispatcherRequest: (is_logged_in, request_status, error_message) => dispatch(actorRequest(is_logged_in, request_status, error_message)),
+        dispatcherLoading: (loading_progress, is_loading_error) => dispatch(loadingRequest(loading_progress, is_loading_error))
     }
 }
 export default connect(mapStatetoProps, mapDispatchtoProps)(Course)

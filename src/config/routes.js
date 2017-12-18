@@ -56,11 +56,11 @@ export const routes = [
     }, {
         path: '/forgot/:email',
         component: ForgotActivation,
-        exact: false
+        exact: true
     }, {
         path: '/forgot/:email/:code',
         component: Reset,
-        exact: false
+        exact: true
     }, {
         path: '/course',
         component: Course,

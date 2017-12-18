@@ -5,7 +5,6 @@ import {connect} from 'react-redux'
 import {InputContent, LayoutGuest} from '../index.js'
 import {actorRequest} from '../../action/action'
 
-
 class Signup extends Component {
     constructor() {
         super()
@@ -14,17 +13,18 @@ class Signup extends Component {
             lName: '',
             id: '',
             email: '',
-            password: ''
+            password: '',
+            is_show_password: false
         }
     }
     render() {
         const {is_logged_in, request_status} = this.props
         return (!is_logged_in
             ? (request_status === 200
-                ? <Redirect 
+                ? <Redirect
                         email={this.state.email}
                         to={{
-                        pathname: `/email-activation/${this.state.email}`,
+                        pathname: `/email-activation/${this.state.email}`
                     }}/>
                 : this.renderMain())
             : <Redirect to={`/`}/>)
@@ -35,6 +35,11 @@ class Signup extends Component {
             [target.name]: target.value
         })
     }
+    onChangeDisplayPassword = () => {
+        this.setState({
+           is_show_password: !this.state.is_show_password
+        })
+     }
     handleSubmit = (dispatcherRequest) => {
         let formData = new FormData()
         formData.append('id', this.state.id)
@@ -106,11 +111,16 @@ class Signup extends Component {
                         <div className="_c5m36 _c5m3o5 _c5x312">
                             <div className="_cn5g">
                                 <input
-                                    type="password"
+                                    id="password"
+                                    type={!this.state.is_show_password
+                                    ? 'password'
+                                    : 'text'}
+                                    value={this.state.password}
                                     name="password"
                                     placeholder="Password"
+                                    autoComplete="disable"
                                     onChange={this.handleChange}/>
-                                <i className="fa fa-eye"></i>
+                                    <i onClick={this.onChangeDisplayPassword} className="fa fa-eye"></i>
                             </div>
                         </div>
                     </div>

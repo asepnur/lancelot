@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 
 class InformationDetail extends Component {
     render() {
+        const {data} = this.props
         return (
             <div
                 className="_md"
@@ -20,16 +21,11 @@ class InformationDetail extends Component {
                 <div className="_ro">
                     <div className="_c5x312 _c5m36 _c5m3o3">
                         <div className="_cn _md5inf">
-                            <img src="/img/course.png" alt="informations_image"/>
+                            <img src={data.image} alt="informations_image"/>
                             <div className="_c5x312 _pd3n3lr">
-                                <h1>Lorem Ipsum Dolor Sit Amet</h1>
-                                <p>11 November 2017</p>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-                                    dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                                    sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                                <h1>{data.title}</h1>
+                                <p>{data.date}</p>
+                                <p>{data.description}</p>
                             </div>
                         </div>
                     </div>

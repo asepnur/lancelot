@@ -48,7 +48,7 @@ class AssignmentDetail extends Component {
         }).then((res) => {
             this.setState({is_loaded: true})
             if (res.data.code === 200) {
-                this.setState({assignment: res.data.data, asg: res.data.data, submitted_file: res.data.data.submitted_file})
+                this.setState({assignment: res.data.data, asg: res.data.data, submitted_file: res.data.data.submitted_file, description: res.data.data.submitted_description})
             }
         }).catch((err) => {
             this.setState({is_loaded: true})
@@ -98,7 +98,7 @@ class AssignmentDetail extends Component {
         const {dispatcherRequest, dispatcherLoading} = this.props
         dispatcherLoading(10, false)
         let formData = new FormData()
-        formData.append('description', this.state.assignment.description)
+        formData.append('description', this.state.description)
         let id = []
         this
             .state

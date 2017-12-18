@@ -30,7 +30,6 @@ class Init extends React.Component {
                 return res.json()
             }
         }).then((data) => {
-            console.log(data)
             data.data.is_logged_in
                 ? this.props.onInitialize(true, data.data.modules)
                 : this.props.onInitialize(false,'')

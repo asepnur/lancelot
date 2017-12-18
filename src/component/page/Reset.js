@@ -5,6 +5,7 @@ import {connect} from 'react-redux'
 import {actorRequest} from '../../action/action'
 import {LayoutGuest, InputContent} from '../index.js'
 
+
 class Reset extends Component {
     constructor() {
         super()

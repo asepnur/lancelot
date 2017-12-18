@@ -9,13 +9,20 @@ import axios from 'axios'
 import {GoogleCharts} from 'google-charts';
 
 import {Assignment} from './Home'
-import {actorRequest} from '../../action/action'
-import {Navbar, Newsbar, LayoutUser, InformationDetail, LoadingAnim} from '../index.js'
+import {actorRequest, loadingRequest} from '../../action/action'
+import {Navbar, Newsbar, LayoutUser, InformationDetail, LoadingAnim, UploadFile} from '../index.js'
 
 class CourseDetail extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            file: [],
+            showUpload: false,
+            description: '',
+            current_id:'',
+            current_submitted_file: [],
+            isUploading: false,
+            asg: [],
             modal_detail: false,
             id: this.props.match.params.id,
             assignment: [],
@@ -43,7 +50,8 @@ class CourseDetail extends Component {
                 assistant: false,
                 grade: false,
                 about: false
-            }
+            },
+            detail_information:{},
         }
     }
     /*----------------------------------------------------------------
@@ -65,13 +73,13 @@ class CourseDetail extends Component {
     ------------------------------------------------------------------*/
     handleDetail = (id) => {
         this.setState({modal_detail: true})
-        axios.get(`api/v1/information/` + 6, {
+        axios.get(`http://localhost:3000/api/v1/information/` + id, {
             validateStatus: (status) => {
                 return status === 200
             }
         }).then((res) => {
             if (res.data.code === 200) {
-                this.setState({detail: res.data.data, modal_detail: true})
+                this.setState({detail_information: res.data.data, modal_detail: true})
             }
         }).catch((err) => {
             console.log(err)
@@ -190,6 +198,172 @@ class CourseDetail extends Component {
             pie_1_chart.draw(data, options);
         }
     }
+    handleCloseModal = ()=>{
+        this.setState({
+            showUpload: !this.state.showUpload
+        })
+    }
+    handleToggleUpload = (e) => {
+        let id = e.currentTarget.dataset.id
+        let not_added = true
+
+        if (this.state.asg.length !== 0){
+            this.state.asg.forEach((data)=>{
+                if (String(data.id) === id){
+                   not_added = false 
+                }
+            }, Promise.resolve().then(()=>{
+                if(not_added){
+                    this.handleGetAssignmentDetail(id)
+                }else{
+                    this.state.asg.forEach((data)=>{
+                        if(String(data.id)===id){
+                            this.setState({
+                                description: data.description,
+                                current_submitted_file: data.submitted_file,
+                                current_id: data.id
+                            })
+                        }
+                    })
+                }
+            }))
+        }else{
+            this.handleGetAssignmentDetail(id)
+        }
+        this.setState({
+            showUpload: !this.state.showUpload
+        })
+    }
+    handleGetAssignmentDetail = (id) => {
+        axios.get(`/api/v1/assignment/` + id, {
+            validateStatus: (status) => {
+                return status === 200
+            }
+        }).then((res) => {
+            if (res.data.code === 200) {
+                let list_asg = this
+                    .state
+                    .asg
+                    .slice()
+                list_asg.push({id: res.data.data.id, submitted_file: res.data.data.submitted_file, description:res.data.data.submitted_description})
+                this.setState({asg: list_asg, is_assignment_loaded: true,
+                    description: res.data.data.submitted_description,
+                    current_submitted_file: res.data.data.submitted_file,
+                    current_id: res.data.data.id})
+            } else {
+                this.setState({asg: [], is_assignment_loaded: true})
+            }
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+    onUploadFile = () => {
+        const {dispatcherRequest} = this.props
+        let formData = new FormData()
+        formData.append('payload', "assignment");
+        formData.append('id', this.state.current_id)
+        formData.append('role', "student")
+        formData.append('file', document.getElementById('upload').files[0])
+        if (document.getElementById('upload').files[0] !== undefined) {
+            this.setState({isUploading: true})
+            axios.post(`/api/v1/file`, formData, {
+                validateStatus: (status) => {
+                    return status < 500
+                }
+            }).then((res) => {
+                this.setState({
+                    isUploading: false
+                })
+                if (res.status === 200) {
+                    this.setState({
+                        change_image: !this.state.change_image
+                    })
+                    let new_submitted_files = this
+                        .state
+                        .current_submitted_file
+                        .slice()
+                    new_submitted_files.push({name: res.data.data.name, id: res.data.data.id, url_thumbnail: res.data.data.url_thumbnail})
+                    this.setState({current_submitted_file: new_submitted_files})
+                    this.state.asg.forEach((data)=>{
+                        if (data.id === this.state.current_id){
+                            data.description = this.state.description
+                            data.submitted_file = this.state.current_submitted_file
+                        }
+                        }
+                    )
+                } else {
+                    dispatcherRequest(true, 401, res.data.error[0])
+                }
+            }).catch((err) => {
+                dispatcherRequest(true, 401, 'Error connection')
+                this.setState({
+                    isUploading: false
+                })
+            })
+        }
+    }
+    handleUploadAssignment = () => {
+        const {dispatcherRequest, dispatcherLoading} = this.props
+        dispatcherLoading(10, false)
+        let formData = new FormData()
+        formData.append('description', this.state.description)
+        let id = []
+        if(this.state.current_submitted_file.length!==0){
+            this.state.current_submitted_file.forEach((data) =>{
+                id.push(data.id)
+            })
+            formData.append('file_id', id.join("~"))
+        }else{
+            formData.append('file_id', "")
+        }
+        axios.put(`/api/v1/assignment/` + this.state.current_id, formData, {
+            validateStatus: (status) => {
+                return status < 500
+            }
+        }).then((res) => {
+            if (res.status === 200) {
+                dispatcherLoading(100, false)
+                this.setState({
+                    change_image: !this.state.change_image,
+                    showUpload: false
+                })
+                dispatcherRequest(true, 200, 'Data Added Successfully')
+            } else {
+                this.setState({showUpload: false})
+                dispatcherLoading(10, true)
+                dispatcherRequest(true, 401, res.data.error[0])
+            }
+        }).catch((err) => {
+            dispatcherLoading(10, true)
+            dispatcherRequest(true, 401, 'Error connection')
+        })
+    }
+    handleChange = (e) => {
+        this.state.asg.forEach((data)=>{
+            if (data.id=== this.state.current_id){
+                data.description = e.target.value
+            }
+            }
+        )
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+    handleDeleteFile = (id) => {
+        let new_list = this
+            .state
+            .current_submitted_file
+            .filter((data) => (data.id !== id))
+        
+        this.setState({current_submitted_file: new_list})
+        this.state.asg.forEach((data)=>{
+            if (data.id === this.state.current_id){
+                data.description = this.state.description
+                data.submitted_file = new_list
+            }
+            }
+        )
+    }
     /*----------------------------------------------------------------
                             HANDLE REQUEST
     ------------------------------------------------------------------*/
@@ -279,8 +453,23 @@ class CourseDetail extends Component {
                             RENDER ELEMENT
     ------------------------------------------------------------------*/
     render() {
+        const dataUpload = {
+            file: this.state.current_submitted_file,
+            showUpload: this.state.showUpload,
+            description: this.state.description,
+            isUploading: this.state.isUploading
+        }
+        const handle = {
+            uploadAssignment: this.handleUploadAssignment,
+            toggleUpload: this.handleToggleUpload,
+            onUploadFile: this.onUploadFile,
+            change: this.handleChange,
+            deleteFile: this.handleDeleteFile,
+            closeModal: this.handleCloseModal,
+        }
         return (
             <LayoutUser>
+                <UploadFile handle={handle} data={dataUpload} />
                 <Navbar match={this.props.match} active_navbar={"course"}/>
                 <div className="_ro _ma3mn">
                     <div className="_cn">
@@ -360,7 +549,11 @@ class CourseDetail extends Component {
                                     ? 'block'
                                     : 'none'
                             }}>
-                                <Assignment data={this.state.assignment} is_loaded={this.state.is_loaded.assignment}/>
+                                {/* <Assignment data={this.state.assignment} is_loaded={this.state.is_loaded.assignment}  toggleUpload={this.handleToggleUpload}/> */}
+                                <Assignment
+                                data={this.state.assignment}
+                                handleToggleUpload={this.handleToggleUpload}
+                                is_loaded={this.state.is_loaded.assignment}/>
                             </div>
                             <div
                                 className="_c5x312 _c5m312 _pd3n3lr __att"
@@ -406,8 +599,9 @@ class CourseDetail extends Component {
                     </div>
                 </div>
                 <InformationDetail
-                        modal_detail={this.state.modal_detail}
-                        handleClose={this.handleClose}/>
+                data={this.state.detail_information}
+                modal_detail={this.state.modal_detail}
+                handleClose={this.handleClose}/>
             </LayoutUser>
         )
     }
@@ -686,7 +880,8 @@ const mapStatetoProps = (state) => {
 }
 const mapDispatchtoProps = (dispatch) => {
     return {
-        dispatcherRequest: (is_logged_in, request_status, error_message) => dispatch(actorRequest(is_logged_in, request_status, error_message))
+        dispatcherRequest: (is_logged_in, request_status, error_message) => dispatch(actorRequest(is_logged_in, request_status, error_message)),
+        dispatcherLoading: (loading_progress, is_loading_error) => dispatch(loadingRequest(loading_progress, is_loading_error))
     }
 }
 export default connect(mapStatetoProps, mapDispatchtoProps)(CourseDetail)

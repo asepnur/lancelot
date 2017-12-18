@@ -1,18 +1,36 @@
 import React, {Component} from 'react'
 import axios from 'axios'
 
-import {Navbar, Newsbar, LayoutUser, LoadingAnim} from '../index.js'
+import {Navbar, Newsbar, LayoutUser, LoadingAnim, InformationDetail} from '../index.js'
 
 class Grade extends Component {
     constructor() {
         super()
         this.state = {
             data: [],
-            is_loaded: false
+            is_loaded: false,
+            detail_information:{},
+            modal_detail: false,
         }
     }
     componentDidMount() {
         this.handleGetGrade()
+    }
+    handleDetail = (id) => {
+        axios.get(`api/v1/information/` + id, {
+            validateStatus: (status) => {
+                return status === 200
+            }
+        }).then((res) => {
+            if (res.data.code === 200) {
+                this.setState({detail_information: res.data.data, modal_detail: true})
+            }
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+    handleClose = () => {
+        this.setState({modal_detail: false})
     }
     handleGetGrade = ()=>{
         axios.get(`/api/v1/grade`, {
@@ -20,7 +38,6 @@ class Grade extends Component {
                 return status === 200
             }
         }).then((res) => {
-            console.log(res.data)
             res.data.code === 200
                 ? this.setState({data: res.data.data, is_loaded: true})
                 : this.setState({data: [], is_loaded: true})
@@ -31,6 +48,10 @@ class Grade extends Component {
     render() {
         return (
             <LayoutUser>
+                <InformationDetail
+                        data={this.state.detail_information}
+                        modal_detail={this.state.modal_detail}
+                        handleClose={this.handleClose}/>
                 <Navbar match={this.props.match} active_navbar={"grade"}/>
                 <div className="_ro _ma3mn">
                     <div className="_cn">
@@ -39,7 +60,7 @@ class Grade extends Component {
                                 <div className="_he3b _pd3l3b">User Report</div>
                                 <Content data={this.state.data} is_loaded={this.state.is_loaded}/>
                             </div>
-                            <Newsbar/>
+                            <Newsbar handleDetail={this.handleDetail}/>
                         </div>
                     </div>
                 </div>

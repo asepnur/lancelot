@@ -24,10 +24,11 @@ class Home extends Component {
             file: [],
             showUpload: false,
             description: '',
-            current_id:'',
+            current_id: '',
             current_submitted_file: [],
             isUploading: false,
             asg: [],
+            detail_information: {},
             today: [],
             assignment: [],
             is_assignment_loaded: false,
@@ -47,13 +48,13 @@ class Home extends Component {
                             HANDLER FUNCTION
     ------------------------------------------------------------------*/
     handleDetail = (id) => {
-        axios.get(`api/v1/information/` + 6, {
+        axios.get(`api/v1/information/` + id, {
             validateStatus: (status) => {
                 return status === 200
             }
         }).then((res) => {
             if (res.data.code === 200) {
-                this.setState({detail: res.data.data, modal_detail: true})
+                this.setState({detail_information: res.data.data, modal_detail: true})
             }
         }).catch((err) => {
             console.log(err)
@@ -89,7 +90,7 @@ class Home extends Component {
             console.log(err)
         })
     }
-    handleCloseModal = ()=>{
+    handleCloseModal = () => {
         this.setState({
             showUpload: !this.state.showUpload
         })
@@ -98,27 +99,29 @@ class Home extends Component {
         let id = e.currentTarget.dataset.id
         let not_added = true
 
-        if (this.state.asg.length !== 0){
-            this.state.asg.forEach((data)=>{
-                if (String(data.id) === id){
-                   not_added = false 
-                }
-            }, Promise.resolve().then(()=>{
-                if(not_added){
-                    this.handleGetAssignmentDetail(id)
-                }else{
-                    this.state.asg.forEach((data)=>{
-                        if(String(data.id)===id){
-                            this.setState({
-                                description: data.description,
-                                current_submitted_file: data.submitted_file,
-                                current_id: data.id
+        if (this.state.asg.length !== 0) {
+            this
+                .state
+                .asg
+                .forEach((data) => {
+                    if (String(data.id) === id) {
+                        not_added = false
+                    }
+                }, Promise.resolve().then(() => {
+                    if (not_added) {
+                        this.handleGetAssignmentDetail(id)
+                    } else {
+                        this
+                            .state
+                            .asg
+                            .forEach((data) => {
+                                if (String(data.id) === id) {
+                                    this.setState({description: data.description, current_submitted_file: data.submitted_file, current_id: data.id})
+                                }
                             })
-                        }
-                    })
-                }
-            }))
-        }else{
+                    }
+                }))
+        } else {
             this.handleGetAssignmentDetail(id)
         }
         this.setState({
@@ -136,11 +139,8 @@ class Home extends Component {
                     .state
                     .asg
                     .slice()
-                list_asg.push({id: res.data.data.id, submitted_file: res.data.data.submitted_file, description:res.data.data.submitted_description})
-                this.setState({asg: list_asg, is_assignment_loaded: true,
-                    description: res.data.data.submitted_description,
-                    current_submitted_file: res.data.data.submitted_file,
-                    current_id: res.data.data.id})
+                list_asg.push({id: res.data.data.id, submitted_file: res.data.data.submitted_file, description: res.data.data.submitted_description})
+                this.setState({asg: list_asg, is_assignment_loaded: true, description: res.data.data.submitted_description, current_submitted_file: res.data.data.submitted_file, current_id: res.data.data.id})
             } else {
                 this.setState({asg: [], is_assignment_loaded: true})
             }
@@ -162,9 +162,7 @@ class Home extends Component {
                     return status < 500
                 }
             }).then((res) => {
-                this.setState({
-                    isUploading: false
-                })
+                this.setState({isUploading: false})
                 if (res.status === 200) {
                     this.setState({
                         change_image: !this.state.change_image
@@ -175,21 +173,21 @@ class Home extends Component {
                         .slice()
                     new_submitted_files.push({name: res.data.data.name, id: res.data.data.id, url_thumbnail: res.data.data.url_thumbnail})
                     this.setState({current_submitted_file: new_submitted_files})
-                    this.state.asg.forEach((data)=>{
-                        if (data.id === this.state.current_id){
-                            data.description = this.state.description
-                            data.submitted_file = this.state.current_submitted_file
-                        }
-                        }
-                    )
+                    this
+                        .state
+                        .asg
+                        .forEach((data) => {
+                            if (data.id === this.state.current_id) {
+                                data.description = this.state.description
+                                data.submitted_file = this.state.current_submitted_file
+                            }
+                        })
                 } else {
                     dispatcherRequest(true, 401, res.data.error[0])
                 }
             }).catch((err) => {
                 dispatcherRequest(true, 401, 'Error connection')
-                this.setState({
-                    isUploading: false
-                })
+                this.setState({isUploading: false})
             })
         }
     }
@@ -199,12 +197,15 @@ class Home extends Component {
         let formData = new FormData()
         formData.append('description', this.state.description)
         let id = []
-        if(this.state.current_submitted_file.length!==0){
-            this.state.current_submitted_file.forEach((data) =>{
-                id.push(data.id)
-            })
+        if (this.state.current_submitted_file.length !== 0) {
+            this
+                .state
+                .current_submitted_file
+                .forEach((data) => {
+                    id.push(data.id)
+                })
             formData.append('file_id', id.join("~"))
-        }else{
+        } else {
             formData.append('file_id', "")
         }
         axios.put(`/api/v1/assignment/` + this.state.current_id, formData, {
@@ -230,12 +231,14 @@ class Home extends Component {
         })
     }
     handleChange = (e) => {
-        this.state.asg.forEach((data)=>{
-            if (data.id=== this.state.current_id){
-                data.description = e.target.value
-            }
-            }
-        )
+        this
+            .state
+            .asg
+            .forEach((data) => {
+                if (data.id === this.state.current_id) {
+                    data.description = e.target.value
+                }
+            })
         this.setState({
             [e.target.name]: e.target.value
         })
@@ -245,18 +248,20 @@ class Home extends Component {
             .state
             .current_submitted_file
             .filter((data) => (data.id !== id))
-        
+
         this.setState({current_submitted_file: new_list})
-        this.state.asg.forEach((data)=>{
-            if (data.id === this.state.current_id){
-                data.description = this.state.description
-                data.submitted_file = new_list
-            }
-            }
-        )
+        this
+            .state
+            .asg
+            .forEach((data) => {
+                if (data.id === this.state.current_id) {
+                    data.description = this.state.description
+                    data.submitted_file = new_list
+                }
+            })
     }
-    
-    renderMain = (today, assignment, modal_detail, dataUpload) => {}
+
+    renderMain = (today, assignment, modal_detail, dataUpload, detail_information) => {}
     /*------------------------------------------------------------
                             RENDER COMPONENT
     --------------------------------------------------------------*/
@@ -267,7 +272,6 @@ class Home extends Component {
         const is_information_loaded = this.state.is_information_loaded
         const is_schedule_loaded = this.state.is_schedule_loaded
         const today = this.state.today
-        const modal_detail = this.state.modal_detail
         const handler = {
             handleClickUpload: this.handleClickUpload,
             handleGetAssignment: this.handleGetAssignment,
@@ -287,10 +291,13 @@ class Home extends Component {
             onUploadFile: this.onUploadFile,
             change: this.handleChange,
             deleteFile: this.handleDeleteFile,
-            closeModal: this.handleCloseModal,
+            closeModal: this.handleCloseModal
         }
         return (is_logged_in
             ? <RenderMain
+                    handleClose = {this.handleClose}
+                    modal_detail = {this.state.modal_detail}
+                    detail_information= {this.state.detail_information}
                     data={dataUpload}
                     handler={handler}
                     handle={handle}
@@ -298,8 +305,7 @@ class Home extends Component {
                     is_assignment_loaded={is_assignment_loaded}
                     is_information_loaded={is_information_loaded}
                     is_schedule_loaded={is_schedule_loaded}
-                    today={today}
-                    modal_detail={modal_detail}/>
+                    today={today}/>
             : <Redirect to={`/login`}/>)
     }
 }
@@ -309,7 +315,7 @@ class Home extends Component {
 const RenderMain = (props) => {
     return (
         <LayoutUser>
-            <UploadFile handle={props.handle} data={props.data} />
+            <UploadFile handle={props.handle} data={props.data}/>
             <Navbar match={props.match} active_navbar={"home"}/>
             <div className="_ro _ma3mn">
                 <div className="_cn3w">
@@ -336,7 +342,7 @@ const RenderMain = (props) => {
                                 </div>
                             </div> */}
                         </div>
-                        <Newsbar handleDetail={props.handler.handleDetail}/>
+                        <Newsbar handleDetail={props.handler.handleDetail} handleClose={props.handleClose}/>
                     </div>
                 </div>
             </div>
@@ -387,8 +393,9 @@ const RenderMain = (props) => {
                 </div>
             </div>
             <InformationDetail
+                data={props.detail_information}
                 modal_detail={props.modal_detail}
-                handleClose={props.handler.handleClose}/>
+                handleClose={props.handleClose}/>
         </LayoutUser>
     )
 }
@@ -451,15 +458,14 @@ export const Assignment = (props) => {
                                         <Link to={"/assignment/" + data.id}>{data.name}</Link>
                                     </td>
                                     <td>
-                                        {
-                                            data.is_allow_upload?
-                                            <i
-                                            data-id={data.id}
-                                            className="fa fa-pencil-square-o _ic __wr"
-                                            aria-hidden="true"
-                                            onClick={handleToggleUpload}></i>
-                                            :null
-                                        }
+                                        {data.is_allow_upload
+                                            ? <i
+                                                    data-id={data.id}
+                                                    className="fa fa-pencil-square-o _ic __wr"
+                                                    aria-hidden="true"
+                                                    onClick={handleToggleUpload}></i>
+                                            : null
+}
                                     </td>
                                     <td>
                                         <Link to={"/assignment/" + data.id}>
@@ -520,16 +526,20 @@ const Today = (props) => {
                                     <td>
                                         <p>{val.time}</p>
                                         <p>
-                                        <Link to={`/course/${val.id}`}> <i className="fa fa-bookmark _ma3r" aria-hidden="true"></i>
-                                            {val.name}</Link>
+                                            <Link to={`/course/${val.id}`}>
+                                                <i className="fa fa-bookmark _ma3r" aria-hidden="true"></i>
+                                                {val.name}</Link>
                                         </p>
                                         <p>
-                                        <Link to={`/course/${val.id}`}>
-                                            <i className="fa fa-map-marker _ma3r" aria-hidden="true"></i>
-                                            {val.place}</Link></p>
+                                            <Link to={`/course/${val.id}`}>
+                                                <i className="fa fa-map-marker _ma3r" aria-hidden="true"></i>
+                                                {val.place}</Link>
+                                        </p>
                                     </td>
                                     <td>
-                                        <Link to={`/course/${val.id}`}><i className="fa fa-angle-double-right _ic __wr" aria-hidden="true"></i></Link>
+                                        <Link to={`/course/${val.id}`}>
+                                            <i className="fa fa-angle-double-right _ic __wr" aria-hidden="true"></i>
+                                        </Link>
                                     </td>
                                 </tr>
                             ))}
