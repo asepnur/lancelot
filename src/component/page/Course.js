@@ -240,7 +240,7 @@ const ListCourse = props => {
                                     </Link>
                                 )
                                 : data.status === 'unenrolled'
-                                    ? <button className="_bt5xs3g">Enroll</button>
+                                    ? <button className="_bt5xs3g" >Enroll</button>
                                     : <button className="_bt5xs3r">Waiting</button>
 }
                         </div>

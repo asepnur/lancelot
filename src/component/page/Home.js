@@ -77,7 +77,7 @@ class Home extends Component {
         })
     }
     handleGetAssignment = () => {
-        axios.get(`/api/v1/assignment`, {
+        axios.get(`/api/v1/assignment?filter=unsubmitted`, {
             validateStatus: (status) => {
                 return status === 200
             }

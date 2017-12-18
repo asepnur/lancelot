@@ -56,7 +56,7 @@ class MyActivity extends Component {
     }
     handleActiveTab = (e) => {
         const tagID = e.currentTarget.id
-        const id = ["tab_submitted", "tab_not_submitted", "tab_all","tab_overdue","tab_graded"]
+        const id = ["tab_submitted", "tab_not_submitted","tab_overdue","tab_graded"]
         id.forEach(function (val) {
             let dom = document.getElementById(val)
             val === tagID
@@ -75,12 +75,6 @@ class MyActivity extends Component {
             case "tab_not_submitted":
                 this.setState({data: this.state.not_submitted, is_loaded: this.state.is_loaded})
                 break
-            case "tab_all":
-                const all = []
-                all.push(...this.state.not_submitted)
-                all.push(...this.state.submitted)
-                this.setState({data: all, is_loaded: this.state.is_loaded})
-                break;
             case "tab_overdue":
                 this.setState({data: this.state.overdue, is_loaded: this.state.is_loaded})
                 break;
@@ -124,11 +118,6 @@ class MyActivity extends Component {
                                         <i className="fa fa-trophy" aria-hidden="true"></i>
                                             <Link to="#">
                                                 &nbsp;Graded</Link>
-                                        </li>
-                                        <li id="tab_all" onClick={this.handleActiveTab}>
-                                            <i className="fa fa-list" aria-hidden="true"></i>
-                                            <Link to="#">
-                                                &nbsp;All</Link>
                                         </li>
                                     </ul>
                                     <ListActivity data={data} is_loaded={this.state.is_loaded}/>

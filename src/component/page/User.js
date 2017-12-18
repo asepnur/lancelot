@@ -311,7 +311,7 @@ class Profil extends Component {
                     <div className="_c5x33 _c5m31">
                         <img className="_i3pr _i3ci" src={this.props.change_image?this.props.data.img_t:this.props.data.img} alt="profil"/>
                         <i
-                            className="fa fa-camera _icx"
+                            className="fa fa-camera _ic3pro _icx"
                             aria-hidden="true"
                             onClick={this.props.data.handleChangeImg}></i>
                         <input

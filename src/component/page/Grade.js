@@ -20,8 +20,9 @@ class Grade extends Component {
                 return status === 200
             }
         }).then((res) => {
+            console.log(res.data)
             res.data.code === 200
-                ? this.setState({data: [], is_loaded: true})
+                ? this.setState({data: res.data.data, is_loaded: true})
                 : this.setState({data: [], is_loaded: true})
         }).catch((err) => {
             console.log(err)

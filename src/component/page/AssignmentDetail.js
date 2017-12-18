@@ -7,7 +7,7 @@ import {Redirect, Link} from 'react-router-dom'
 import axios from 'axios'
 
 import {actorRequest, loadingRequest} from '../../action/action'
-import {Navbar, Newsbar, LayoutUser, UploadFile} from '../index.js'
+import {Navbar, Newsbar, LayoutUser, UploadFile, LoadingAnim} from '../index.js'
 
 class AssignmentDetail extends Component {
     constructor() {
@@ -19,7 +19,8 @@ class AssignmentDetail extends Component {
             isUploading: false,
             uploaded: false,
             asg: {},
-            submitted_file: []
+            submitted_file: [],
+            is_loaded: false
         }
     }
     /*------------------------------------------------------------
@@ -45,10 +46,12 @@ class AssignmentDetail extends Component {
                 return status === 200
             }
         }).then((res) => {
+            this.setState({is_loaded: true})
             if (res.data.code === 200) {
                 this.setState({assignment: res.data.data, asg: res.data.data, submitted_file: res.data.data.submitted_file})
             }
         }).catch((err) => {
+            this.setState({is_loaded: true})
             console.log(err)
         })
     }
@@ -71,9 +74,7 @@ class AssignmentDetail extends Component {
                     return status < 500
                 }
             }).then((res) => {
-                this.setState({
-                    isUploading: false
-                })
+                this.setState({isUploading: false})
                 if (res.status === 200) {
                     this.setState({
                         change_image: !this.state.change_image
@@ -89,9 +90,7 @@ class AssignmentDetail extends Component {
                 }
             }).catch((err) => {
                 dispatcherRequest(true, 401, 'Error connection')
-                this.setState({
-                    isUploading: false
-                })
+                this.setState({isUploading: false})
             })
         }
     }
@@ -101,9 +100,12 @@ class AssignmentDetail extends Component {
         let formData = new FormData()
         formData.append('description', this.state.assignment.description)
         let id = []
-        this.state.submitted_file.forEach((data) =>{
-            id.push(data.id)
-        })
+        this
+            .state
+            .submitted_file
+            .forEach((data) => {
+                id.push(data.id)
+            })
         formData.append('file_id', id.join("~"))
         axios.put(`/api/v1/assignment/` + this.state.assignment.id, formData, {
             validateStatus: (status) => {
@@ -133,7 +135,7 @@ class AssignmentDetail extends Component {
             .state
             .submitted_file
             .filter((data) => (data.id !== id))
-        
+
         this.setState({submitted_file: new_list})
     }
     /*------------------------------------------------------------
@@ -176,112 +178,123 @@ class AssignmentDetail extends Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="_c5x312 _c5m312 _pd3n3lr _ta ">
-                                    <div className="_se3da">
-                                        <div className="_ro">
-                                            <div className="_c5x312 _c5m38">
-                                                <h2 className="_he3b _pd3l3tb">{this.state.asg.name}</h2>
-                                                <p className="_ct3nor _pd3l3t">{this.state.asg.description}</p>
-                                            </div>
-                                            <div className="_c5x312 _c5m34">
-                                                <table className="_tb3asi">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Assignment Source Info</th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>
-                                                                <i className="fa fa-calendar-plus-o" aria-hidden="true"></i>
-                                                            </th>
-                                                            <th>
-                                                                {this.state.asg.updated_at}</th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>
-                                                                <i className="fa fa-clock-o" aria-hidden="true"></i>
-                                                            </th>
-                                                            <th>{this.state.asg.due_date}</th>
-                                                        </tr>
-                                                        {this.state.asg.assignment_file !== undefined && this.state.asg.assignment_file.length !== 0
-                                                            ? this
-                                                                .state
-                                                                .asg
-                                                                .assignment_file
-                                                                .map((data, i) => (
-                                                                    <tr key={i}>
+                                {this.state.is_loaded
+                                    ? <div className="_c5x312 _c5m312 _pd3n3lr _ta ">
+                                            <div className="_se3da">
+                                                <div className="_ro">
+                                                    <div className="_c5x312 _c5m38">
+                                                        <h2 className="_he3b _pd3l3tb">{this.state.asg.name}</h2>
+                                                        <p className="_ct3nor _pd3l3t">{this.state.asg.description}</p>
+                                                    </div>
+                                                    <div className="_c5x312 _c5m34">
+                                                        <table className="_tb3asi">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Assignment Source Info</th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>
+                                                                        <i className="fa fa-calendar-plus-o" aria-hidden="true"></i>
+                                                                    </th>
+                                                                    <th>
+                                                                        {this.state.asg.updated_at}</th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>
+                                                                        <i className="fa fa-clock-o" aria-hidden="true"></i>
+                                                                    </th>
+                                                                    <th>{this.state.asg.due_date}</th>
+                                                                </tr>
+                                                                {this.state.asg.assignment_file !== undefined && this.state.asg.assignment_file.length !== 0
+                                                                    ? this
+                                                                        .state
+                                                                        .asg
+                                                                        .assignment_file
+                                                                        .map((data, i) => (
+                                                                            <tr key={i}>
+                                                                                <th>
+                                                                                    <i className="fa fa-file-pdf-o" aria-hidden="true"></i>
+                                                                                </th>
+                                                                                <th>
+                                                                                    {data.name}</th>
+                                                                            </tr>
+                                                                        ))
+                                                                    : <tr>
                                                                         <th>
                                                                             <i className="fa fa-file-pdf-o" aria-hidden="true"></i>
                                                                         </th>
                                                                         <th>
-                                                                            {data.name}</th>
+                                                                            No file Source</th>
                                                                     </tr>
-                                                                ))
-                                                            : <tr>
-                                                                <th>
-                                                                    <i className="fa fa-file-pdf-o" aria-hidden="true"></i>
-                                                                </th>
-                                                                <th>
-                                                                    No file Source</th>
-                                                            </tr>
 }
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>Assignment User Info</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <i className="fa fa-trophy" aria-hidden="true"></i>
-                                                            </td>
-                                                            <td>
-                                                                {this.state.asg.score}
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <i className="fa fa-calendar" aria-hidden="true"></i>
-                                                            </td>
-                                                            <td>
-                                                                {this.state.asg.submitted_date}
-                                                            </td>
-                                                        </tr>
-                                                        {this.state.asg.submitted_file !== undefined && this.state.asg.submitted_file !== []
-                                                            ? this
-                                                                .state
-                                                                .assignment
-                                                                .submitted_file
-                                                                .map((val, i) => (
-                                                                    <tr key={i}>
-                                                                        <td>
-                                                                            <i className="fa fa-file-pdf-o" aria-hidden="true"></i>
-                                                                        </td>
-                                                                        <td>
-                                                                            <a href={"http://47.74.149.190" + val.url} target="_blank">{val.name}</a>
-                                                                        </td>
-                                                                    </tr>
-                                                                ))
-                                                            : null}
-                                                        <tr>
-                                                            <td>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>Assignment User Info</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <i className="fa fa-trophy" aria-hidden="true"></i>
+                                                                    </td>
+                                                                    <td>
+                                                                        {this.state.asg.score}
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <i className="fa fa-calendar" aria-hidden="true"></i>
+                                                                    </td>
+                                                                    <td>
+                                                                        {this.state.asg.submitted_date}
+                                                                    </td>
+                                                                </tr>
+                                                                {this.state.asg.submitted_file !== undefined && this.state.asg.submitted_file !== []
+                                                                    ? this
+                                                                        .state
+                                                                        .assignment
+                                                                        .submitted_file
+                                                                        .map((val, i) => (
+                                                                            <tr key={i}>
+                                                                                <td>
+                                                                                    <i className="fa fa-file-pdf-o" aria-hidden="true"></i>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <a href={"http://47.74.149.190" + val.url} target="_blank">{val.name}</a>
+                                                                                </td>
+                                                                            </tr>
+                                                                        ))
+                                                                    : null}
+                                                                <tr>
+                                                                    <td>
 
-                                                                {this.state.asg.status === "submitted"
-                                                                    ? <button className="_bt3b" onClick={this.handleToggleUpload}>
-                                                                            Update</button>
-                                                                    : this.state.asg.status === "unsubmitted"
-                                                                        ? <button className="_bt3b" onClick={this.handleToggleUpload}>
-                                                                                Add</button>
-                                                                        : this.state.asg.status === "overdue"
-                                                                            ? <button className="_bt3r">
-                                                                                    Overdue</button>
-                                                                            : null}
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                                                        {this.state.asg.status === "submitted"
+                                                                            ? <button className="_bt3b" onClick={this.handleToggleUpload}>
+                                                                                    Update</button>
+                                                                            : this.state.asg.status === "unsubmitted"
+                                                                                ? <button className="_bt3b" onClick={this.handleToggleUpload}>
+                                                                                        Add</button>
+                                                                                : this.state.asg.status === "overdue"
+                                                                                    ? <button className="_bt3r">
+                                                                                            Overdue</button>
+                                                                                    : null}
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
+                                    : <table className="_se3msg">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <LoadingAnim color_left="#333" color_right="#333"/>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    }
                             </div>
                             <Newsbar/>
                         </div>
