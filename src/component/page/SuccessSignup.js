@@ -33,7 +33,7 @@ class SuccessSignup extends Component {
                     </div>
 
                     <div className="_ro">
-                        <div className="_c5m3o4 _c5m34 _c5x3o3  _c5x36">
+                        <div className="_c5m3o4 _c5m34 _c5x3o4  _c5x34">
                             <Link className="_bt5m3m" to="/login">Login</Link>
                         </div>
                     </div>

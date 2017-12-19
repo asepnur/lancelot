@@ -73,7 +73,7 @@ class CourseDetail extends Component {
     ------------------------------------------------------------------*/
     handleDetail = (id) => {
         this.setState({modal_detail: true})
-        axios.get(`http://localhost:3000/api/v1/information/` + id, {
+        axios.get(`/api/v1/information/` + id, {
             validateStatus: (status) => {
                 return status === 200
             }
@@ -653,7 +653,7 @@ const Assistant = props => {
                 <div className="_c5x312 _c5m34 _pd3n3lr3x" key={i}>
                     <div className="_se3lc ">
                         <div>
-                            <img src="/img/image.png" alt=""/>
+                            <img style={{"object-fit":"cover"}} src="/img/image.png" alt=""/>
                             <p>{data.name}</p>
                             <p>{data.role}</p>
                             <p>

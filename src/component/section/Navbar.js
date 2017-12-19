@@ -36,7 +36,6 @@ class Navbar extends Component {
             "schedule",
             "assignment",
             "grade",
-            "admin",
             "information",
             "user"
         ]
@@ -88,11 +87,13 @@ class Navbar extends Component {
                                                 <i className="fa fa-bar-chart" aria-hidden="true"></i>
                                             </Link>
                                         </li>
-                                        <li id="admin" className="_n3a">
+                                        {// Adminnya belum siap gan 
+                                        }
+                                        {/* <li id="admin" className="_n3a">
                                             <Link to={'/'}>
                                                 <i className="fa fa-wrench" aria-hidden="true"></i>
                                             </Link>
-                                        </li>
+                                        </li> */}
                                     </div>
                                     <div className="_n52">
                                         <li id="information">

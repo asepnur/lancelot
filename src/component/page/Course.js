@@ -264,9 +264,12 @@ const ListCourse = props => {
                 <div className="_c5x312 _c5m34 _pd3n3lr3x" key={data.id}>
                     <div className="_se3lc">
                         <div>
+                            <p>2017</p>
                             <p>{data.name}</p>
-                            <p>{data.description}
-                            </p>
+                            {data.description===""
+                            ?<p style={{height: "63px", overflow:"hidden", fontStyle:"italic"}}>No description available</p>
+                            :<p style={{height: "63px", overflow:"hidden"}}>{data.description}</p>}
+                            
                             {data.status === 'enrolled'
                                 ? (
                                     <Link to={"/course/" + data.id}>

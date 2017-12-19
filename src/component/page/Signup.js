@@ -56,7 +56,7 @@ class Signup extends Component {
             return res.json()
         }).then((data) => {
             data.code === 200
-                ? dispatcherRequest(false, 200, '')
+                ? dispatcherRequest(false, 200, 'Signup success! Check your email')
                 : dispatcherRequest(false, 401, data.error)
         })
     }

@@ -49,7 +49,7 @@ class EmailActivation extends Component {
             return res.json()
         }).then((data) => {
             data.code === 200
-                ? dispatcherRequest(false, 201, '')
+                ? dispatcherRequest(false, 201, 'Success, Waiting for admin approval')
                 : dispatcherRequest(false, 401, data.error)
         })
     }

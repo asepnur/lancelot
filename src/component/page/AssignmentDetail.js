@@ -266,8 +266,8 @@ class AssignmentDetail extends Component {
                                                                     : null}
                                                                 <tr>
                                                                     <td>
-
-                                                                        {this.state.asg.status === "submitted"
+                                                                        {this.state.asg.is_allow_upload
+                                                                            ?this.state.asg.status === "submitted"
                                                                             ? <button className="_bt3b" onClick={this.handleToggleUpload}>
                                                                                     Update</button>
                                                                             : this.state.asg.status === "unsubmitted"
@@ -276,7 +276,8 @@ class AssignmentDetail extends Component {
                                                                                 : this.state.asg.status === "overdue"
                                                                                     ? <button className="_bt3r">
                                                                                             Overdue</button>
-                                                                                    : null}
+                                                                                    : null
+                                                                            :null}
                                                                     </td>
                                                                 </tr>
                                                             </tbody>
