@@ -1,175 +1,249 @@
 import React, {Component} from 'react'
-import {Link, Redirect} from 'react-router-dom'
+import { Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 
 import {actorRequest} from '../../action/action'
-import {Navbar, LayoutUser} from '../index'
+import {Navbar, LayoutUser, AdminNavCourse} from '../index'
 
-const ListCourse = (props) => {
-      return (
-            <div className="_cn">
-                  <div className="_ro _c5m312 _c5x132 _pd3n3r ">
-                        <div className="_c5x312 _c5m312 _pd5m3n _pd3n3l">
-                              <div className="_se _se3a">
-                                    <div className="_ro">
-                                          <div className="_c5x310 _c5m311 ">
-                                                <h1 className="_he3m3b">List Courses</h1>
-                                          </div>
-                                          <div className="_c5x32 _c5m31 ">
-                                                <button
-                                                      className="_bt5m3b"
-                                                      onClick={e => {
-                                                      e.preventDefault();
-                                                      props.handleRedirect()
-                                                }}>
-                                                      <i className="fa fa-plus" aria-hidden="true"></i>
-                                                </button>
-                                          </div>
-                                    </div>
-                                    <div className="_ro _pd3n3b _ma3l3lr">
-                                          <table className="_tb3g34">
-                                                <thead >
-                                                      <tr>
-                                                            <th>No.</th>
-                                                            <th>Subject</th>
-                                                            <th>Class</th>
-                                                            <th>Action</th>
-                                                      </tr>
-                                                </thead>
-                                          </table>
-                                          <div className="_c5m312 _c5x312 _pd3n3lr _ov3y _pdx3n">
-                                                <table className="_tb3g34">
-                                                      <tbody>
-                                                            {props
-                                                                  .data
-                                                                  .map((data, i) => (
-                                                                        <tr key={i + 1}>
-                                                                              <td>{i}</td>
-                                                                              <td>{data.name}</td>
-                                                                              <td>{data.class}</td>
-                                                                              <td>
-                                                                                    <div align="center">
-                                                                                          <Link to={'/admin/course/manage/' + data.schedule_id}>
-                                                                                                <i className="fa fa-pencil-square _ic3mb _ma3lr" aria-hidden="true"></i>
-                                                                                          </Link>
-                                                                                          <Link
-                                                                                                to={'#'}
-                                                                                                onClick={e => {
-                                                                                                e.preventDefault();
-                                                                                                props.handleDelete(props.dispatcherRequest, data.schedule_id)
-                                                                                          }}>
-                                                                                                <i className="fa fa-window-close _ic3mr _ma3lr" aria-hidden="true"></i>
-                                                                                          </Link>
-                                                                                    </div>
-                                                                              </td>
-                                                                        </tr>
-                                                                  ))}
-                                                      </tbody>
-                                                </table>
-                                          </div>
-                                    </div>
-                              </div>
-                        </div>
-                  </div>
-            </div>
-      )
-}
 class AdminCourse extends Component {
       constructor() {
             super()
-
             this.state = {
-                  data: [
-                        {
-                              id: '',
-                              name: '',
-                              class: '',
-                              start_time: '',
-                              end_time: '',
-                              day: '',
-                              status: '',
-                              schedule_id: ''
-                        }
-                  ]
+                  active_menu: 'btn_assign'
             }
       }
-      componentDidMount() {
-            fetch('/api/admin/v1/course?pg=1&ttl=10', {
-                  method: 'GET',
-                  credentials: 'include',
-                  crossDomain: true
-            }).then((res) => {
-                  return res.json()
-            }).then((data) => {
-                  if (data.code === 200) {
-                        this.setState({data: data.data})
-                  }
-            })
-      }
-      handleRedirect = () => {
-            window.location = '/admin/create/course'
-      }
-      handleChange = (e) => {
-            this.setState({
-                  [e.target.name]: e.target.value
-            })
-      }
-      handleRedirectUpdate = (id) => {
-            window.location = '/admin/course/manage/' + id
-      }
-
-      handleDelete = (dispatcherRequest, id) => {
-            fetch('/api/admin/v1/course/' + id + '/delete', {
-                  method: 'POST',
-                  credentials: 'include',
-                  crossDomain: true
-            }).then((res) => {
-                  return res.json()
-            }).then((data) => {
-                  if (data.code === 200) {
-                        dispatcherRequest(true, 200, '')
-                        let val = this
-                              .state
-                              .data
-                              .filter((data, i) => data.schedule_id !== id
-                                    ? {
-                                          id: data.id,
-                                          name: data.name,
-                                          class: data.class,
-                                          start_time: data.start_time,
-                                          end_time: data.end_time,
-                                          day: data.day,
-                                          status: data.status,
-                                          schedule_id: data.schedule_id
-                                    }
-                                    : null)
-                        this.setState({data: val})
-                  } else {
-                        dispatcherRequest(true, 401, data.error)
-                  }
-            })
-      }
-
       render() {
             const {is_logged_in} = this.props
-            const data = this.state.data
             return (is_logged_in
                   ? <LayoutUser>
-                              <Navbar match={this.props.match}/>
-                              <div className="_cn">
-                                    <div className="_ro">
-                                          <div className="_pd5m3n _c5m312 _c5x312">
-                                                <h1 className="_he3b">Courses Management</h1>
+                              <Navbar match={this.props.match} active_navbar={"admin"}/>
+                              <div className="_ro _ma3mn">
+                                    <div className="_cn">
+                                          <div className="_ro _c5m312 _c5x312 _pd5m3n">
+                                                <div className="_c5x312 _c5m312 _he3b _pd3l3b">Mobile Computing</div>
+                                                <div className="_c5x312 _c5m312 _pd3n3lr  _pd3l3b">
+                                                      <div className="_pd3n3lr _ta">
+                                                            <ul className="_ta5p">
+                                                                  <li>
+                                                                        <a href="">Home</a>
+                                                                  </li>
+                                                                  <li className="_active">
+                                                                        <a href="">Mobile Computing</a>
+                                                                  </li>
+                                                            </ul>
+                                                      </div>
+                                                </div>
+                                                <AdminNavCourse
+                                                      active_menu={this.state.active_menu}
+                                                      handleActive={this.handleChangeActiveMenu}/>
+                                                <div className="_c5x312 _c5m310  _pd3l3lr __ass">
+                                                      <div className="_ca">
+                                                            <div className="_ca3h">
+                                                                  <div className="_c5m310 _c5x310">Assignment</div>
+                                                                  <div className="_c5m32 _c5x32">
+                                                                        <i className="fa fa-plus-circle" aria-hidden="true"></i>
+                                                                  </div>
+                                                                  <div className="_c5m310 _c5x310">
+                                                                        <a href="">Assignment</a>
+                                                                        <a href="">Create</a>
+                                                                  </div>
+                                                            </div>
+                                                            <table className="_se _se3ada">
+                                                                  <thead>
+                                                                        <tr>
+                                                                              <th>Subject</th>
+                                                                              <th>Due</th>
+                                                                              <th>Created</th>
+                                                                              <th>Action</th>
+                                                                        </tr>
+                                                                  </thead>
+                                                                  <tbody>
+                                                                        <tr>
+                                                                              <td>Tugas 1 Tentang Sesuatu</td>
+                                                                              <td>Monday, 21 December 2017 13:00</td>
+                                                                              <td>Monday, 21 December 2017
+                                                                              </td>
+                                                                              <td>
+                                                                                    <i className="fa fa-pencil-square-o _ic3b __wr" aria-hidden="true"></i>
+                                                                                    <i className="fa fa-arrow-circle-down _ic3b" aria-hidden="true"></i>
+                                                                                    <i className="fa fa-trash _ic3 __wr" aria-hidden="true"></i>
+                                                                              </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                              <td>Tugas 1 Tentang Sesuatu</td>
+                                                                              <td>Monday, 21 December 2017 13:00</td>
+                                                                              <td>Monday, 21 December 2017
+                                                                              </td>
+                                                                              <td>
+                                                                                    <i className="fa fa-pencil-square-o _ic3b __wr" aria-hidden="true"></i>
+                                                                                    <i className="fa fa-arrow-circle-down _ic3b" aria-hidden="true"></i>
+                                                                                    <i className="fa fa-trash _ic3 __wr" aria-hidden="true"></i>
+                                                                              </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                              <td>Tugas 1 Tentang Sesuatu</td>
+                                                                              <td>Monday, 21 December 2017 13:00</td>
+                                                                              <td>Monday, 21 December 2017
+                                                                              </td>
+                                                                              <td>
+                                                                                    <i className="fa fa-pencil-square-o _ic3b __wr" aria-hidden="true"></i>
+                                                                                    <i className="fa fa-arrow-circle-down _ic3b" aria-hidden="true"></i>
+                                                                                    <i className="fa fa-trash _ic3 __wr" aria-hidden="true"></i>
+                                                                              </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                              <td>Tugas 1 Tentang Sesuatu</td>
+                                                                              <td>Monday, 21 December 2017 13:00</td>
+                                                                              <td>Monday, 21 December 2017
+                                                                              </td>
+                                                                              <td>
+                                                                                    <i className="fa fa-pencil-square-o _ic3b __wr" aria-hidden="true"></i>
+                                                                                    <i className="fa fa-arrow-circle-down _ic3b" aria-hidden="true"></i>
+                                                                                    <i className="fa fa-trash _ic3 __wr" aria-hidden="true"></i>
+                                                                              </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                              <td>Tugas 1 Tentang Sesuatu</td>
+                                                                              <td>Monday, 21 December 2017 13:00</td>
+                                                                              <td>Monday, 21 December 2017
+                                                                              </td>
+                                                                              <td>
+                                                                                    <i className="fa fa-pencil-square-o _ic3b __wr" aria-hidden="true"></i>
+                                                                                    <i className="fa fa-arrow-circle-down _ic3b" aria-hidden="true"></i>
+                                                                                    <i className="fa fa-trash _ic3 __wr" aria-hidden="true"></i>
+                                                                              </td>
+                                                                        </tr>
+                                                                  </tbody>
+                                                                  <tfoot>
+                                                                        <tr className="_pg">
+                                                                              <td>
+                                                                                    <a href="">&laquo;</a>
+                                                                              </td>
+                                                                              <td>
+                                                                                    <a href="">1</a>
+                                                                              </td>
+                                                                              <td>
+                                                                                    <a className="_active" href="">2</a>
+                                                                              </td>
+                                                                              <td>
+                                                                                    <a href="">3</a>
+                                                                              </td>
+                                                                              <td>
+                                                                                    <a href="">&raquo;</a>
+                                                                              </td>
+                                                                        </tr>
+                                                                  </tfoot>
+                                                            </table>
+                                                            <table className="_se _se3ada">
+                                                                  <thead>
+                                                                        <tr>
+                                                                              <th>Subject</th>
+                                                                              <th>Name</th>
+                                                                              <th>NPM</th>
+                                                                              <th>Created</th>
+                                                                              <th>Action</th>
+                                                                        </tr>
+                                                                  </thead>
+                                                                  <tbody>
+                                                                        <tr>
+                                                                              <td>Tugas1_140810140070.pdf</td>
+                                                                              <td>Rifki Muhammad</td>
+                                                                              <td>140810140070</td>
+                                                                              <td>Monday, 21 December 2017
+                                                                              </td>
+                                                                              <td>
+                                                                                    <i className="fa fa-arrow-circle-down _ic3mb __wr" aria-hidden="true"></i>
+                                                                              </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                              <td>Tugas1_140810140070.pdf</td>
+                                                                              <td>Rifki Muhammad</td>
+                                                                              <td>140810140070</td>
+                                                                              <td>Monday, 21 December 2017
+                                                                              </td>
+                                                                              <td>
+                                                                                    <i className="fa fa-arrow-circle-down _ic3mb __wr" aria-hidden="true"></i>
+                                                                              </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                              <td>Tugas1_140810140070.pdf</td>
+                                                                              <td>Rifki Muhammad</td>
+                                                                              <td>140810140070</td>
+                                                                              <td>Monday, 21 December 2017
+                                                                              </td>
+                                                                              <td>
+                                                                                    <i className="fa fa-arrow-circle-down _ic3mb __wr" aria-hidden="true"></i>
+                                                                              </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                              <td>Tugas1_140810140070.pdf</td>
+                                                                              <td>Rifki Muhammad</td>
+                                                                              <td>140810140070</td>
+                                                                              <td>Monday, 21 December 2017
+                                                                              </td>
+                                                                              <td>
+                                                                                    <i className="fa fa-arrow-circle-down _ic3mb __wr" aria-hidden="true"></i>
+                                                                              </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                              <td>Tugas1_140810140070.pdf</td>
+                                                                              <td>Rifki Muhammad</td>
+                                                                              <td>140810140070</td>
+                                                                              <td>Monday, 21 December 2017
+                                                                              </td>
+                                                                              <td>
+                                                                                    <i className="fa fa-arrow-circle-down _ic3mb __wr" aria-hidden="true"></i>
+                                                                              </td>
+                                                                        </tr>
+                                                                  </tbody>
+                                                                  <tfoot>
+                                                                        <tr className="_pg">
+                                                                              <td>
+                                                                                    <a href="">&laquo;</a>
+                                                                              </td>
+                                                                              <td>
+                                                                                    <a href="">1</a>
+                                                                              </td>
+                                                                              <td>
+                                                                                    <a className="_active" href="">2</a>
+                                                                              </td>
+                                                                              <td>
+                                                                                    <a href="">3</a>
+                                                                              </td>
+                                                                              <td>
+                                                                                    <a href="">&raquo;</a>
+                                                                              </td>
+                                                                        </tr>
+                                                                  </tfoot>
+                                                            </table>
+
+                                                            <div className="_se">
+                                                                  <div className="_c5x36 _c5m38">
+                                                                        <label htmlFor="name">Assignment Name</label>
+                                                                        <input name="name" type="text"/>
+                                                                  </div>
+                                                                  <div className="_c5x36 _c5m34">
+                                                                        <label htmlFor="course_name">Due Date</label>
+                                                                        <input name="due" type="date"/>
+                                                                  </div>
+                                                                  <div className="_c5x36 _c5m33">
+                                                                        <button type="button" className="_bt5m3b">Add Attachment</button>
+                                                                  </div>
+                                                                  <div className="_c5x312 _c5m312">
+                                                                        <label htmlFor="description">Description*</label>
+                                                                        <textarea placeholder="input description"></textarea>
+                                                                  </div>
+                                                                  <div className="_c5m3o8 _c5x3o6 _c5x33 _c5m32 _pd3r">
+                                                                        <button type="button" className="_bt5m">Back</button>
+                                                                  </div>
+                                                                  <div className="_c5x33 _c5m32 _pd3l">
+                                                                        <button type="button" className="_bt5m3b">Save</button>
+                                                                  </div>
+                                                            </div>
+                                                      </div>
+                                                </div>
                                           </div>
                                     </div>
-                              </div>
-                              <div className="_cn">
-                                    <ListCourse
-                                          data={data}
-                                          handleRedirect={this.handleRedirect}
-                                          handleRedirectUpdate={this.handleRedirectUpdate}
-                                          handleDelete={this.handleDelete}
-                                          dispatcherRequest={this.props.dispatcherRequest}/>
                               </div>
                         </LayoutUser>
                   : <Redirect to="/login"/>)

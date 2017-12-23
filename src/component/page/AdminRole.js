@@ -6,9 +6,9 @@ import { Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 
 import {actorRequest} from '../../action/action'
-import {Navbar, LayoutUser, AdminNavUser} from '../index.js'
+import {Navbar, LayoutUser, AdminNavRole} from '../index.js'
 
-class AdminUser extends Component {
+class AdminRole extends Component {
     /* -----------------------------------------------------------------------------
                                       Render Element
      -----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ class AdminUser extends Component {
                                         </ul>
                                     </div>
                                 </div>
-                                <AdminNavUser active_menu={`btn_user`} />
+                                <AdminNavRole active_menu={`btn_role`} />
                                 <div className="_c5x312 _c5m310  _pd3l3lr">
                                     <div className="_ca">
                                         <div className="_ca3h">
@@ -174,4 +174,4 @@ const mapDispatchtoProps = (dispatch) => {
         dispatcherRequest: (is_logged_in, request_status, error_message) => dispatch(actorRequest(is_logged_in, request_status, error_message))
     }
 }
-export default connect(mapStatetoProps, mapDispatchtoProps)(AdminUser)
+export default connect(mapStatetoProps, mapDispatchtoProps)(AdminRole)

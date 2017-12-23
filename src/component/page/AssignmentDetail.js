@@ -24,7 +24,7 @@ class AssignmentDetail extends Component {
         }
     }
     /*------------------------------------------------------------
-                        LIFE CYCLE
+                            LIFE CYCLE
     --------------------------------------------------------------*/
     componentDidMount() {
         const id = this.props.match.params.id

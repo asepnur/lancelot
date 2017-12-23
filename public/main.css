@@ -4183,7 +4183,7 @@ input:checked + .slider:before {
       ._ta ._ta5ad li:hover a:hover {
         color: #000000 !important;
         font-weight: bold; }
-      ._ta ._ta5ad li a {
+      ._ta ._ta5ad li a:last-child {
         color: rgba(0, 0, 0, 0.5);
         display: none; }
       ._ta ._ta5ad li i {

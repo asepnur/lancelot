@@ -7,7 +7,7 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import axios from 'axios'
 
-import {actorRequest, loadingRequest} from '../../action/action'
+import {actorRequest, loadingRequest, initAction} from '../../action/action'
 import {LayoutGuest, InputContent} from '../index.js'
 
 class Login extends Component {
@@ -85,6 +85,21 @@ class Login extends Component {
          </LayoutGuest>
       )
    }
+   handleInit = ()=>{
+      const {updateModules} = this.props
+      fetch("/api/v1/role", {
+            method: "GET",
+            credentials: "include",
+            crossDomain: true
+        }).then(res => {
+            
+            if (res.ok) {
+                return res.json()
+            }
+        }).then((data) => {
+                updateModules(true, data.data.modules)
+        })
+   }
    handlerSignIn = (e) => {
       e.preventDefault()
       const {dispatcherRequest, dispatcherLoading} = this.props
@@ -109,6 +124,7 @@ class Login extends Component {
          if (res.status === 200) {
             dispatcherLoading(100, false)
             dispatcherRequest(true, 0, '')
+            this.handleInit()
          } else {
             dispatcherLoading(10, true)
             dispatcherRequest(false, 401, res.data.error[0])
@@ -160,7 +176,8 @@ const mapStatetoProps = (state) => {
 const mapDispatchtoProps = (dispatch) => {
    return {
       dispatcherRequest: (is_logged_in, request_status, error_message) => dispatch(actorRequest(is_logged_in, request_status, error_message)),
-      dispatcherLoading: (loading_progress, is_loading_error) => dispatch(loadingRequest(loading_progress, is_loading_error))
+      dispatcherLoading: (loading_progress, is_loading_error) => dispatch(loadingRequest(loading_progress, is_loading_error)),
+      updateModules: (is_logged_in, module_access) => dispatch(initAction(is_logged_in,module_access))
    }
 }
 export default connect(mapStatetoProps, mapDispatchtoProps)(Login)
