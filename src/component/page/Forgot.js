@@ -32,7 +32,7 @@ class Forgot extends Component {
 						return res.json()
 				}).then((data) => {
 						data.code === 200
-								? dispatcherRequest(false, 200, '')
+								? dispatcherRequest(false, 200, 'Please check your email')
 								: dispatcherRequest(false, 401, data.error)
 				})
 		}

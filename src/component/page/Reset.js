@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 
 import {actorRequest} from '../../action/action'
 import {LayoutGuest, InputContent} from '../index.js'
-
+import history from '../../../src/history'
 
 class Reset extends Component {
     constructor() {
@@ -45,9 +45,12 @@ class Reset extends Component {
         }).then((res) => {
             return res.json()
         }).then((data) => {
-            data.code === 200
-                ? dispatcherRequest(false, 202, '')
-                : dispatcherRequest(false, 401, data.error)
+            if (data.code === 200){
+                dispatcherRequest(false, 200, data.message)
+                history.push('/login')
+            }else{
+                dispatcherRequest(false, 401, data.error)
+            }
         })
     }
 
@@ -77,6 +80,7 @@ class Reset extends Component {
                             classWraper="_c5m36 _c5m3o3 _c5x3o1 _c5x310"
                             type="password"
                             name="password"
+                            autoComplete="disable"
                             placeholder="Enter new password"
                             onChangeState={this.handleChange}
                             value={this.state.password}/>
@@ -84,6 +88,7 @@ class Reset extends Component {
                             classWraper="_c5m36 _c5m3o3 _c5x3o1 _c5x310"
                             type="password"
                             name="password_confirmation"
+                            autoComplete="disable"
                             placeholder="Reenter new password"
                             onChangeState={this.handleChange}
                             value={this.state.password_confirmation}/>

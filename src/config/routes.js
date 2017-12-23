@@ -15,18 +15,21 @@ import {
     Grade,
     Information,
     User,
-    AdminCrtUser,
     AdminUpdateUser,
     AdminUser,
-    AdminCrtRole,
-    AdminCrtInfo,
     AdminCourse,
-    AdminCrtAssign,
-    AdminCrtAssis,
-    AdminCrtAttand,
-    AdminCrtCourse,
     AdminManageCourse,
-    AdminManageAssignment
+    AdminManageAssignment,
+    NotFound,
+    AdminHome,
+    AdminCourseAbout,
+    AdminCourseGrade,
+    AdminCourseAttendance,
+    AdminCourseTutorial,
+    AdminCourseUser,
+    AdminUserCreate,
+    AdminRole,
+    AdminRoleCreate,
 } from '../component/index.js'
 export const routes = [
     {
@@ -94,40 +97,27 @@ export const routes = [
         component: User,
         exact: false
     }, {
-        path: '/admin/users/create',
-        component: AdminCrtUser,
-        exact: false
-    }, 
-    {
         path: '/admin/users/update/:id',
         component: AdminUpdateUser,
         exact: true
     }, {
-        path: '/admin/users/role',
-        component: AdminCrtRole,
-        exact: false
+        path: '/admin/role',
+        component: AdminRole,
+        exact: true
     }, {
-        path: '/admin/users',
+        path: '/admin/role/add',
+        component: AdminRoleCreate,
+        exact: true
+    }, {
+        path: '/admin/user',
         component: AdminUser,
-        exact: false
-    }, {
-        path: '/admin/information/create',
-        component: AdminCrtInfo,
-        exact: false
-    }, {
-        path: '/admin/course/assistant/create',
-        component: AdminCrtAssis,
         exact: true
     }, {
-        path: '/admin/course/assignment/create',
-        component: AdminCrtAssign,
+        path: '/admin/user/add',
+        component: AdminUserCreate,
         exact: true
     }, {
-        path: '/admin/course/attandance/create',
-        component: AdminCrtAttand,
-        exact: true
-    }, {
-        path: '/admin/course',
+        path: '/admin/course/:id',
         component: AdminCourse,
         exact: true
     }, {
@@ -139,8 +129,32 @@ export const routes = [
         component: AdminManageAssignment,
         exact: true
     }, {
-        path: '/admin/create/course',
-        component: AdminCrtCourse,
+        path: '/admin/',
+        component: AdminHome,
+        exact: true
+    }, {
+        path: '/admin/course/:id/about',
+        component: AdminCourseAbout,
+        exact: true
+    }, {
+        path: '/admin/course/:id/grade',
+        component: AdminCourseGrade,
+        exact: true
+    }, {
+        path: '/admin/course/:id/attendance',
+        component: AdminCourseAttendance,
+        exact: true
+    }, {
+        path: '/admin/course/:id/tutorial',
+        component: AdminCourseTutorial,
+        exact: true
+    }, {
+        path: '/admin/course/:id/user',
+        component: AdminCourseUser,
+        exact: true
+    }, {
+        path: '*',
+        component: NotFound,
         exact: true
     }
 ]

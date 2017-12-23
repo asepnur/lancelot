@@ -39,7 +39,6 @@ class ForgotActivation extends Component {
         }).then((data) => {
             if (data.code === 200){
                 history.push(`/forgot/${this.state.email}/${this.state.code}`)
-                 dispatcherRequest(false, 200, '')
             }else{
                 dispatcherRequest(false, 401, data.error)
             }

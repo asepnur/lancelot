@@ -11,7 +11,7 @@ const initialState = {
     is_code_match: false,
     request_status: 0,
     error_message: '',
-    modules_access: '',
+    modules_access: [],
     loading_progress: 0,
     is_loading_error: false
 

@@ -45,30 +45,36 @@ export {default as Information}
 from './page/Information'
 export {default as User}
 from './page/User'
-export {default as AdminCrtUser}
-from './page/AdminCrtUser'
 export {default as AdminUpdateUser}
 from './page/AdminUpdateUser'
 export {default as AdminUser}
 from './page/AdminUser'
-export {default as AdminCrtRole}
-from './page/AdminCrtRole'
-export {default as AdminCrtInfo}
-from './page/AdminCrtInfo'
 export {default as AdminCourse}
 from './page/AdminCourse'
-export {default as AdminCrtAssign}
-from './page/AdminCrtAssign'
-export {default as AdminCrtAssis}
-from './page/AdminCrtAssis'
-export {default as AdminCrtAttand}
-from './page/AdminCrtAttand'
-export {default as AdminCrtCourse}
-from './page/AdminCrtCourse'
 export {default as AdminManageCourse}
 from './page/AdminManageCourse'
 export {default as AdminManageAssignment}
 from './page/AdminManageAssignment'
+export {default as NotFound}
+from './page/NotFound'
+export {default as AdminHome}
+from './page/AdminHome'
+export {default as AdminCourseAbout}
+from './page/AdminCourseAbout'
+export {default as AdminCourseGrade}
+from './page/AdminCourseGrade'
+export {default as AdminCourseAttendance}
+from './page/AdminCourseAttendance'
+export {default as AdminCourseTutorial}
+from './page/AdminCourseTutorial'
+export {default as AdminCourseUser}
+from './page/AdminCourseUser'
+export {default as AdminUserCreate}
+from './page/AdminUserCreate'
+export {default as AdminRole}
+from './page/AdminRole'
+export {default as AdminRoleCreate}
+from './page/AdminRoleCreate'
 
 /*----------------------------
             SECTION
@@ -93,3 +99,9 @@ export {default as Navbar}
 from './section/Navbar'
 export {default as InformationDetail}
 from './section/InformationDetail'
+export {default as AdminNavCourse}
+from './section/AdminNavCourse'
+export {default as AdminNavUser}
+from './section/AdminNavUser'
+export {default as AdminNavRole}
+from './section/AdminNavRole'

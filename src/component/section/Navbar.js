@@ -7,7 +7,7 @@ import {Link, Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 import dateformat from 'dateformat'
 
-import {actorRequest} from '../../action/action'
+import {actorRequest, initAction} from '../../action/action'
 
 class Navbar extends Component {
 
@@ -16,6 +16,7 @@ class Navbar extends Component {
     }
 
     handlerSignOut = (dispatcherRequest) => {
+        const {updateModules} = this.props
         fetch('/api/v1/user/signout', {
             method: 'POST',
             credentials: 'include',
@@ -23,9 +24,12 @@ class Navbar extends Component {
         }).then((res) => {
             return res.json()
         }).then((data) => {
-            data.code === 200
-                ? dispatcherRequest(false, 0, '')
-                : dispatcherRequest(true, 401, 'Error')
+            if(data.code === 200){
+                dispatcherRequest(false, 0, '')
+                updateModules(false, [])
+            }else{
+                dispatcherRequest(true, 401, 'Error')
+            }
         })
     }
     handleActiveMenu = () => {
@@ -36,9 +40,9 @@ class Navbar extends Component {
             "schedule",
             "assignment",
             "grade",
-            "admin",
             "information",
-            "user"
+            "user",
+            "admin"
         ]
         id.forEach(function (val) {
             let dom = document.getElementById(val)
@@ -55,8 +59,7 @@ class Navbar extends Component {
                             RENDER COMPONENT
 ------------------------------------------------------------------*/
     render() {
-        const {is_logged_in, time_now} = this.props
-
+        const {is_logged_in, time_now, modules_access} = this.props
         return (is_logged_in
             ? <div className="_ro">
                     <div className="_mn">
@@ -66,7 +69,7 @@ class Navbar extends Component {
                                 <ul className="_n">
                                     <div className="_n51">
                                         <li id="home">
-                                            <Link to={`/`}><img className="_i3c" src="../img/icon/white/logo_utama.png" alt="logo"/></Link>
+                                            <Link to={`/`}><img className="_i3c" src="/img/icon/white/logo_utama.png" alt="logo"/></Link>
                                         </li>
                                         <li id="course">
                                             <Link to={'/course'}>
@@ -88,11 +91,17 @@ class Navbar extends Component {
                                                 <i className="fa fa-bar-chart" aria-hidden="true"></i>
                                             </Link>
                                         </li>
-                                        <li id="admin" className="_n3a">
-                                            <Link to={'/'}>
-                                                <i className="fa fa-wrench" aria-hidden="true"></i>
-                                            </Link>
-                                        </li>
+                                        {Object
+                                            .keys(modules_access)
+                                            .length !== 0
+                                            ? <li id="admin">
+                                                    <Link to={'/admin'}>
+                                                        <i className="fa fa-wrench" aria-hidden="true"></i>
+                                                    </Link>
+                                                </li>
+                                            : <li id="admin" style={{display: "none"}}>
+                                            </li>
+}
                                     </div>
                                     <div className="_n52">
                                         <li id="information">
@@ -135,7 +144,8 @@ const mapStatetoProps = (state) => {
 }
 const mapDispatchtoProps = (dispatch) => {
     return {
-        dispatcherRequest: (is_logged_in, request_status, error_message) => dispatch(actorRequest(is_logged_in, request_status, error_message))
+        dispatcherRequest: (is_logged_in, request_status, error_message) => dispatch(actorRequest(is_logged_in, request_status, error_message)),
+        updateModules: (is_logged_in, module_access) => dispatch(initAction(is_logged_in,module_access))
     }
 }
 export default connect(mapStatetoProps, mapDispatchtoProps)(Navbar)

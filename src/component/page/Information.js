@@ -65,7 +65,7 @@ class Information extends Component {
         const {is_logged_in} = this.props
         return (is_logged_in
             ? <LayoutUser>
-                    <Navbar match={this.props.match} active_navbar={"information"}/>
+                    <Navbar match={this.props.match} active_navbar={"information"} />
                     <div className="_ro _ma3mn">
                         <div className="_cn">
                             <div className="_ro">
@@ -93,7 +93,7 @@ class Information extends Component {
 }
 
                                 </div>
-                                <Newsbar/>
+                                <Newsbar handleDetail={this.handleDetail}/>
                             </div>
                         </div>
                     </div>
@@ -113,10 +113,12 @@ const Content = (props) => {
         <div className="_c5x312 _c5m34 _pd3n3lr3x" key={i}>
             <div className="_se3b">
                 <div>
-                    <img src={`http://47.74.149.190${data.image_thumbnail}`} alt="informations_image"/>
+                    <img src={data.image_thumbnail} alt="informations_image"/>
                     <p>{data.date}</p>
                     <p>{data.title},</p>
-                    <p>{data.description}</p>
+                    {data.description===""
+                            ?<p style={{height: "63px", overflow:"hidden", fontStyle:"italic"}}>No description available</p>
+                            :<p style={{height: "63px", overflow:"hidden"}}>{data.description}</p>}
                 </div>
                 <button
                     className="_bt5xs3b __wr"

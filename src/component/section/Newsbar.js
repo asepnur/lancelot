@@ -11,7 +11,7 @@ class Newsbar extends Component {
         }
     }
     componentDidMount() {
-        axios.get(`http://localhost:3000/api/v1/information?pg=1&ttl=5`, {
+        axios.get(`/api/v1/information?pg=1&ttl=5`, {
             validateStatus: (status) => {
                 return status === 200
             }
