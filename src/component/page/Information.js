@@ -24,13 +24,13 @@ class Information extends Component {
                             LIFE CYCLE
 ------------------------------------------------------------------*/
     componentDidMount() {
-        this.handlerGetInformation()
+        this.handlerGetInformation(1)
     }
     /*----------------------------------------------------------------
                             FUNCTION HANDLER
 ------------------------------------------------------------------*/
-    handlerGetInformation = () => {
-        axios.get(`api/v1/information?pg=1&ttl=100`, {
+    handlerGetInformation = (page) => {
+        axios.get(`api/v1/information?ttl=10&pg=${page}`, {
             validateStatus: (status) => {
                 return status === 200
             }
@@ -65,7 +65,7 @@ class Information extends Component {
         const {is_logged_in} = this.props
         return (is_logged_in
             ? <LayoutUser>
-                    <Navbar match={this.props.match} active_navbar={"information"} />
+                    <Navbar match={this.props.match} active_navbar={"information"}/>
                     <div className="_ro _ma3mn">
                         <div className="_cn">
                             <div className="_ro">
@@ -87,11 +87,13 @@ class Information extends Component {
                                         )
                                         : (
                                             <div>
-                                                <Content data={this.state.information} detail={this.handleDetail}/>
+                                                <Content
+                                                    data={this.state.information}
+                                                    detail={this.handleDetail}
+                                                    handlerGetInformation={this.handlerGetInformation}/>
                                             </div>
                                         )
-}
-
+                                    }
                                 </div>
                                 <Newsbar handleDetail={this.handleDetail}/>
                             </div>
@@ -109,25 +111,75 @@ class Information extends Component {
                             FUNCTION ELEMENT
 ------------------------------------------------------------------*/
 const Content = (props) => {
-    return (props.data.map((data, i) => (
-        <div className="_c5x312 _c5m34 _pd3n3lr3x" key={i}>
-            <div className="_se3b">
-                <div>
-                    <p>{data.date}</p>
-                    <p>@{data.course_name}</p>
-                    <p>{data.title},</p>
-                    {data.description===""
-                            ?<p style={{height: "63px", overflow:"hidden", fontStyle:"italic"}}>No description available</p>
-                            :<p style={{height: "63px", overflow:"hidden"}}>{data.description}</p>}
-                </div>
-                <button
-                    className="_bt5xs3b __wr"
-                    onClick={(e) => {
-                    props.detail(data.id)
-                }}>Read More</button>
-            </div>
+    return (
+        <div>
+            <table>
+                <tfoot>
+                    <tr className="_pg">
+                        <td>
+                            <button
+                                disabled={props.data.links.prev === 0
+                                ? true
+                                : false}
+                                onClick={() => {
+                                props.handlerGetInformation(props.data.links.prev)
+                            }}>&laquo; Prev</button>
+                        </td>
+                        <td>
+                            <a
+                                className="_active"
+                                onClick={() => {
+                                props.handlerGetInformation(props.data.links.self)
+                            }}>{props.data.links.self}
+                                of {props.data.meta.total_page}</a>
+                        </td>
+                        <td>
+                            <button
+                                disabled={(props.data.links.next - 1) === props.data.meta.total_page
+                                ? true
+                                : false}
+                                onClick={(e) => {
+                                props.handlerGetInformation(props.data.links.next)
+                            }}>Next &raquo;</button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+            {props
+                .data
+                .data
+                .map((data, i) => (
+                    <div className="_c5x312 _c5m34 _pd3n3lr3x" key={i}>
+                        <div className="_se3b">
+                            <div>
+                                <p>{data.date}</p>
+                                <p>@{data.course_name}</p>
+                                <p>{data.title},</p>
+                                {data.description === ""
+                                    ? <p
+                                            style={{
+                                            height: "63px",
+                                            overflow: "hidden",
+                                            fontStyle: "italic"
+                                        }}>No description available</p>
+                                    : <p
+                                        style={{
+                                        height: "63px",
+                                        overflow: "hidden"
+                                    }}>{data.description}</p>}
+                            </div>
+                            <button
+                                className="_bt5xs3b __wr"
+                                onClick={(e) => {
+                                props.detail(data.id)
+                            }}>Read More</button>
+                        </div>
+                    </div>
+                ))
+}
         </div>
-    )))
+    )
+
 }
 /*----------------------------------------------------------------
                             DISPATCHER

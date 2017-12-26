@@ -37,7 +37,7 @@ class Newsbar extends Component {
                             </tbody>
                         </table>
                     )
-                    : <Content data={this.state.data} handleDetail={this.props.handleDetail} />
+                    : <Content data={this.state.data} handleDetail={this.props.handleDetail}/>
 }
             </div>
         )
@@ -50,6 +50,7 @@ const Content = (props) => {
         : <table className="_se3inf">
             <tbody>
                 {props
+                    .data
                     .data
                     .map((data, i) => (
                         <tr key={i}>
