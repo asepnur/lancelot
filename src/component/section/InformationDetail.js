@@ -21,7 +21,6 @@ class InformationDetail extends Component {
                 <div className="_ro">
                     <div className="_c5x312 _c5m36 _c5m3o3">
                         <div className="_cn _md5inf">
-                            <img src={data.image} alt="informations_image"/>
                             <div className="_c5x312 _pd3n3lr">
                                 <h1>{data.title}</h1>
                                 <p>{data.date}</p>

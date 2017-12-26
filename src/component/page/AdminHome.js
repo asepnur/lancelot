@@ -4,24 +4,45 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Link, Redirect} from 'react-router-dom'
+import axios from 'axios'
 
 import {actorRequest} from '../../action/action'
-import {Navbar, LayoutUser} from '../index.js'
+import {Navbar, LayoutUser, LoadingAnim} from '../index.js'
 
 class AdminHome extends Component {
     constructor() {
 
         super()
         this.state = {
-            abilities: []
+            information_loaded: false,
+            abilities: [],
+            information: []
         }
     }
     /*----------------------------------------------------------------
                             LIFE CYCLE
     ------------------------------------------------------------------*/
+    componentDidMount() {
+        this.handleGetInformation()
+    }
     /*----------------------------------------------------------------
                             FUNCTION HANDLER
     ------------------------------------------------------------------*/
+    handleGetInformation = () => {
+        axios.get(`/api/admin/v1/information?ttl=10&pg=1`, {
+            validateStatus: (status) => {
+                return status === 200
+            }
+        }).then((res) => {
+            if (res.data.code === 200) {
+                this.setState({information: res.data.data, information_loaded: true})
+            } else {
+                this.setState({information: [], information_loaded: true})
+            }
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
     /*----------------------------------------------------------------
                             RENDER COMPONENT
     ------------------------------------------------------------------*/
@@ -39,7 +60,10 @@ class AdminHome extends Component {
                                         <ManageUser modules_access={modules_access}/>
                                         <ManageCourse modules_access={modules_access}/>
                                     </div>
-                                    <ManageInformation modules_access={modules_access}/>
+                                    <ManageInformation
+                                        modules_access={modules_access}
+                                        information={this.state.information}
+                                        is_loaded={this.state.information_loaded}/>
                                 </div>
                             </div>
                         </div>
@@ -138,106 +162,75 @@ const ManageCourse = (props) => {
     }
 }
 const ManageInformation = (props) => {
+    const {information, is_loaded} = props
     if (props.modules_access.informations !== undefined) {
         return (
             <div className="_c5m38 _c5x312 _pd3cr">
                 <div className="_he3b">My Post</div>
-                <table className="_se3ainf">
-                    <tbody>
-                        <tr>
-                            <td>Title</td>
-                            <td>Created At</td>
-                            <td>Course</td>
-                            <td>Action</td>
-                        </tr>
-                        <tr>
-                            <td>My Post A</td>
-                            <td>8:39 AM, September 11, 2017</td>
-                            <td>Mobile Computing</td>
-                            <td>
-                                <a className="" href="">
-                                    <i className="fa fa-pencil-square-o _ic3xb __wr" aria-hidden="true"></i>
-                                </a>
-                                <a className="" href="">
-                                    <i className="fa fa-times _ic3xr __wr" aria-hidden="true"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>My Post B</td>
-                            <td>8:39 AM, September 11, 2017</td>
-                            <td>Mobile Computing</td>
-                            <td>
-                                <a className="" href="">
-                                    <i className="fa fa-pencil-square-o _ic3xb __wr" aria-hidden="true"></i>
-                                </a>
-                                <a className="" href="">
-                                    <i className="fa fa-times _ic3xr __wr" aria-hidden="true"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>My Post C</td>
-                            <td>8:39 AM, September 11, 2017</td>
-                            <td>Mobile Computing</td>
-                            <td>
-                                <a className="" href="">
-                                    <i className="fa fa-pencil-square-o _ic3xb __wr" aria-hidden="true"></i>
-                                </a>
-                                <a className="" href="">
-                                    <i className="fa fa-times _ic3xr __wr" aria-hidden="true"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>My Post D</td>
-                            <td>8:39 AM, September 11, 2017</td>
-                            <td>Mobile Computing</td>
-                            <td>
-                                <a className="" href="">
-                                    <i className="fa fa-pencil-square-o _ic3xb __wr" aria-hidden="true"></i>
-                                </a>
-                                <a className="" href="">
-                                    <i className="fa fa-times _ic3xr __wr" aria-hidden="true"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>My Post E</td>
-                            <td>8:39 AM, September 11, 2017</td>
-                            <td>Mobile Computing</td>
-                            <td>
-                                <a className="" href="">
-                                    <i className="fa fa-pencil-square-o _ic3xb __wr" aria-hidden="true"></i>
-                                </a>
-                                <a className="" href="">
-                                    <i className="fa fa-times _ic3xr __wr" aria-hidden="true"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table>
-                    <tfoot>
-                        <tr className="_pg">
-                            <td>
-                                <a href="">&laquo;</a>
-                            </td>
-                            <td>
-                                <a href="">1</a>
-                            </td>
-                            <td>
-                                <a className="_active" href="">2</a>
-                            </td>
-                            <td>
-                                <a href="">3</a>
-                            </td>
-                            <td>
-                                <a href="">&raquo;</a>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
+                {!is_loaded
+                    ? <table className="_se3msg">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <LoadingAnim color_left="#333" color_right="#333"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    : <div>
+                        <table className="_se3ainf">
+                            <tbody>
+                                <tr>
+                                    <td>Title</td>
+                                    <td>Created At</td>
+                                    <td>For Course</td>
+                                    <td>Action</td>
+                                </tr>
+                                {information.length !== 0
+                                    ? information.map((data, i) => (
+                                        <tr key={i}>
+                                            <td>{data.title}</td>
+                                            <td>{data.updated_at}</td>
+                                            <td>{data.course_name}</td>
+                                            <td>
+                                                <a className="" href="">
+                                                    <i className="fa fa-pencil-square-o _ic3xb __wr" aria-hidden="true"></i>
+                                                </a>
+                                                <a className="" href="">
+                                                    <i className="fa fa-times _ic3xr __wr" aria-hidden="true"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    ))
+                                    : null
+                                }
+                            </tbody>
+                        </table>
+                        <table>
+                            <tfoot>
+                                <tr className="_pg">
+                                    <td>
+                                        <a href="">&laquo;</a>
+                                    </td>
+                                    <td>
+                                        <a href="">1</a>
+                                    </td>
+                                    <td>
+                                        <a className="_active" href="">2</a>
+                                    </td>
+                                    <td>
+                                        <a href="">3</a>
+                                    </td>
+                                    <td>
+                                        <a href="">&raquo;</a>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+}
+
             </div>
         )
     } else {

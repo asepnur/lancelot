@@ -59,7 +59,7 @@ const Content = (props) => {
                                     onClick={() => {
                                     props.handleDetail(data.id)
                                 }}>{data.title}</p>
-                                <p>@Mobile Computing</p>
+                                <p>@{data.course_name}</p>
                                 <p>{data.description}</p>
                                 <p className="_pd3m3t">{data.date}</p>
                             </td>

@@ -113,8 +113,8 @@ const Content = (props) => {
         <div className="_c5x312 _c5m34 _pd3n3lr3x" key={i}>
             <div className="_se3b">
                 <div>
-                    <img src={data.image_thumbnail} alt="informations_image"/>
                     <p>{data.date}</p>
+                    <p>@{data.course_name}</p>
                     <p>{data.title},</p>
                     {data.description===""
                             ?<p style={{height: "63px", overflow:"hidden", fontStyle:"italic"}}>No description available</p>
