@@ -75,6 +75,9 @@ export {default as AdminRole}
 from './page/AdminRole'
 export {default as AdminRoleCreate}
 from './page/AdminRoleCreate'
+export {default as AdminInformation}
+from './page/AdminInformation'
+
 
 /*----------------------------
             SECTION
@@ -105,3 +108,7 @@ export {default as AdminNavUser}
 from './section/AdminNavUser'
 export {default as AdminNavRole}
 from './section/AdminNavRole'
+export {default as AdminNavInfo}
+from './section/AdminNavInfo'
+export {default as DeleteModal}
+from './section/DeleteModal'

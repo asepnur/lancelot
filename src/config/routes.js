@@ -30,6 +30,7 @@ import {
     AdminUserCreate,
     AdminRole,
     AdminRoleCreate,
+    AdminInformation
 } from '../component/index.js'
 export const routes = [
     {
@@ -151,6 +152,10 @@ export const routes = [
     }, {
         path: '/admin/course/:id/user',
         component: AdminCourseUser,
+        exact: true
+    }, {
+        path: '/admin/information',
+        component: AdminInformation,
         exact: true
     }, {
         path: '*',

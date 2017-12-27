@@ -83,7 +83,6 @@ samp {
 button,
 input,
 optgroup,
-select,
 textarea,
 ._txa3l {
   color: inherit;
@@ -92,9 +91,6 @@ textarea,
 
 button {
   overflow: visible;
-  text-transform: none; }
-
-select {
   text-transform: none; }
 
 button,
@@ -1946,6 +1942,13 @@ textarea:focus,
 ._txa3l:focus,
 input[type="password"]:focus {
   border: 0.5px solid silver; }
+
+select {
+  height: 35px;
+  cursor: pointer; }
+
+._desc {
+  min-height: 300px; }
 
 ._att::after {
   content: "Add Attachment"; }
@@ -4182,8 +4185,9 @@ input:checked + .slider:before {
         color: #000000 !important;
         font-weight: bold; }
       ._ta ._ta5ad li a {
-        color: rgba(0, 0, 0, 0.5);
-        display: none; }
+        color: rgba(0, 0, 0, 0.5); }
+        ._ta ._ta5ad li a:last-child {
+          display: none; }
       ._ta ._ta5ad li i {
         color: rgba(0, 0, 0, 0.5); }
   ._ta ._ta5lh {
@@ -4436,7 +4440,7 @@ input:checked + .slider:before {
   left: 0;
   top: 0;
   width: 100%;
-  height: auto;
+  height: 100%;
   z-index: 100; }
   ._md5d ._md5cu {
     background-color: #2d3037;
@@ -4445,7 +4449,8 @@ input:checked + .slider:before {
     border-radius: 5px;
     margin-top: 10%;
     margin-bottom: auto;
-    padding-bottom: 15px; }
+    padding-bottom: 15px;
+    height: auto; }
     ._md5d ._md5cu input[type="text"], ._md5d ._md5cu textarea, ._md5d ._md5cu ._txa3l {
       border: none;
       border-bottom: 1px solid #C0C0C0;
@@ -4547,7 +4552,6 @@ input:checked + .slider:before {
   margin: 0 auto !important;
   padding-top: 25px !important;
   padding-bottom: 25px !important; }
-
  
 
 .LoadingBar {
