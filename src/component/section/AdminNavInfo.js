@@ -15,7 +15,18 @@ class AdminNavInfo extends Component {
         this.handleActiveMenu(this.props.active_menu)
     }
     handleActiveMenu = (tagID) => {
-        const id = ["btn_list", "btn_add"]
+        let id = []
+        const {modules_access} = this.props
+        modules_access
+            .informations
+            .forEach((data) => {
+                if (data === "CREATE") {
+                    id.push("btn_add")
+                }
+                if (data === "READ") {
+                    id.push("btn_list")
+                }
+            })
         id.forEach(function (val) {
             let dom = document.getElementById(val)
             val === tagID
@@ -31,25 +42,35 @@ class AdminNavInfo extends Component {
                             RENDER COMPONENT
     ------------------------------------------------------------------*/
     render() {
-        const {handle} = this.props
+        const {handle, modules_access} = this.props
         return (
             <div className="_c5x312 _c5m32 _pd3l3t _pd3n3lr">
                 <div className="_ta">
                     <ul className="_ta5ad">
-                        <li id="btn_list" onClick={handle.changeMenu}>
-                            <a onClick={handle.changeMenu}>
-                                <i className="fa fa-list" aria-hidden="true" onClick={handle.changeMenu}></i>
-                            </a>
-                            <a>
-                                &nbsp;Information List</a>
-                        </li>
-                        <li id="btn_add" onClick={handle.changeMenu}>
-                            <a onClick={handle.changeMenu}>
-                                <i className="fa fa-plus-circle" aria-hidden="true" onClick={handle.changeMenu}></i>
-                            </a>
-                            <a>
-                                &nbsp;Create</a>
-                        </li>
+                        {modules_access
+                            .informations
+                            .map((data, i) => (data === "READ"
+                                ? <li key={i} id="btn_list" onClick={handle.changeMenu}>
+                                        <a onClick={handle.changeMenu}>
+                                            <i className="fa fa-list" aria-hidden="true" onClick={handle.changeMenu}></i>
+                                        </a>
+                                        <a>
+                                            &nbsp;Information List</a>
+                                    </li>
+                                : null))
+}
+                        {modules_access
+                            .informations
+                            .map((data, i) => (data === "CREATE"
+                                ? <li key={i} id="btn_add" onClick={handle.changeMenu}>
+                                        <a onClick={handle.changeMenu}>
+                                            <i className="fa fa-plus-circle" aria-hidden="true" onClick={handle.changeMenu}></i>
+                                        </a>
+                                        <a>
+                                            &nbsp;Create</a>
+                                    </li>
+                                : null))
+}
                     </ul>
                 </div>
             </div>

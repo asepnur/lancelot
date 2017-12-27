@@ -5,6 +5,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Link, Redirect} from 'react-router-dom'
 import axios from 'axios'
+import history from '../../history'
 
 import {actorRequest, loadingRequest} from '../../action/action'
 import {Navbar, LayoutUser, LoadingAnim, DeleteModal} from '../index.js'
@@ -18,7 +19,7 @@ class AdminHome extends Component {
             abilities: [],
             information: [],
             modal_active: false,
-            current_id: '',
+            current_id: ''
         }
     }
     /*----------------------------------------------------------------
@@ -36,7 +37,7 @@ class AdminHome extends Component {
     modalDeleteOff = () => {
         this.setState({modal_active: false})
     }
-    handelDeleteInformation = () =>{
+    handelDeleteInformation = () => {
         const {dispatcherLoading, dispatcherRequest} = this.props
         dispatcherLoading(10, false)
         axios.delete(`/api/admin/v1/information/${this.state.current_id}`, {
@@ -215,74 +216,97 @@ const ManageInformation = (props) => {
                             </tbody>
                         </table>
 
-                    : <div>
-                        <table className="_se3ainf">
-                            <tbody>
-                                <tr>
-                                    <td>Title</td>
-                                    <td>Created At</td>
-                                    <td>For Course</td>
-                                    <td>Action</td>
-                                </tr>
-                                {information.data.length !== 0
-                                    ? information
-                                        .data
-                                        .map((data, i) => (
-                                            <tr key={i}>
-                                                <td>{data.title}</td>
-                                                <td>{data.updated_at}</td>
-                                                <td>{data.course_name}</td>
+                    : props
+                        .modules_access
+                        .informations
+                        .map((info, k) => (info === "READ"
+                            ? <div key={k}>
+                                    <table className="_se3ainf">
+                                        <tbody>
+                                            <tr>
+                                                <td>Title</td>
+                                                <td>Created At</td>
+                                                <td>For Course</td>
+                                                <td>Action</td>
+                                            </tr>
+                                            {information.data.length !== 0
+                                                ? information
+                                                    .data
+                                                    .map((data, i) => (
+                                                        <tr key={i}>
+                                                            <td>{data.title}</td>
+                                                            <td>{data.updated_at}</td>
+                                                            <td>{data.course_name}</td>
+                                                            <td>
+                                                                {props
+                                                                    .modules_access
+                                                                    .informations
+                                                                    .map((info, i) => (info === "UPDATE"
+                                                                        ? <a
+                                                                                key={i}
+                                                                                onClick={(e) => {
+                                                                                e.preventDefault()
+                                                                                const state = {
+                                                                                    id: data.id
+                                                                                }
+                                                                                history.push('/admin/information', state)
+                                                                            }}>
+                                                                                <i className="fa fa-pencil-square-o _ic3xb __wr" aria-hidden="true"></i>
+                                                                            </a>
+                                                                        : null))}
+                                                                {props
+                                                                    .modules_access
+                                                                    .informations
+                                                                    .map((info, i) => (info === "DELETE"
+                                                                        ? <a
+                                                                                onClick={() => {
+                                                                                handle.On(data.id)
+                                                                            }}>
+                                                                                <i className="fa fa-trash-o _ic3xr __wr" aria-hidden="true"></i>
+                                                                            </a>
+                                                                        : null))
+}
+                                                            </td>
+                                                        </tr>
+                                                    ))
+                                                : null
+}
+                                        </tbody>
+                                    </table>
+                                    <table>
+                                        <tfoot>
+                                            <tr className="_pg">
                                                 <td>
-                                                    <a className="" href="">
-                                                        <i className="fa fa-pencil-square-o _ic3xb __wr" aria-hidden="true"></i>
-                                                    </a>
-                                                    <a onClick={
-                                                        ()=>{
-                                                            handle.On(data.id)
-                                                        }
-                                                    }>
-                                                        <i className="fa fa-times _ic3xr __wr" aria-hidden="true"></i>
-                                                    </a>
+                                                    <button
+                                                        disabled={information.links.prev === 0
+                                                        ? true
+                                                        : false}
+                                                        onClick={() => {
+                                                        handleGetInformation(information.links.prev)
+                                                    }}>&laquo; Prev</button>
+                                                </td>
+                                                <td>
+                                                    <a
+                                                        className="_active"
+                                                        onClick={() => {
+                                                        handleGetInformation(information.links.self)
+                                                    }}>{information.links.self}
+                                                        of {information.meta.total_page}</a>
+                                                </td>
+                                                <td>
+                                                    <button
+                                                        disabled={(information.links.next - 1) === information.meta.total_page
+                                                        ? true
+                                                        : false}
+                                                        onClick={(e) => {
+                                                        handleGetInformation(information.links.next)
+                                                    }}>Next &raquo;</button>
                                                 </td>
                                             </tr>
-                                        ))
-                                    : null
-                                }
-                            </tbody>
-                        </table>
-                        <table>
-                            <tfoot>
-                                <tr className="_pg">
-                                    <td>
-                                        <button
-                                            disabled={information.links.prev === 0
-                                            ? true
-                                            : false}
-                                            onClick={() => {
-                                            handleGetInformation(information.links.prev)
-                                        }}>&laquo; Prev</button>
-                                    </td>
-                                    <td>
-                                        <a
-                                            className="_active"
-                                            onClick={() => {
-                                            handleGetInformation(information.links.self)
-                                        }}>{information.links.self}
-                                            of {information.meta.total_page}</a>
-                                    </td>
-                                    <td>
-                                        <button
-                                            disabled={(information.links.next - 1) === information.meta.total_page
-                                            ? true
-                                            : false}
-                                            onClick={(e) => {
-                                            handleGetInformation(information.links.next)
-                                        }}>Next &raquo;</button>
-                                    </td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            : null))
 }
             </div>
         )

@@ -7,7 +7,7 @@ import {Redirect} from 'react-router-dom'
 import axios from 'axios'
 
 import {actorRequest} from '../../action/action'
-import {Navbar, Newsbar, LayoutUser, InformationDetail, LoadingAnim} from '../index.js'
+import {Navbar, LayoutUser, InformationDetail, LoadingAnim} from '../index.js'
 
 class Information extends Component {
     constructor() {
@@ -69,7 +69,7 @@ class Information extends Component {
                     <div className="_ro _ma3mn">
                         <div className="_cn">
                             <div className="_ro">
-                                <div className="_c5m38 _pd5m3n">
+                                <div className="_c5m312 _pd5m3n">
                                     <div className="_ro _pd3l3l">
                                         <h1 className="_he3b">Information</h1>
                                     </div>
@@ -95,7 +95,6 @@ class Information extends Component {
                                         )
                                     }
                                 </div>
-                                <Newsbar handleDetail={this.handleDetail}/>
                             </div>
                         </div>
                     </div>
@@ -149,7 +148,7 @@ const Content = (props) => {
                 .data
                 .data
                 .map((data, i) => (
-                    <div className="_c5x312 _c5m34 _pd3n3lr3x" key={i}>
+                    <div className="_c5x312 _c5m33 _pd3n3lr3x" key={i}>
                         <div className="_se3b">
                             <div>
                                 <p>{data.date}</p>

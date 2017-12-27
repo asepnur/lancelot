@@ -5,11 +5,12 @@ import React, {Component} from 'react'
 import {Redirect, Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import axios from 'axios'
+import history from '../../history'
 
 import {actorRequest, loadingRequest} from '../../action/action'
 import {Navbar, LayoutUser, AdminNavInfo, LoadingAnim, DeleteModal} from '../index.js'
 
-class AdminUser extends Component {
+class AdminInformation extends Component {
     constructor() {
         super()
         this.state = {
@@ -28,12 +29,22 @@ class AdminUser extends Component {
             description_update: '',
             schedule_id_update: '',
             information_id: '',
-            modal_active: false,
+            modal_active: false
         }
     }
-    componentDidMount = () => {
-        this.handleGetInformation(1)
-        this.handleGetListAvailableCourse()
+    componentWillMount = () => {
+        const {modules_access} = this.props
+        if (modules_access.informations === undefined) {
+            history.push(`/`)
+        } else {
+            if (this.props.history.location.state !== undefined) {
+                this.setState({is_create: false, is_list: false, is_update: true, active_navbar: "btn_list"});
+                this.handleGetDetail(this.props.history.location.state.id)
+            } else {
+                this.handleGetInformation(1)
+            }
+            this.handleGetListAvailableCourse()
+        }
     }
     /* -----------------------------------------------------------------------------
                                       Render Element
@@ -95,18 +106,23 @@ class AdminUser extends Component {
         })
     }
     handleGetListAvailableCourse = () => {
-        axios.get(`/api/admin/v1/available-course`, {
-            validateStatus: (status) => {
-                return status === 200
+        const {modules_access} = this.props
+        modules_access.informations.forEach((data)=>{
+            if (data==="CREATE"){
+                axios.get(`/api/admin/v1/available-course`, {
+                    validateStatus: (status) => {
+                        return status === 200
+                    }
+                }).then((res) => {
+                    if (res.data.code === 200) {
+                        this.setState({available_course: res.data.data})
+                    } else {
+                        this.setState({available_course: []})
+                    }
+                }).catch((err) => {
+                    console.log(err)
+                })
             }
-        }).then((res) => {
-            if (res.data.code === 200) {
-                this.setState({available_course: res.data.data})
-            } else {
-                this.setState({available_course: []})
-            }
-        }).catch((err) => {
-            console.log(err)
         })
     }
     handleActiveUpdate = (id) => {
@@ -132,6 +148,7 @@ class AdminUser extends Component {
     handleChangeMenu = (e) => {
         switch (e.currentTarget.id) {
             case "btn_list":
+                this.handleGetInformation(1);
                 this.setState({is_update: false, is_create: false, is_list: true, active_navbar: "btn_list"});
                 break;
             case "btn_add":
@@ -175,7 +192,7 @@ class AdminUser extends Component {
     modalDeleteOff = () => {
         this.setState({modal_active: false})
     }
-    handelDeleteInformation = () =>{
+    handelDeleteInformation = () => {
         const {dispatcherLoading, dispatcherRequest} = this.props
         dispatcherLoading(10, false)
         axios.delete(`/api/admin/v1/information/${this.state.information_id}`, {
@@ -208,7 +225,7 @@ class AdminUser extends Component {
             updateInformation: this.handleUpdateInformation,
             On: this.modalDeleteOn,
             Off: this.modalDeleteOff,
-            Action: this.handelDeleteInformation,
+            Action: this.handelDeleteInformation
         }
         const data = {
             title: this.state.title,
@@ -221,6 +238,7 @@ class AdminUser extends Component {
             update_loaded: this.state.update_loaded,
             modal_active: this.state.modal_active
         }
+        const {modules_access} = this.props
         return (is_logged_in
             ? <LayoutUser>
                     <Navbar match={this.props.match} active_navbar={"admin"}/>
@@ -241,19 +259,34 @@ class AdminUser extends Component {
                                     </div>
                                 </div>
                                 <AdminNavInfo active_menu={this.state.active_navbar} handle={handle}/>
-                                <ContentList
-                                    information={this.state.information}
-                                    is_loaded={this.state.info_loaded}
-                                    is_active={this.state.is_list}
-                                    handle={handle}/>
+
                                 <CreateInformation
                                     is_active={this.state.is_create}
                                     handle={handle}
-                                    data={data}/>
-                                <UpdateInformation
-                                    is_active={this.state.is_update}
-                                    handle={handle}
-                                    data={data}/>
+                                    data={data}
+                                    modules_access={modules_access}/> {modules_access
+                                    .informations
+                                    .map((information, i) => (information === "UPDATE"
+                                        ? <UpdateInformation
+                                                key={i}
+                                                is_active={this.state.is_update}
+                                                handle={handle}
+                                                data={data}
+                                                modules_access={modules_access}/>
+                                        : null))
+}
+                                {modules_access
+                                    .informations
+                                    .map((information, i) => (information === "READ"
+                                        ? <ContentList
+                                                key={i}
+                                                information={this.state.information}
+                                                is_loaded={this.state.info_loaded}
+                                                is_active={this.state.is_list}
+                                                handle={handle}
+                                                modules_access={modules_access}/>
+                                        : null))
+}
                             </div>
                         </div>
                     </div>
@@ -263,61 +296,62 @@ class AdminUser extends Component {
     }
 }
 const CreateInformation = (props) => {
-    const {is_active, handle, data} = props
-    return (
-        <div
-            className="_c5x312 _c5m310  _pd3l3lr"
-            style={{
-            display: is_active
-                ? "block"
-                : "none"
-        }}>
-            <div className="_ca">
-                <div className="_ca3h">
-                    <div className="_c5m310 _c5x310">Create Information</div>
-                </div>
-                <div className="_se">
-                    <form onSubmit={handle.addInformation}>
-                        <div className="_ro">
-                            <div className="_c5m312 _c5x312">
+    const {is_active, handle, data, modules_access} = props
+    return (modules_access.informations.map((information, i) => (information === "CREATE"
+        ? <div
+                key={i}
+                className="_c5x312 _c5m310  _pd3l3lr"
+                style={{
+                display: is_active
+                    ? "block"
+                    : "none"
+            }}>
+                <div className="_ca">
+                    <div className="_ca3h">
+                        <div className="_c5m310 _c5x310">Create Information</div>
+                    </div>
+                    <div className="_se">
+                        <form onSubmit={handle.addInformation}>
+                            <div className="_ro">
+                                <div className="_c5m312 _c5x312">
 
-                                <label htmlFor="name">Title</label>
-                                <input
-                                    type="text"
-                                    value={data.title}
-                                    name="title"
-                                    onChange={handle.changeInput}/>
-                            </div>
-                            <div className="_c5m312 _c5x312">
+                                    <label htmlFor="name">Title</label>
+                                    <input
+                                        type="text"
+                                        value={data.title}
+                                        name="title"
+                                        onChange={handle.changeInput}/>
+                                </div>
+                                <div className="_c5m312 _c5x312">
 
-                                <label htmlFor="name">Description</label>
-                                <textarea
-                                    className="description"
-                                    name="description"
-                                    value={data.description}
-                                    onChange={handle.changeInput}></textarea>
-                            </div>
-                            <div className="_c5m36 _c5x312">
-                                <label htmlFor="name">For Course</label>
-                                <select name="schedule_id" onChange={handle.changeInput}>
-                                    <option value="">General Information</option>
-                                    {data
-                                        .available_course
-                                        .map((data, i) => (
-                                            <option key={i} value={data.schedule_id}>{data.course_name}</option>
-                                        ))
+                                    <label htmlFor="name">Description</label>
+                                    <textarea
+                                        className="description"
+                                        name="description"
+                                        value={data.description}
+                                        onChange={handle.changeInput}></textarea>
+                                </div>
+                                <div className="_c5m36 _c5x312">
+                                    <label htmlFor="name">For Course</label>
+                                    <select name="schedule_id" onChange={handle.changeInput}>
+                                        <option value="">General Information</option>
+                                        {data
+                                            .available_course
+                                            .map((data, i) => (
+                                                <option key={i} value={data.schedule_id}>{data.course_name}</option>
+                                            ))
 }
-                                </select>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div className="_c5m3o10 _c5x3o9 _c5x33 _c5m32">
-                            <button className="_bt5m3b">Create</button>
-                        </div>
-                    </form>
+                            <div className="_c5m3o10 _c5x3o9 _c5x33 _c5m32">
+                                <button className="_bt5m3b">Create</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
-    )
+        : null)))
 }
 const UpdateInformation = (props) => {
     const {is_active, handle, data} = props
@@ -391,7 +425,7 @@ const UpdateInformation = (props) => {
     )
 }
 const ContentList = (props) => {
-    const {information, is_loaded, handle, is_active} = props
+    const {information, is_loaded, handle, is_active, modules_access} = props
     return (
         <div
             className="_c5x312 _c5m310  _pd3l3lr"
@@ -426,15 +460,30 @@ const ContentList = (props) => {
                                             <td>{data.updated_at}</td>
                                             <td>{data.course_name}</td>
                                             <td>
-                                                <i
-                                                    onClick={() => {
-                                                    handle.activeUpdate(data.id)
-                                                }}
-                                                    className="fa fa-pencil-square-o _ic3b __wr"
-                                                    aria-hidden="true"></i>
-                                                <i onClick={()=>{
-                                                    handle.On(data.id)
-                                                }} className="fa fa-trash _ic3 __wr" aria-hidden="true"></i>
+                                                {modules_access
+                                                    .informations
+                                                    .map((info, j) => (info === "UPDATE"
+                                                        ? <i
+                                                                key={j}
+                                                                onClick={() => {
+                                                                handle.activeUpdate(data.id)
+                                                            }}
+                                                                className="fa fa-pencil-square-o _ic3b __wr"
+                                                                aria-hidden="true"></i>
+                                                        : null))
+}
+                                                {modules_access
+                                                    .informations
+                                                    .map((info, j) => (info === "DELETE"
+                                                        ? <i
+                                                                key={j}
+                                                                onClick={() => {
+                                                                handle.On(data.id)
+                                                            }}
+                                                                className="fa fa-trash-o _ic3xr __wr"
+                                                                aria-hidden="true"></i>
+                                                        : null))
+}
                                             </td>
                                         </tr>
                                     ))
@@ -485,7 +534,7 @@ const ContentList = (props) => {
                             state and dispatch to props
 ------------------------------------------------------------------------------*/
 const mapStatetoProps = (state) => {
-    return {is_logged_in: state.is_logged_in, request_status: state.request_status, error_message: state.error_message}
+    return {is_logged_in: state.is_logged_in, request_status: state.request_status, error_message: state.error_message, modules_access: state.modules_access}
 }
 const mapDispatchtoProps = (dispatch) => {
     return {
@@ -493,4 +542,4 @@ const mapDispatchtoProps = (dispatch) => {
         dispatcherLoading: (loading_progress, is_loading_error) => dispatch(loadingRequest(loading_progress, is_loading_error))
     }
 }
-export default connect(mapStatetoProps, mapDispatchtoProps)(AdminUser)
+export default connect(mapStatetoProps, mapDispatchtoProps)(AdminInformation)
