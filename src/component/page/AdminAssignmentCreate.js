@@ -11,6 +11,12 @@ import history from '../../history'
 import {actorRequest, loadingRequest} from '../../action/action'
 import {Navbar, LayoutUser, AdminNavCourse, LoadingAnim} from '../index'
 
+var module_content = {
+    asg_read: '',
+    asg_create: '',
+    asg_xcreate: '',
+    asg_xread: '',
+}
 class AdminAssignmentCreate extends Component {
     constructor(props) {
         super(props)
@@ -31,10 +37,36 @@ class AdminAssignmentCreate extends Component {
             checked_typ: [],
             dropdown: false,
             uploaded_files: [],
-            isUploading: false
+            isUploading: false,
+            ...module_content
         }
     }
     componentDidMount() {
+        const {modules_access} = this.props
+        if (modules_access.assignments === undefined) {
+           history.push(`/`)
+        } else {
+           modules_access
+              .assignments
+              .forEach(data => {
+                 switch (data) {
+                    case "CREATE":
+                       this.setState({asg_create: data});
+                       break
+                    case "READ":
+                       this.setState({asg_read: data});
+                       break
+                    case "XCREATE":
+                       this.setState({asg_xcreate: data});
+                       break
+                    case "XREAD":
+                       this.setState({asg_xread: data});
+                       break
+                    default:
+                       break
+                 }
+              })
+        }
         this.handleGetListGP()
         this.handleGetListType()
     }
@@ -48,7 +80,7 @@ class AdminAssignmentCreate extends Component {
         })
     }
     handleAutoCheck = () =>{
-        
+
     }
     handleToggleCheck = (e) => {
         const value = e.target.value
@@ -212,6 +244,9 @@ class AdminAssignmentCreate extends Component {
             console.log(err)
         })
     }
+    /*------------------------------------------------------------
+                              RENDER ELEMENT
+     -------------------------------------------------------------*/
     render() {
         const {is_logged_in} = this.props
         const hdlr_asg = {
@@ -238,6 +273,16 @@ class AdminAssignmentCreate extends Component {
             max_file: this.state.max_file,
             max_size: this.state.max_size
         }
+        const asg_mdl = {
+            read: this.state.asg_read,
+            crate: this.state.asg_create,
+            update: this.state.asg_update,
+            delete: this.state.asg_delete,
+            xcreate: this.state.asg_xcreate,
+            xread: this.state.asg_xread,
+            xupdate: this.state.asg_xupdate,
+            xdelete: this.state.asg_xdelete
+         }
         const dt_nav = {
             schedule_id: this.state.schedule_id
         }
@@ -264,6 +309,7 @@ class AdminAssignmentCreate extends Component {
                                     </div>
                                 </div>
                                 <AdminNavCourse
+                                    asg_mdl={asg_mdl}
                                     dt_nav={dt_nav}
                                     active_menu={this.state.active_menu}
                                     handleActive={this.handleChangeActiveMenu}/>
@@ -274,6 +320,7 @@ class AdminAssignmentCreate extends Component {
                                         </div>
 
                                         <ListAssignment
+                                            asg_mdl={asg_mdl}
                                             dt={dt}
                                             is_loaded={this.state.detail_loaded}
                                             hdlr_asg={hdlr_asg}/>
@@ -295,7 +342,7 @@ class AdminAssignmentCreate extends Component {
     }
 }
 const ListAssignment = (props) => {
-    const {dt, hdlr_asg} = props
+    const {dt, hdlr_asg, asg_mdl} = props
     return (
         <div className="_se">
             <div className="_c5x312 _c5m312">
@@ -453,7 +500,15 @@ const ListAssignment = (props) => {
                 </div>
             </div>
             <div className="_c5m3o8 _c5x3o6 _c5x33 _c5m32 _pd3r">
-                <button type="button" className="_bt5m">Back</button>
+                {
+                    asg_mdl.read === "READ" || asg_mdl.xread ==="XREAD"
+                    ?<button type="button" onClick={
+                        ()=>{
+                            history.push(`/admin/course/${dt.schedule_id}`)
+                        }
+                    } className="_bt5m">Back</button>
+                    :null
+                }
             </div>
             <div className="_c5x33 _c5m32 _pd3l">
                 <button type="button" className="_bt5m3b" onClick={hdlr_asg.createAssignment}>Save</button>
@@ -463,7 +518,7 @@ const ListAssignment = (props) => {
 }
 
 const mapStatetoProps = (state) => {
-    return {is_logged_in: state.is_logged_in, request_status: state.request_status, error_message: state.error_message}
+    return {is_logged_in: state.is_logged_in, request_status: state.request_status, error_message: state.error_message, modules_access: state.modules_access}
 }
 const mapDispatchtoProps = (dispatch) => {
     return {

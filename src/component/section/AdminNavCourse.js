@@ -13,41 +13,45 @@ class AdminNavCourse extends Component {
         this.handleActiveMenu(this.props.active_menu)
     }
     handleActiveMenu = (tagID) => {
-        const id = [
-            "btn_assign",
-            "btn_attendance",
-            "btn_tutorial",
-            "btn_user",
-            "btn_grade",
-            "btn_about"
-        ]
-        id.forEach(function (val) {
-            let dom = document.getElementById(val)
-            val === tagID
-                ? ReactDOM
-                    .findDOMNode(dom)
-                    .className = "_active"
-                : ReactDOM
-                    .findDOMNode(dom)
-                    .className = ""
-        }, this)
+        const {modules_access} = this.props
+        const id = ["btn_attendance", "btn_tutorial", "btn_user", "btn_grade", "btn_about"]
+        if (modules_access.assignments !== undefined) {
+            id.push("btn_assign")
+        }
+        id
+            .forEach(function (val) {
+                let dom = document.getElementById(val)
+                val === tagID
+                    ? ReactDOM
+                        .findDOMNode(dom)
+                        .className = "_active"
+                    : ReactDOM
+                        .findDOMNode(dom)
+                        .className = ""
+            }, this)
     }
     /*----------------------------------------------------------------
                             RENDER COMPONENT
     ------------------------------------------------------------------*/
     render() {
-        const {dt_nav} = this.props
-        let id = dt_nav === undefined?149:dt_nav.schedule_id
-        return (
-            <div className="_c5x312 _c5m32 _pd3l3t _pd3n3lr">
+        const {dt_nav, modules_access} = this.props
+        let id = dt_nav === undefined
+            ? 149
+            : dt_nav.schedule_id
+        return (modules_access.courses === undefined
+            ? <div></div>
+            : <div className="_c5x312 _c5m32 _pd3l3t _pd3n3lr">
                 <div className="_ta">
                     <ul className="_ta5ad">
-                        <li id="btn_assign">
-                            <Link to={`/admin/course/${ id}`}>
-                                <i className="fa fa-tasks" aria-hidden="true"></i>
-                            </Link>
-                            <Link to={`/admin/course/${ 12}`}>&nbsp; Assignment</Link>
-                        </li>
+                        {modules_access.assignments !== undefined
+                            ? <li id="btn_assign">
+                                    <Link to={`/admin/course/${id}`}>
+                                        <i className="fa fa-tasks" aria-hidden="true"></i>
+                                    </Link>
+                                    <Link to={`/admin/course/${ 12}`}>&nbsp; Assignment</Link>
+                                </li>
+                            : null
+}
                         <li id="btn_attendance">
                             <Link to={`/admin/course/${ 12}/attendance`}>
                                 <i className="fa fa-book" aria-hidden="true"></i>
@@ -80,8 +84,7 @@ class AdminNavCourse extends Component {
                         </li>
                     </ul>
                 </div>
-            </div>
-        )
+            </div>)
     }
 }
 /*----------------------------------------------------------------
