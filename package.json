@@ -36,5 +36,5 @@
     "url": "https://github.com/asepnur/lancelot/issues"
   },
   "homepage": "https://github.com/asepnur/lancelot#readme",
-  "proxy": "http://localhost:9000"
+  "proxy": "http://47.74.149.190"
 }
