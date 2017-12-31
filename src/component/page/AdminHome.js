@@ -154,7 +154,7 @@ const ManageCourse = (props) => {
                     <div className="_he3b">My Course</div>
                     <div className="_c5x36 _c5m36 _pd3n3l">
                         <div className="_se3lcb">
-                            <Link to={`/admin/course/12`}>
+                            <Link to={`/admin/course/149`}>
                                 <div>
                                     <p>ALGORITMA PEMROGRAMAN - B</p>
                                     <p>Monday, 13.00 - 14.30</p>
@@ -259,6 +259,7 @@ const ManageInformation = (props) => {
                                                                     .informations
                                                                     .map((info, i) => (info === "DELETE"
                                                                         ? <a
+                                                                                key={i}
                                                                                 onClick={() => {
                                                                                 handle.On(data.id)
                                                                             }}>

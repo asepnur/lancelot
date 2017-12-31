@@ -36,12 +36,14 @@ class AdminNavCourse extends Component {
                             RENDER COMPONENT
     ------------------------------------------------------------------*/
     render() {
+        const {dt_nav} = this.props
+        let id = dt_nav === undefined?149:dt_nav.schedule_id
         return (
             <div className="_c5x312 _c5m32 _pd3l3t _pd3n3lr">
                 <div className="_ta">
                     <ul className="_ta5ad">
                         <li id="btn_assign">
-                            <Link to={`/admin/course/${ 12}`}>
+                            <Link to={`/admin/course/${ id}`}>
                                 <i className="fa fa-tasks" aria-hidden="true"></i>
                             </Link>
                             <Link to={`/admin/course/${ 12}`}>&nbsp; Assignment</Link>

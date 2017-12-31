@@ -30,7 +30,10 @@ import {
     AdminUserCreate,
     AdminRole,
     AdminRoleCreate,
-    AdminInformation
+    AdminInformation,
+    AdminCourseAssignment,
+    AdminAssignmentCreate,
+    AdminAssignmentUpdate,
 } from '../component/index.js'
 export const routes = [
     {
@@ -158,7 +161,23 @@ export const routes = [
         component: AdminInformation,
         exact: true
     }, {
+        path: '/admin/course/:id/asg/:asg_id',
+        component: AdminCourseAssignment,
+        exact: true
+    }, {
+        path: '/admin/course/:id/create-assignment',
+        component: AdminAssignmentCreate,
+        exact: true
+    }, {
+        path: '/admin/course/:id/uptate-assignment/:asg_id',
+        component: AdminAssignmentUpdate,
+        exact: true
+    }, {
         path: '*',
+        component: NotFound,
+        exact: true
+    }, {
+        path: '/404',
         component: NotFound,
         exact: true
     }

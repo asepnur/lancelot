@@ -12,6 +12,7 @@ class AdminCourseAttendance extends Component {
             active_menu: 'btn_attendance'
         }
     }
+    
     render() {
         const {is_logged_in} = this.props
         return (is_logged_in
