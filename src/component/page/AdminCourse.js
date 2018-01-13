@@ -150,7 +150,7 @@ class AdminCourse extends Component {
       }
       const asg_mdl = {
          read: this.state.asg_read,
-         crate: this.state.asg_create,
+         create: this.state.asg_create,
          update: this.state.asg_update,
          delete: this.state.asg_delete,
          xcreate: this.state.asg_xcreate,
@@ -214,7 +214,7 @@ class AdminCourse extends Component {
          : <Redirect to="/login"/>)
    }
 }
-const ListAssignment = (props) => {
+export const ListAssignment = (props) => {
    const {is_loaded, lst_asg, hdlr_asg, asg_mdl} = props
    return (is_loaded
       ? <table className="_se _se3ada">
@@ -240,7 +240,7 @@ const ListAssignment = (props) => {
                            <td>{data.updated_at}</td>
                            <td>
                               {asg_mdl.update === "UPDATE" || asg_mdl.xupdate !== "XUPDATE"
-                                 ? <Link to={`/admin/course/${lst_asg.schedule_id}/uptate-assignment/${data.id}`}>
+                                 ? <Link to={`/admin/course/${lst_asg.schedule_id}/update-assignment/${data.id}`}>
                                        <i className="fa fa-pencil-square-o _ic3b __wr" aria-hidden="true"></i>
                                     </Link>
                                  : null}

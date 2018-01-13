@@ -259,7 +259,7 @@ class AssignmentDetail extends Component {
                                                                                     <i className="fa fa-file-pdf-o" aria-hidden="true"></i>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <a href={"http://47.74.149.190" + val.url} target="_blank">{val.name}</a>
+                                                                                    <a href={val.url} target="_blank">{val.name}</a>
                                                                                 </td>
                                                                             </tr>
                                                                         ))

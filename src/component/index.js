@@ -63,6 +63,8 @@ export {default as AdminCourseAbout}
 from './page/AdminCourseAbout'
 export {default as AdminCourseGrade}
 from './page/AdminCourseGrade'
+export {default as AdminGradeDetail}
+from './page/AdminGradeDetail'
 export {default as AdminCourseAttendance}
 from './page/AdminCourseAttendance'
 export {default as AdminCourseTutorial}

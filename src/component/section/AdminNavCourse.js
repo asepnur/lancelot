@@ -36,11 +36,11 @@ class AdminNavCourse extends Component {
     render() {
         const {dt_nav, modules_access} = this.props
         let id = dt_nav === undefined
-            ? 149
+            ? 1
             : dt_nav.schedule_id
         return (modules_access.courses === undefined
             ? <div></div>
-            : <div className="_c5x312 _c5m32 _pd3l3t _pd3n3lr">
+            : <div className="_c5x3id _c5m32 _pd3l3t _pd3n3lr">
                 <div className="_ta">
                     <ul className="_ta5ad">
                         {modules_access.assignments !== undefined
@@ -48,39 +48,39 @@ class AdminNavCourse extends Component {
                                     <Link to={`/admin/course/${id}`}>
                                         <i className="fa fa-tasks" aria-hidden="true"></i>
                                     </Link>
-                                    <Link to={`/admin/course/${ 12}`}>&nbsp; Assignment</Link>
+                                    <Link to={`/admin/course/${ id}`}>&nbsp; Assignment</Link>
                                 </li>
                             : null
 }
                         <li id="btn_attendance">
-                            <Link to={`/admin/course/${ 12}/attendance`}>
+                            <Link to={`/admin/course/${ id}/attendance`}>
                                 <i className="fa fa-book" aria-hidden="true"></i>
                             </Link>
-                            <Link to={`/admin/course/${ 12}/attendance`}>&nbsp; Attendance</Link>
+                            <Link to={`/admin/course/${ id}/attendance`}>&nbsp; Attendance</Link>
                         </li>
                         <li id="btn_tutorial">
-                            <Link to={`/admin/course/${ 12}/tutorial`}>
+                            <Link to={`/admin/course/${ id}/tutorial`}>
                                 <i className="fa fa-folder-open-o" aria-hidden="true"></i>
                             </Link>
-                            <Link to={`/admin/course/${ 12}/tutorial`}>&nbsp; Tutorial File</Link>
+                            <Link to={`/admin/course/${ id}/tutorial`}>&nbsp; Tutorial File</Link>
                         </li>
                         <li id="btn_user">
-                            <Link to={`/admin/course/${ 12}/user`}>
+                            <Link to={`/admin/course/${ id}/user`}>
                                 <i className="fa fa-users" aria-hidden="true"></i>
                             </Link>
-                            <Link to={`/admin/course/${ 12}/user`}>&nbsp; Assistant & Student</Link>
+                            <Link to={`/admin/course/${ id}/user`}>&nbsp; Assistant & Student</Link>
                         </li>
                         <li id="btn_grade">
-                            <Link to={`/admin/course/${ 12}/grade`}>
+                            <Link to={`/admin/course/${ id}/grade`}>
                                 <i className="fa fa-bar-chart" aria-hidden="true"></i>
                             </Link>
-                            <Link to={`/admin/course/${ 12}/grade`}>&nbsp; Grade</Link>
+                            <Link to={`/admin/course/${ id}/grade`}>&nbsp; Grade</Link>
                         </li>
                         <li id="btn_about">
-                            <Link to={`/admin/course/${ 12}/about`}>
+                            <Link to={`/admin/course/${ id}/about`}>
                                 <i className="fa fa-question-circle" aria-hidden="true"></i>
                             </Link>
-                            <Link to={`/admin/course/${ 12}/about`}>&nbsp; About</Link>
+                            <Link to={`/admin/course/${ id}/about`}>&nbsp; About</Link>
                         </li>
                     </ul>
                 </div>

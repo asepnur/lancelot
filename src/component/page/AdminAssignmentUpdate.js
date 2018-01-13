@@ -139,6 +139,12 @@ class AdminAssignmentUpdate extends Component {
             }
         }).then((res) => {
             if (res.data.code === 200) {
+                if (res.data.data.types!== null){
+                    this.setState({
+                        checked_typ: res.data.data.types
+                    })
+                }
+                
                 let d = new Date(res.data.data.due_date)
                 let lc = moment(d)
                     .local()
@@ -152,7 +158,6 @@ class AdminAssignmentUpdate extends Component {
                     status: res.data.data.status,
                     max_file: res.data.data.max_file,
                     max_size: res.data.data.max_size,
-                    checked_typ: res.data.data.types,
                     uploaded_files: res.data.data.files
                 },)
             }
