@@ -36,6 +36,7 @@ import {
     AdminAssignmentCreate,
     AdminAssignmentUpdate,
     AdminGradeDetail,
+    AdminUserUpdate
 } from '../component/index.js'
 export const routes = [
     {
@@ -121,6 +122,10 @@ export const routes = [
     }, {
         path: '/admin/user/add',
         component: AdminUserCreate,
+        exact: true
+    }, {
+        path: '/admin/user/update/:id',
+        component: AdminUserUpdate,
         exact: true
     }, {
         path: '/admin/course/:id',

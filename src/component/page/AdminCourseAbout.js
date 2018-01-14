@@ -93,12 +93,14 @@ class AdminCourseAbout extends Component {
                                 <div className="_c5x312 _c5m312 _pd3n3lr  _pd3l3b">
                                     <div className="_pd3n3lr _ta">
                                         <ul className="_ta5p">
-                                            <li>
-                                                <Link to={`/`}>Home</Link>
-                                            </li>
-                                            <li>
-                                                <Link to={`/admin`}>Admin</Link>
-                                            </li>
+                                        <li>
+                                        <Link to="/">
+                                            <i className="fa fa-home"></i>
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link to="/admin">Admin</Link>
+                                    </li>
                                             {
                                                 is_loaded ? (
                                                     <li className="_active">

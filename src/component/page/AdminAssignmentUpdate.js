@@ -139,12 +139,10 @@ class AdminAssignmentUpdate extends Component {
             }
         }).then((res) => {
             if (res.data.code === 200) {
-                if (res.data.data.types!== null){
-                    this.setState({
-                        checked_typ: res.data.data.types
-                    })
+                if (res.data.data.types !== null) {
+                    this.setState({checked_typ: res.data.data.types})
                 }
-                
+
                 let d = new Date(res.data.data.due_date)
                 let lc = moment(d)
                     .local()
@@ -334,9 +332,14 @@ class AdminAssignmentUpdate extends Component {
                                         <div className="_pd3n3lr _ta">
                                             <ul className="_ta5p">
                                                 <li>
-                                                    <Link to={`/admin`}>Admin</Link>
+                                                    <Link to="/">
+                                                        <i className="fa fa-home"></i>
+                                                    </Link>
                                                 </li>
-                                                <li >
+                                                <li>
+                                                    <Link to="/admin">Admin</Link>
+                                                </li>
+                                                <li>
                                                     <Link to={`/admin/course/${this.state.schedule_id}`}>Mobile Computing</Link>
                                                 </li>
                                                 <li className="_active">
@@ -550,9 +553,12 @@ const ListAssignment = (props) => {
                         </div>
                     </div>
                     <div className="_c5m3o8 _c5x3o6 _c5x33 _c5m32 _pd3r">
-                        <button type="button" onClick={()=>{
+                        <button
+                            type="button"
+                            onClick={() => {
                             history.push(`/admin/course/${dt.schedule_id}`)
-                        }} className="_bt5m">Back</button>
+                        }}
+                            className="_bt5m">Back</button>
                     </div>
                     <div className="_c5x33 _c5m32 _pd3l">
                         <button type="button" className="_bt5m3b" onClick={hdlr_asg.updateAssignment}>Update</button>

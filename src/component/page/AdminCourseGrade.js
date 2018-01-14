@@ -2,7 +2,7 @@
                         ADMIN COURSE GRADE
 ------------------------------------------------------------------*/
 import React, {Component} from 'react'
-import { Redirect, Link} from 'react-router-dom'
+import {Redirect, Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import axios from 'axios'
 
@@ -15,50 +15,50 @@ class AdminCourseGrade extends Component {
         this.state = {
             active_menu: 'btn_grade',
             schedule_id: this.props.match.params.id,
-            assignments: {},
+            assignments: {}
         }
     }
-    componentDidMount(){
+    componentDidMount() {
         this.handleGetGrade(1)
     }
-    handleGetGrade = (page) =>{
+    handleGetGrade = (page) => {
         axios.get(`/api/admin/v1/assignment?ttl=10&pg=${page}&schedule_id=${this.state.schedule_id}`, {
             validateStatus: (status) => {
-               return status === 200
+                return status === 200
             }
-         }).then((res) => {
+        }).then((res) => {
             if (res.data.code === 200) {
-               this.setState({assignments: res.data.data, assignment_loaded: true})
+                this.setState({assignments: res.data.data, assignment_loaded: true})
             } else {
-               this.setState({assignments: {}, assignment_loaded: true})
+                this.setState({assignments: {}, assignment_loaded: true})
             }
-         }).catch((err) => {
+        }).catch((err) => {
             console.log(err)
-         })
+        })
     }
-    
+
     render() {
         const {is_logged_in, modules_access} = this.props
         const hdlr_asg = {
-           getList: this.handleGetListAssignment,
-           On: this.modalDeleteOn,
-           Off: this.modalDeleteOff,
-           Action: this.handelDeleteAssignment
+            getList: this.handleGetListAssignment,
+            On: this.modalDeleteOn,
+            Off: this.modalDeleteOff,
+            Action: this.handelDeleteAssignment
         }
         const lst_asg = {
-           schedule_id: this.state.schedule_id,
-           asgs: this.state.assignments,
-           modules_access: modules_access
+            schedule_id: this.state.schedule_id,
+            asgs: this.state.assignments,
+            modules_access: modules_access
         }
         const asg_mdl = {
-           read: this.state.asg_read,
-           create: this.state.asg_create,
-           update: this.state.asg_update,
-           delete: this.state.asg_delete,
-           xcreate: this.state.asg_xcreate,
-           xread: this.state.asg_xread,
-           xupdate: this.state.asg_xupdate,
-           xdelete: this.state.asg_xdelete
+            read: this.state.asg_read,
+            create: this.state.asg_create,
+            update: this.state.asg_update,
+            delete: this.state.asg_delete,
+            xcreate: this.state.asg_xcreate,
+            xread: this.state.asg_xread,
+            xupdate: this.state.asg_xupdate,
+            xdelete: this.state.asg_xdelete
         }
         return (is_logged_in
             ? <LayoutUser>
@@ -71,10 +71,19 @@ class AdminCourseGrade extends Component {
                                     <div className="_pd3n3lr _ta">
                                         <ul className="_ta5p">
                                             <li>
-                                                <a href="">Home</a>
+                                                <Link to="/">
+                                                    <i className="fa fa-home"></i>
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link to="/admin">Admin</Link>
+                                            </li>
+                                            <li>
+                                                <Link to={`/admin/course/${this.state.schedule_id}`}>Mobile Computing</Link>
                                             </li>
                                             <li className="_active">
-                                                <a href="">Mobile Computing</a>
+                                                <Link
+                                                    to={`/admin/course/${this.state.schedule_id}/grade`}>Grade</Link>
                                             </li>
                                         </ul>
                                     </div>
@@ -86,10 +95,10 @@ class AdminCourseGrade extends Component {
                                             <div className="_c5m310 _c5x310">Grade</div>
                                         </div>
                                         <ListAssignment
-                                       asg_mdl={asg_mdl}
-                                       lst_asg={lst_asg}
-                                       is_loaded={this.state.assignment_loaded}
-                                       hdlr_asg={hdlr_asg}/>
+                                            asg_mdl={asg_mdl}
+                                            lst_asg={lst_asg}
+                                            is_loaded={this.state.assignment_loaded}
+                                            hdlr_asg={hdlr_asg}/>
 
                                     </div>
                                 </div>
@@ -100,88 +109,88 @@ class AdminCourseGrade extends Component {
             : <Redirect to="/login"/>)
     }
 }
-const ListAssignment = (props)=>{
+const ListAssignment = (props) => {
     const {is_loaded, lst_asg, hdlr_asg, asg_mdl} = props
     return (is_loaded
-       ? <table className="_se _se3ada">
-             <thead>
+        ? <table className="_se _se3ada">
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Due</th>
+                        <th>Created</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {lst_asg.asgs.assignments.length > 0
+                        ? lst_asg
+                            .asgs
+                            .assignments
+                            .map((data, i) => (
+                                <tr key={i}>
+                                    <td>
+                                        <Link to={`/admin/course/${lst_asg.schedule_id}/grade/${data.id}`}>{data.name}</Link>
+                                    </td>
+                                    <td>{data.due_date}</td>
+                                    <td>{data.updated_at}</td>
+                                    <td>
+                                        {asg_mdl.update === "UPDATE" || asg_mdl.xupdate !== "XUPDATE"
+                                            ? <Link to={`/admin/course/${lst_asg.schedule_id}/grade/${data.id}`}>
+                                                    <i className="fa fa-bar-chart _ic3mb __wr" aria-hidden="true"></i>
+                                                </Link>
+                                            : null}
+                                    </td>
+                                </tr>
+                            ))
+                        : null}
+                </tbody>
+                <tfoot>
+                    <tr className="_pg">
+                        <td>
+                            <button
+                                disabled={(lst_asg.asgs.page - 1) === 0
+                                ? true
+                                : false}
+                                onClick={() => {
+                                hdlr_asg.getList(lst_asg.asgs.page - 1,)
+                            }}>&laquo; Prev</button>
+                        </td>
+                        <td>
+                            <button
+                                disabled={(lst_asg.asgs.page - 1) === 0
+                                ? true
+                                : false}
+                                className="_active">{`${lst_asg.asgs.page} of ${lst_asg.asgs.total_page}`}</button>
+                        </td>
+                        <td>
+                            <button
+                                disabled={lst_asg.asgs.page === lst_asg.asgs.total_page
+                                ? true
+                                : false}
+                                onClick={() => {
+                                hdlr_asg.getList(lst_asg.asgs.page + 1,)
+                            }}>Next &raquo;</button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        : <table className="_se3msg">
+            <tbody>
                 <tr>
-                   <th>Subject</th>
-                   <th>Due</th>
-                   <th>Created</th>
-                   <th>Action</th>
+                    <td>
+                        <LoadingAnim color_left="#333" color_right="#333"/>
+                    </td>
                 </tr>
-             </thead>
-             <tbody>
-                {lst_asg.asgs.assignments.length > 0
-                   ? lst_asg
-                      .asgs
-                      .assignments
-                      .map((data, i) => (
-                         <tr key={i}>
-                            <td>
-                               <Link to={`/admin/course/${lst_asg.schedule_id}/grade/${data.id}`}>{data.name}</Link>
-                            </td>
-                            <td>{data.due_date}</td>
-                            <td>{data.updated_at}</td>
-                            <td>
-                               {asg_mdl.update === "UPDATE" || asg_mdl.xupdate !== "XUPDATE"
-                                  ? <Link to={`/admin/course/${lst_asg.schedule_id}/grade/${data.id}`}>
-                                        <i className="fa fa-bar-chart _ic3mb __wr" aria-hidden="true"></i>
-                                     </Link>
-                                  : null}
-                            </td>
-                         </tr>
-                      ))
-                   : null}
-             </tbody>
-             <tfoot>
-                <tr className="_pg">
-                   <td>
-                      <button
-                         disabled={(lst_asg.asgs.page - 1) === 0
-                         ? true
-                         : false}
-                         onClick={() => {
-                         hdlr_asg.getList(lst_asg.asgs.page - 1,)
-                      }}>&laquo; Prev</button>
-                   </td>
-                   <td>
-                      <button
-                         disabled={(lst_asg.asgs.page - 1) === 0
-                         ? true
-                         : false}
-                         className="_active">{`${lst_asg.asgs.page} of ${lst_asg.asgs.total_page}`}</button>
-                   </td>
-                   <td>
-                      <button
-                         disabled={lst_asg.asgs.page === lst_asg.asgs.total_page
-                         ? true
-                         : false}
-                         onClick={() => {
-                         hdlr_asg.getList(lst_asg.asgs.page + 1,)
-                      }}>Next &raquo;</button>
-                   </td>
-                </tr>
-             </tfoot>
-          </table>
-       : <table className="_se3msg">
-          <tbody>
-             <tr>
-                <td>
-                   <LoadingAnim color_left="#333" color_right="#333"/>
-                </td>
-             </tr>
-          </tbody>
-       </table>)
+            </tbody>
+        </table>)
 }
 const mapStatetoProps = (state) => {
     return {is_logged_in: state.is_logged_in, request_status: state.request_status, error_message: state.error_message, modules_access: state.modules_access}
- }
- const mapDispatchtoProps = (dispatch) => {
+}
+const mapDispatchtoProps = (dispatch) => {
     return {
-       dispatcherRequest: (is_logged_in, request_status, error_message) => dispatch(actorRequest(is_logged_in, request_status, error_message)),
-       dispatcherLoading: (loading_progress, is_loading_error) => dispatch(loadingRequest(loading_progress, is_loading_error))
+        dispatcherRequest: (is_logged_in, request_status, error_message) => dispatch(actorRequest(is_logged_in, request_status, error_message)),
+        dispatcherLoading: (loading_progress, is_loading_error) => dispatch(loadingRequest(loading_progress, is_loading_error))
     }
- }
+}
 export default connect(mapStatetoProps, mapDispatchtoProps)(AdminCourseGrade)
