@@ -25,6 +25,7 @@ import {
     AdminCourseAbout,
     AdminCourseGrade,
     AdminCourseAttendance,
+    AdminAttendanceCreate,
     AdminCourseTutorial,
     AdminCourseUser,
     AdminUserCreate,
@@ -152,6 +153,14 @@ export const routes = [
     }, {
         path: '/admin/course/:id/attendance',
         component: AdminCourseAttendance,
+        exact: true
+    }, {
+        path: '/admin/course/:id/attendance/create',
+        component: AdminAttendanceCreate,
+        exact: true
+    }, {
+        path: '/admin/course/:id/attendance/update/:meeting_id',
+        component: AdminAttendanceCreate,
         exact: true
     }, {
         path: '/admin/course/:id/tutorial',

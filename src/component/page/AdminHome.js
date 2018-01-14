@@ -12,12 +12,16 @@ import {Navbar, LayoutUser, LoadingAnim, DeleteModal} from '../index.js'
 
 class AdminHome extends Component {
     constructor() {
-
         super()
         this.state = {
             information_loaded: false,
-            abilities: [],
+            course_loaded: false,
             information: [],
+            courses: {
+                page: 0,
+                total_page: 0,
+                courses: []
+            },
             modal_active: false,
             current_id: ''
         }
@@ -26,7 +30,15 @@ class AdminHome extends Component {
                             LIFE CYCLE
     ------------------------------------------------------------------*/
     componentDidMount() {
-        this.handleGetInformation(1)
+        const {modules_access} = this.props
+        if (modules_access.informations) {
+            this.handleGetInformation(1)
+        }
+        if (modules_access.courses) {
+            if (modules_access.courses.indexOf('READ') >= 0) {
+                this.handleGetCourse()
+            }
+        }
     }
     /*----------------------------------------------------------------
                             FUNCTION HANDLER
@@ -74,6 +86,19 @@ class AdminHome extends Component {
             console.log(err)
         })
     }
+    handleGetCourse = () => {
+        axios.get(`/api/admin/v1/course?pg=1&ttl=10`, {
+            validateStatus: (status) => {
+                return status === 200
+            }
+        }).then((res) => {
+            if (res.data.code === 200) {
+                this.setState({courses: res.data.data, course_loaded: true})
+            }
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
     /*----------------------------------------------------------------
                             RENDER COMPONENT
     ------------------------------------------------------------------*/
@@ -82,7 +107,7 @@ class AdminHome extends Component {
         const deleteHandle = {
             On: this.modalDeleteOn,
             Off: this.modalDeleteOff,
-            Action: this.handelDeleteInformation
+            Action: this.handelDeleteInformation,
         }
         return (!is_logged_in
             ? <Redirect to={`/login`}/>
@@ -94,7 +119,10 @@ class AdminHome extends Component {
                                 <div className="_ro">
                                     <div className="_c5m34 _pd5n _pd3cl _pd5m3n">
                                         <ManageUser modules_access={modules_access}/>
-                                        <ManageCourse modules_access={modules_access}/>
+                                        <ManageCourse
+                                            modules_access={modules_access}
+                                            data={this.state.courses}
+                                            is_loaded={this.state.course_loaded}/>
                                     </div>
                                     <ManageInformation
                                         handle={deleteHandle}
@@ -147,57 +175,64 @@ const ManageUser = (props) => {
     }
 }
 const ManageCourse = (props) => {
-    if (props.modules_access.courses !== undefined) {
-        if (props.modules_access.courses.length !== 0) {
-            return (
+    const {
+        is_loaded,
+        data,
+        modules_access
+    } = props
+    return (
+        modules_access.courses ? (
+            modules_access.courses.indexOf('READ') >= 0 ? (
                 <div>
                     <div className="_he3b">My Course</div>
-                    <div className="_c5x36 _c5m36 _pd3n3l">
-                        <div className="_se3lcb">
-                            <Link to={`/admin/course/1`}>
-                                <div>
-                                    <p>ALGORITMA PEMROGRAMAN - B</p>
-                                    <p>Monday, 13.00 - 14.30</p>
-                                </div>
-                            </Link>
-                        </div>
-                    </div>
-                    <div className="_c5x36 _c5m36 _pd3n3r">
-                        <div className="_se3lcb">
-                            <Link to={`/admin/course/12`}>
-                                <div>
-                                    <p>ALGORITMA PEMROGRAMAN - B</p>
-                                    <p>Monday, 13.00 - 14.30</p>
-                                </div>
-                            </Link>
-                        </div>
-                    </div>
-                    <div className="_c5x36 _c5m36 _pd3n3l">
-                        <div className="_se3lcb">
-                            <Link to={`/admin/course/12`}>
-                                <div>
-                                    <p>ALGORITMA PEMROGRAMAN - B</p>
-                                    <p>Monday, 13.00 - 14.30</p>
-                                </div>
-                            </Link>
-                        </div>
-                    </div>
-                    <div className="_c5x36 _c5m36 _pd3n3r">
-                        <div className="_se3lcb">
-                            <Link to={`/admin/course/12`}>
-                                <div>
-                                    <p>ALGORITMA PEMROGRAMAN - B</p>
-                                    <p>Monday, 13.00 - 14.30</p>
-                                </div>
-                            </Link>
-                        </div>
-                    </div>
+                    {
+                        !is_loaded ? (
+                            <table className="_se3msg">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <LoadingAnim color_left="#333" color_right="#333"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        ) : (
+                            <div>
+                                {
+                                    data.courses.map((course, k) => (
+                                        <div key={k} className="_c5x36 _c5m36 _pd3n3l">
+                                            <div className="_se3lcb">
+                                                <Link to={`/admin/course/${course.schedule_id}`}>
+                                                    <div>
+                                                        <p>{course.name}</p>
+                                                        <p>{course.day}, {course.start_time} - {course.end_time}</p>
+                                                    </div>
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    ))
+                                }
+                                {
+                                    modules_access.courses.indexOf('CREATE') >= 0 ? (
+                                        <div className="_c5x36 _c5m36 _pd3n3l">
+                                            <div className="_se3lca">
+                                                <Link to={`/admin/role`}>
+                                                    <div>
+                                                        <i className="fa fa-plus" aria-hidden="true"></i>
+                                                        <p>Create</p>
+                                                    </div>
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    ) : null
+                                }
+                            </div>
+                        )
+                    } 
                 </div>
-            )
-        }
-    } else {
-        return null
-    }
+            ) : null
+        ) : null
+    )
 }
 const ManageInformation = (props) => {
     const {information, is_loaded, handleGetInformation, handle} = props

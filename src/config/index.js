@@ -52,10 +52,10 @@ class Init extends React.Component {
         })
     }
 
-    handleTimeChange = setInterval(() => {
-        const {dispatcherTime, time_now} = this.props
-        dispatcherTime(time_now + 1000)
-    }, 1000)
+    // handleTimeChange = setInterval(() => {
+    //     const {dispatcherTime, time_now} = this.props
+    //     dispatcherTime(time_now + 1000)
+    // }, 1000)
 
     render() {
         const {is_loading} = this.props

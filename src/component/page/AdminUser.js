@@ -120,7 +120,7 @@ class AdminUser extends Component {
                                                     <td>Assistant</td>
                                                     <td>
                                                         <label className="switch">
-                                                            <input type="checkbox" defaultChecked={`true`}/>
+                                                            <input type="checkbox" defaultChecked={`false`}/>
                                                             <span className="slider round"></span>
                                                         </label>
                                                     </td>
