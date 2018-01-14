@@ -19,6 +19,7 @@ class Newsbar extends Component {
             this.setState({data: res.data.data, is_loaded: true})
         }).catch((err) => {
             console.log(err)
+            this.setState({ is_loaded: true})
         })
     }
     render() {
@@ -45,8 +46,26 @@ class Newsbar extends Component {
 }
 
 const Content = (props) => {
-    return props.data.length === 0
-        ? <div>kosong</div>
+    return props.data.length === 0 || props.data.data.length === 0
+        ? <table className="_se3msg3l" style={{border: "1px dashed silver"}}>
+        <tbody>
+            <tr>
+                <td>
+                    <i className="fa fa-info" aria-hidden="true"></i>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p className="_head">No Information yet in this course</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p className="_main">Happy good day</p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
         : <table className="_se3inf">
             <tbody>
                 {props

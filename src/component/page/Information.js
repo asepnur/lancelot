@@ -39,6 +39,7 @@ class Information extends Component {
                 this.setState({information: res.data.data, is_loaded: true})
             }
         }).catch((err) => {
+            this.setState({is_loaded: true})
             console.log(err)
         })
     }
@@ -93,7 +94,7 @@ class Information extends Component {
                                                     handlerGetInformation={this.handlerGetInformation}/>
                                             </div>
                                         )
-                                    }
+}
                                 </div>
                             </div>
                         </div>
@@ -110,74 +111,112 @@ class Information extends Component {
                             FUNCTION ELEMENT
 ------------------------------------------------------------------*/
 const Content = (props) => {
-    return (
-        <div>
-            <table>
-                <tfoot>
-                    <tr className="_pg">
-                        <td>
-                            <button
-                                disabled={props.data.links.prev === 0
-                                ? true
-                                : false}
-                                onClick={() => {
-                                props.handlerGetInformation(props.data.links.prev)
-                            }}>&laquo; Prev</button>
-                        </td>
-                        <td>
-                            <a
-                                className="_active"
-                                onClick={() => {
-                                props.handlerGetInformation(props.data.links.self)
-                            }}>{props.data.links.self}
-                                of {props.data.meta.total_page}</a>
-                        </td>
-                        <td>
-                            <button
-                                disabled={(props.data.links.next - 1) === props.data.meta.total_page
-                                ? true
-                                : false}
-                                onClick={(e) => {
-                                props.handlerGetInformation(props.data.links.next)
-                            }}>Next &raquo;</button>
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
-            {props
-                .data
-                .data
-                .map((data, i) => (
-                    <div className="_c5x312 _c5m33 _pd3n3lr3x" key={i}>
-                        <div className="_se3b">
-                            <div>
-                                <p>{data.date}</p>
-                                <p>@{data.course_name}</p>
-                                <p>{data.title},</p>
-                                {data.description === ""
-                                    ? <p
-                                            style={{
-                                            height: "63px",
-                                            overflow: "hidden",
-                                            fontStyle: "italic"
-                                        }}>No description available</p>
-                                    : <p
-                                        style={{
-                                        height: "63px",
-                                        overflow: "hidden"
-                                    }}>{data.description}</p>}
+    return (props.data.data !== undefined
+        ? props.data.data.length === 0
+            ? <table className="_se3msg3l">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <i className="fa fa-info" aria-hidden="true"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p className="_head">No Information yet in this course</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p className="_main">Happy good day</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            : <div>
+                    <table>
+                        <tfoot>
+                            <tr className="_pg">
+                                <td>
+                                    <button
+                                        disabled={props.data.links.prev === 0
+                                        ? true
+                                        : false}
+                                        onClick={() => {
+                                        props.handlerGetInformation(props.data.links.prev)
+                                    }}>&laquo; Prev</button>
+                                </td>
+                                <td>
+                                    <a
+                                        className="_active"
+                                        onClick={() => {
+                                        props.handlerGetInformation(props.data.links.self)
+                                    }}>{props.data.links.self}
+                                        of {props.data.meta.total_page}</a>
+                                </td>
+                                <td>
+                                    <button
+                                        disabled={(props.data.links.next - 1) === props.data.meta.total_page
+                                        ? true
+                                        : false}
+                                        onClick={(e) => {
+                                        props.handlerGetInformation(props.data.links.next)
+                                    }}>Next &raquo;</button>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    {props
+                        .data
+                        .data
+                        .map((data, i) => (
+                            <div className="_c5x312 _c5m33 _pd3n3lr3x" key={i}>
+                                <div className="_se3b">
+                                    <div>
+                                        <p>{data.date}</p>
+                                        <p>@{data.course_name}</p>
+                                        <p>{data.title},</p>
+                                        {data.description === ""
+                                            ? <p
+                                                    style={{
+                                                    height: "63px",
+                                                    overflow: "hidden",
+                                                    fontStyle: "italic"
+                                                }}>No description available</p>
+                                            : <p
+                                                style={{
+                                                height: "63px",
+                                                overflow: "hidden"
+                                            }}>{data.description}</p>}
+                                    </div>
+                                    <button
+                                        className="_bt5xs3b __wr"
+                                        onClick={(e) => {
+                                        props.detail(data.id)
+                                    }}>Read More</button>
+                                </div>
                             </div>
-                            <button
-                                className="_bt5xs3b __wr"
-                                onClick={(e) => {
-                                props.detail(data.id)
-                            }}>Read More</button>
-                        </div>
-                    </div>
-                ))
+                        ))
 }
-        </div>
-    )
+                </div>
+        : <table className="_se3msg3l">
+            <tbody>
+                <tr>
+                    <td>
+                        <i className="fa fa-info" aria-hidden="true"></i>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p className="_head">No Information yet in this course</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p className="_main">Happy good day</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>)
 
 }
 /*----------------------------------------------------------------
