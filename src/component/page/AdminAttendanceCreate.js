@@ -283,7 +283,7 @@ class AdminAttendanceCreate extends Component {
                                                 </div>
                                             </div>
                                             <div className="_c5m3o10 _c5x3o9 _c5x33 _c5m32 _pd3l">
-                                                <button type="submit" className="_bt5m3b">Create</button>
+                                                <button type="submit" className="_bt5m3b">{this.state.meeting_id ? 'Update' : 'Create'}</button>
                                             </div>
                                         </form>
                                     </div>

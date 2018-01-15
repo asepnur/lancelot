@@ -4,8 +4,8 @@ import {connect} from 'react-redux'
 import axios from 'axios'
 import moment from 'moment'
 
-import {actorRequest} from '../../action/action'
-import {Navbar, LayoutUser, AdminNavCourse} from '../index'
+import {actorRequest, loadingRequest} from '../../action/action'
+import {Navbar, LayoutUser, AdminNavCourse, DeleteModal} from '../index'
 
 class AdminCourseAttendance extends Component {
     constructor(props) {
@@ -21,6 +21,8 @@ class AdminCourseAttendance extends Component {
             is_allow_create: false,
             is_allow_update: false,
             is_allow_delete: false,
+            modal_active: false,
+            modal_id: 0
         }
     }
 
@@ -71,9 +73,40 @@ class AdminCourseAttendance extends Component {
             console.log(err)
         })
     }
+
+    modalDeleteOn = (id) => {
+        this.setState({modal_active: true, modal_id: id})
+    }
+    
+    modalDeleteOff = () => {
+        this.setState({modal_active: false})
+    }
+
+    handleDelete = () => {
+        const {dispatcherLoading, dispatcherRequest} = this.props
+        dispatcherLoading(10, false)
+        axios.delete(`/api/admin/v1/attendance/${this.state.modal_id}?is_force=true`, {
+            validateStatus: (status) => {
+                return status === 200
+            }
+        }).then((res) => {
+                dispatcherLoading(100, false)
+                dispatcherRequest(true, 200, 'Attendance successfully deleted')
+                this.setState({modal_active: false, modal_id: 0})
+                this.handleGetAttendance(this.state.page)
+        }).catch((err) => {
+            dispatcherLoading(10, true)
+            dispatcherRequest(true, 401, 'Error connection')
+        })
+    }
     
     render() {
         const {is_logged_in} = this.props
+        const modal_handler = {
+            On: this.modalDeleteOn,
+            Off: this.modalDeleteOff,
+            Action: this.handleDelete
+        }
         const {
             page,
             total_page,
@@ -151,7 +184,7 @@ class AdminCourseAttendance extends Component {
                                                                     }
                                                                     {
                                                                         is_allow_delete ? (
-                                                                            <Link to="#"><i className="fa fa-trash _ic3 __wr" aria-hidden="true"></i></Link>
+                                                                            <Link to="#" onClick={modal_handler.On.bind(null, meet.id)}><i className="fa fa-trash _ic3 __wr" aria-hidden="true"></i></Link>
                                                                         ) : null
                                                                     }
                                                                 </td>
@@ -186,6 +219,7 @@ class AdminCourseAttendance extends Component {
                                 </div>
                             </div>
                         </div>
+                        <DeleteModal handle={modal_handler} is_active={this.state.modal_active} />
                     </LayoutUser>
                 ) : <Redirect to="/admin"/>
             ) : <Redirect to="/login"/>
@@ -198,6 +232,7 @@ const mapStatetoProps = (state) => {
 }
 const mapDispatchtoProps = (dispatch) => {
     return {
+        dispatcherLoading: (loading_progress, is_loading_error) => dispatch(loadingRequest(loading_progress, is_loading_error)),
         dispatcherRequest: (is_logged_in, request_status, error_message) => dispatch(actorRequest(is_logged_in, request_status, error_message))
     }
 }

@@ -5,8 +5,8 @@ import axios from 'axios'
 import Select from 'react-select'
 import 'react-select/dist/react-select.css'
 
-import {actorRequest} from '../../action/action'
-import {Navbar, LayoutUser, AdminNavCourse} from '../index'
+import {actorRequest, loadingRequest} from '../../action/action'
+import {Navbar, LayoutUser, AdminNavCourse, DeleteModal} from '../index'
 
 class AdminCourseUser extends Component {
     
@@ -18,12 +18,27 @@ class AdminCourseUser extends Component {
             role_menu: 'student',
             user_select: null,
             users: [],
-            is_loaded: false
+            is_loaded: false,
+            is_allow_update: false,
+            modal_active: false,
+            modal_id: 0
         }
     }
 
     componentDidMount() {
         this.handleGetList()
+        this.getPrivilege()
+    }
+
+    getPrivilege = () => {
+        const {
+            modules_access: {
+                courses
+            }
+        } = this.props
+        this.setState({
+            is_allow_update: courses.indexOf('UPDATE') >= 0 ? true : false
+        })
     }
 
     handleChangeMenu = (e) => {
@@ -100,8 +115,42 @@ class AdminCourseUser extends Component {
         }
     }
 
+    modalDeleteOn = (id) => {
+        this.setState({modal_active: true, modal_id: id})
+    }
+    
+    modalDeleteOff = () => {
+        this.setState({modal_active: false})
+    }
+
+    handleDelete = () => {
+        const {dispatcherLoading, dispatcherRequest} = this.props
+        dispatcherLoading(10, false)
+        axios.delete(`/api/admin/v1/attendance/${this.state.modal_id}?is_force=true`, {
+            validateStatus: (status) => {
+                return status === 200
+            }
+        }).then((res) => {
+                dispatcherLoading(100, false)
+                dispatcherRequest(true, 200, 'Attendance successfully deleted')
+                this.setState({modal_active: false, modal_id: 0})
+                this.handleGetAttendance(this.state.page)
+        }).catch((err) => {
+            dispatcherLoading(10, true)
+            dispatcherRequest(true, 401, 'Error connection')
+        })
+    }
+
     render() {
         const {is_logged_in} = this.props
+        const modal_handler = {
+            On: this.modalDeleteOn,
+            Off: this.modalDeleteOff,
+            Action: this.handleDelete
+        }
+        const {
+            is_allow_update
+        } = this.state
         return (is_logged_in
             ? <LayoutUser>
                     <Navbar match={this.props.match} active_navbar={"admin"}/>
@@ -138,56 +187,68 @@ class AdminCourseUser extends Component {
                                                 <tr>
                                                     <th>Name</th>
                                                     <th>NPM</th>
-                                                    <th>Action</th>
+                                                    {
+                                                        is_allow_update ? (
+                                                            <th>Action</th>
+                                                        ) : null
+                                                    }
                                                 </tr>
                                             </thead>
                                             <tbody className="_ov3y5m">
                                                 {
-                                                    this.state.users.map((value, k) => (
+                                                    this.state.users.map((user, k) => (
                                                         <tr key={k}>
-                                                            <td>{value.name}</td>
-                                                            <td>{value.id}</td>
-                                                            <td>
-                                                                <i className="fa fa-trash _ic3 __wr" aria-hidden="true"></i>
-                                                            </td>
+                                                            <td>{user.name}</td>
+                                                            <td>{user.id}</td>
+                                                            {    
+                                                                is_allow_update ? (
+                                                                    <td><Link to="#" onClick={modal_handler.On.bind(null, user.id)}><i className="fa fa-trash _ic3 __wr" aria-hidden="true"></i></Link></td>
+                                                                ) : null
+                                                            }
                                                         </tr>
                                                     ))
                                                 }
                                             </tbody>
                                         </table>
-                                        <div>
-                                            <div className="_c5m311 _c5x11">
-                                                <Select.AsyncCreatable
-                                                    name="user_select"
-                                                    multi={false}
-                                                    value={this.state.user_select}
-                                                    onChange={e => this.setState({user_select: e})}
-                                                    clearable={true}
-                                                    loadOptions={this.handleSearchUser}
-                                                    placeholder="Add User"
-                                                    />
-                                            </div>
-                                            <div className="_c5m31 _c5x31" style={{fontSize: '1.8em'}}>
-                                                <Link to="#" onClick={this.handleAdd}>
-                                                    <i className="fa fa-plus-circle _pl5r" aria-hidden="true"></i>
-                                                </Link>
-                                            </div>
-                                        </div>
+                                        {
+                                            is_allow_update ? (
+                                                <div>
+                                                    <div className="_c5m311 _c5x11">
+                                                        <Select.AsyncCreatable
+                                                            name="user_select"
+                                                            multi={false}
+                                                            value={this.state.user_select}
+                                                            onChange={e => this.setState({user_select: e})}
+                                                            clearable={true}
+                                                            loadOptions={this.handleSearchUser}
+                                                            placeholder="Add User"
+                                                            />
+                                                    </div>
+                                                    <div className="_c5m31 _c5x31" style={{fontSize: '1.8em'}}>
+                                                        <Link to="#" onClick={this.handleAdd}>
+                                                            <i className="fa fa-plus-circle _pl5r" aria-hidden="true"></i>
+                                                        </Link>
+                                                    </div>
+                                                </div>
+                                            ) : null
+                                        }
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <DeleteModal handle={modal_handler} is_active={this.state.modal_active} />
                 </LayoutUser>
             : <Redirect to="/login"/>)
     }
 }
 
 const mapStatetoProps = (state) => {
-    return {is_logged_in: state.is_logged_in, request_status: state.request_status, error_message: state.error_message}
+    return {is_logged_in: state.is_logged_in, modules_access: state.modules_access, request_status: state.request_status, error_message: state.error_message}
 }
 const mapDispatchtoProps = (dispatch) => {
     return {
+        dispatcherLoading: (loading_progress, is_loading_error) => dispatch(loadingRequest(loading_progress, is_loading_error)),
         dispatcherRequest: (is_logged_in, request_status, error_message) => dispatch(actorRequest(is_logged_in, request_status, error_message))
     }
 }

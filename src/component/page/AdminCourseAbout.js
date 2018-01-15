@@ -5,10 +5,12 @@ import axios from 'axios'
 import Select from 'react-select'
 import 'react-select/dist/react-select.css'
 
-import {actorRequest} from '../../action/action'
+import {actorRequest, loadingRequest} from '../../action/action'
 import {Navbar, LayoutUser, AdminNavCourse, LoadingAnim} from '../index'
+import history from '../../history'
 
 class AdminCourseAbout extends Component {
+    
     constructor(props) {
         super(props)
         this.state = {
@@ -16,25 +18,98 @@ class AdminCourseAbout extends Component {
             is_loaded: false,
             schedule_id: this.props.match.params.id,
             id: '',
-            name: '',
+            name: null,
+            select_name: null,
             description: '',
             ucu: '',
-            status: 'active',
+            is_update: 'false',
             semester: '',
             year: '',
             start_time: '',
             end_time: '',
-            class: '',
-            day: '',
-            place_id: ''
+            room: '',
+            status: '',
+            day: { value: 'monday', label: 'Monday'},
+            place: null,
+            grade_parameters: []
         }
     }
     componentDidMount() {
-        this.handleGetAbout()
+        if (this.state.schedule_id) {
+            this.handleGetAbout()
+            this.handleGetParameter()
+        }
     }
-    handleUpdate = (e) => {
+    handleSubmit = (e) => {
         e.preventDefault()
-        console.log('ok')
+        const {dispatcherRequest, dispatcherLoading} = this.props
+        const id = this.state.select_name ? this.state.select_name.value : ''
+        const name = this.state.select_name ? this.state.select_name.label : ''
+        const description = this.state.description
+        const ucu = this.state.ucu
+        const room = this.state.room
+        const place = this.state.place ? this.state.place.value : ''
+        const semester = this.state.semester
+        const year = this.state.year
+        const day = this.state.day ? this.state.day.value : ''
+        const start_time = this.state.start_time
+        const end_time = this.state.end_time
+        const is_update = this.state.is_update
+        const schedule_id = this.state.schedule_id
+        const status = this.state.status
+
+        const parameters = JSON.stringify(this.state.grade_parameters.map(value => ({
+            type: value.name,
+            percentage: parseFloat(value.percentage)
+        })))
+        
+        const formData = new FormData()
+        formData.append('id', id)
+        formData.append('name', name)
+        formData.append('description', description)
+        formData.append('ucu', ucu)
+        formData.append('class', room)
+        formData.append('place', place)
+        formData.append('semester', semester)
+        formData.append('year', year)
+        formData.append('day', day)
+        formData.append('start_time', start_time)
+        formData.append('end_time', end_time)
+        formData.append('is_update', is_update)
+        formData.append('grade_parameter', parameters)
+        
+        let url = `/api/admin/v1/course`,
+        method = `post`,
+        message = `Course sucessfully created`
+        if (schedule_id) {
+            url = `/api/admin/v1/course/${schedule_id}`
+            method = `patch`
+            message = `Course sucessfully updated`
+            formData.append('status', status)
+        }
+        axios({
+            method: method,
+            url: url,
+            data: formData,
+            validateStatus: (status) => {
+                return status < 500
+            }
+        }).then((res) => {
+            if (res.status === 200) {
+                dispatcherLoading(100, false)
+                this.setState({
+                    change_image: !this.state.change_image
+                })
+                dispatcherRequest(true, 200, message)
+                history.push(`/admin/course/${schedule_id}/about/`)
+            } else {
+                dispatcherLoading(10, true)
+                dispatcherRequest(true, 401, res.data.error[0])
+            }
+        }).catch((err) => {
+            dispatcherLoading(10, true)
+            dispatcherRequest(true, 401, 'Error connection')
+        })
     }
     handleGetAbout = () => {
         axios.get(`/api/admin/v1/course/${this.state.schedule_id}`, {
@@ -42,10 +117,41 @@ class AdminCourseAbout extends Component {
                return status === 200
             }
         }).then((res) => {
-            if (res.data.code === 200) {
-                this.setState(res.data.data)
+            const {data} = res.data
+            this.setState({
+                id: data.id,
+                name: data.name,
+                select_name: {value: data.id, label: data.name},
+                description: data.description,
+                ucu: data.ucu,
+                semester: data.semester,
+                year: data.year,
+                start_time: data.start_time,
+                end_time: data.end_time,
+                room: data.class,
+                status: data.status,
+                day: {value: data.day, label: data.day},
+                place: {value: data.place_id, label: data.place_id},
+                is_loaded: true
+            })
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+    handleGetParameter = () => {
+        axios.get(`/api/admin/v1/course/${this.state.schedule_id}/parameter`, {
+            validateStatus: (status) => {
+                return status === 200
             }
-            this.setState({is_loaded: true})
+        }).then((res) => {
+            const {data} = res.data
+            const parameters = data.map(parameter => ({
+                name: parameter.type,
+                percentage: parameter.percentage
+            }))
+            this.setState({
+                grade_parameters: parameters
+            })
         }).catch((err) => {
             console.log(err)
         })
@@ -78,6 +184,30 @@ class AdminCourseAbout extends Component {
             return { options }
         }).catch((err) => {
             console.log(err)
+        })
+    }
+    handleChangeParameter = (k, e) => {
+        const parameters = this.state.grade_parameters
+        parameters[k].name = e.target.value
+        this.setState({
+            grade_parameters: parameters
+        })
+    }
+    handleChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+    handleAddParameter = (e) => {
+        this.setState({
+            grade_parameters: [...this.state.grade_parameters, {name: 'ASSIGNMENT', percentage: 0}]
+        })
+    }
+    handleDeleteParameter = (key) => {
+        const parameters = this.state.grade_parameters
+        parameters.splice(key, 1)
+        this.setState({
+            grade_parameters: parameters
         })
     }
     render() {
@@ -127,77 +257,187 @@ class AdminCourseAbout extends Component {
                                                     </tbody>
                                                 </table>
                                             ) : (
-                                                <form onSubmit={this.handleUpdate}>
-                                                    <div className="_se">
-                                                        <div className="_c5x312 _c5m312 _pd3m3b">
-                                                            <label htmlFor="name">Course Name</label>
-                                                            <Select.AsyncCreatable
-                                                                name="name"
-                                                                multi={false}
-                                                                value={{ value: this.state.id, label: this.state.name }}
-                                                                // onChange={e => this.setState({course: e})}
-                                                                loadOptions={this.handleSearchCourse}
-                                                                placeholder="Insert course"
-                                                                />
+                                                <form onSubmit={this.handleSubmit}>
+                                                    <div className="_ca" style={{padding: 0, margin: 0}}>
+                                                        <div className="_c5m38 _c5x312" style={{padding: 0, marginBottom: "20px"}}>
+                                                            <div className="_se">
+                                                                <div className="_c5x312 _c5m312 _pd3m3b">
+                                                                    <label htmlFor="name">Course Name*</label>
+                                                                    <Select.AsyncCreatable
+                                                                        name="name"
+                                                                        multi={false}
+                                                                        value={this.state.select_name}
+                                                                        onChange={e => this.setState({select_name: e})}
+                                                                        loadOptions={this.handleSearchCourse}
+                                                                        placeholder="Insert course"
+                                                                        style={{margin: '10px 0', height: '40px'}}
+                                                                        />
+                                                                </div>
+                                                                <div className="_c5x312 _c5m312">
+                                                                    <label htmlFor="description">Description</label>
+                                                                    <textarea
+                                                                        name="description"
+                                                                        placeholder="Insert description"
+                                                                        onChange={this.handleChange}
+                                                                        value={this.state.description}></textarea>
+                                                                </div>
+                                                                <div className="_c5x36 _c5m34">
+                                                                    <label htmlFor="ucu">UCU*</label>
+                                                                    <input
+                                                                        name="ucu"
+                                                                        type="text"
+                                                                        onChange={this.handleChange}
+                                                                        value={this.state.ucu}/>
+                                                                </div>
+                                                                <div className="_c5x36 _c5m34">
+                                                                    <label htmlFor="class">Class*</label>
+                                                                    <input
+                                                                        name="room"
+                                                                        type="text"
+                                                                        onChange={this.handleChange}
+                                                                        value={this.state.room}/>
+                                                                </div>
+                                                                <div className="_c5x36 _c5m34">
+                                                                    <label htmlFor="place">Place*</label>
+                                                                    <Select.AsyncCreatable
+                                                                        name="place"
+                                                                        multi={false}
+                                                                        value={this.state.place}
+                                                                        onChange={e => this.setState({place: e})}
+                                                                        loadOptions={this.handleSearchPlace}
+                                                                        placeholder="Insert Place"
+                                                                        style={{margin: '10px 0', height: '40px'}}
+                                                                        />
+                                                                </div>
+                                                                <div className="_c5x36 _c5m34">
+                                                                    <label htmlFor="semester">Semester*</label>
+                                                                    <input
+                                                                        name="semester"
+                                                                        type="text"
+                                                                        onChange={this.handleChange}
+                                                                        value={this.state.semester}/>
+                                                                </div>
+                                                                <div className="_c5x36 _c5m34">
+                                                                    <label htmlFor="year">Year*</label>
+                                                                    <input
+                                                                        name="year"
+                                                                        type="text"
+                                                                        onChange={this.handleChange}
+                                                                        value={this.state.year}/>
+                                                                </div>
+                                                                <div className="_c5x36 _c5m34">
+                                                                    <label htmlFor="day">Day*</label>
+                                                                    <Select
+                                                                        value={this.state.day}
+                                                                        onChange={e => this.setState({day: e})}
+                                                                        clearable={false}
+                                                                        options={[
+                                                                            { value: 'Monday', label: 'Monday' },
+                                                                            { value: 'Tuesday', label: 'Tuesday' },
+                                                                            { value: 'Wednesday', label: 'Wednesday' },
+                                                                            { value: 'Thursday', label: 'Thursday' },
+                                                                            { value: 'Friday', label: 'Friday' },
+                                                                            { value: 'Saturday', label: 'Saturday' },
+                                                                            { value: 'Sunday', label: 'Sunday' },
+                                                                        ]}
+                                                                        style={{margin: '10px 0', height: '40px'}}
+                                                                    />
+                                                                </div>
+                                                                <div className="_c5x36 _c5m36">
+                                                                    <label htmlFor="start_time">Start Time*</label>
+                                                                    <input
+                                                                        name="start_time"
+                                                                        type="text"
+                                                                        onChange={this.handleChange}
+                                                                        value={this.state.start_time}/>
+                                                                </div>
+                                                                <div className="_c5x36 _c5m36">
+                                                                    <label htmlFor="end_time">End Time*</label>
+                                                                    <input
+                                                                        name="end_time"
+                                                                        type="text"
+                                                                        onChange={this.handleChange}
+                                                                        value={this.state.end_time}/>
+                                                                </div>
+                                                                <div className="_c5x36 _c5m36">
+                                                                    <label htmlFor="status">Status</label>
+                                                                    <select name="status" value={this.state.status} onChange={this.handleChange}>
+                                                                        <option value="active">Active</option>
+                                                                        <option value="inactive">Inactive</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div className="_c5x36 _c5m36">
+                                                                    <label htmlFor="desc_update">Update Description</label>
+                                                                    <select name="is_update" value={this.state.is_update} onChange={this.handleChange}>
+                                                                        <option value="true">Yes</option>
+                                                                        <option value="false">No</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                        <div className="_c5x312 _c5m312">
-                                                            <label htmlFor="description">Description*</label>
-                                                            <textarea placeholder="Insert description" value={this.state.description}></textarea>
+                                                        <div className="_c5m34 _c5x312" style={{padding: 0}}>
+                                                            <div className="_c5x312 _c5m312">
+                                                                <label htmlFor="grade_parameter" style={{fontSize: '1.2em'}}>Grade Parameter</label>
+                                                            </div>
+                                                            <table className="_se _se3ada _pd3m3b _ma3m3tb" style={{marginLeft: 0, marginRight: 0}}>
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Name</th>
+                                                                        <th>Percentage</th>
+                                                                        <th>Action</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody style={{maxHeight: '320px', overflowY: 'scroll'}}>
+                                                                    {
+                                                                        this.state.grade_parameters.map((parameter, k) => (
+                                                                            <tr key={k}>
+                                                                                <td>
+                                                                                    <select value={parameter.name} onChange={(e) => {
+                                                                                        const {grade_parameters} = this.state
+                                                                                        grade_parameters[k].name = e.target.value
+                                                                                        this.setState({
+                                                                                            grade_parameters: grade_parameters
+                                                                                        })
+                                                                                    }}>
+                                                                                        <option value="ATTENDANCE">Attendance</option>
+                                                                                        <option value="QUIZ">Quiz</option>
+                                                                                        <option value="ASSIGNMENT">Assignment</option>
+                                                                                        <option value="MID">Mid Test</option>
+                                                                                        <option value="FINAL">Final Test</option>
+                                                                                    </select>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <input
+                                                                                        type="number"
+                                                                                        style={{margin: 0}}
+                                                                                        value={parameter.percentage}
+                                                                                        onChange={(e) => {
+                                                                                            const {grade_parameters} = this.state
+                                                                                            grade_parameters[k].percentage = e.target.value
+                                                                                            this.setState({
+                                                                                                grade_parameters: grade_parameters
+                                                                                            })
+                                                                                        }}/>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <Link to="#" onClick={this.handleDeleteParameter.bind(null, k)}>
+                                                                                        <i className="fa fa-trash _ic3 __wr" aria-hidden="true"></i>
+                                                                                    </Link>
+                                                                                </td>
+                                                                            </tr>
+                                                                        ))
+                                                                    }
+                                                                    <tr>
+                                                                        <td colSpan="3">
+                                                                            <input type="button" className="_bt5m3b" value="Add" onClick={this.handleAddParameter} style={{margin: 0}}/>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
                                                         </div>
-                                                        <div className="_c5x36 _c5m36">
-                                                            <label htmlFor="course_name">UCU</label>
-                                                            <input name="due" type="text" value={this.state.ucu}/>
-                                                        </div>
-                                                        <div className="_c5x36 _c5m36">
-                                                            <label htmlFor="course_name">Class</label>
-                                                            <input name="due" type="text" value={this.state.class}/>
-                                                        </div>
-                                                        <div className="_c5x36 _c5m36">
-                                                            <label htmlFor="place">Place</label>
-                                                            <Select.AsyncCreatable
-                                                                name="place"
-                                                                multi={false}
-                                                                value={{ value: this.state.place_id, label: this.state.place_id }}
-                                                                // onChange={e => this.setState({course: e})}
-                                                                loadOptions={this.handleSearchPlace}
-                                                                placeholder="Insert course"
-                                                                />
-                                                        </div>
-                                                        <div className="_c5x36 _c5m36">
-                                                            <label htmlFor="course_name">Semester</label>
-                                                            <input name="due" type="text" value={this.state.semester}/>
-                                                        </div>
-                                                        <div className="_c5x36 _c5m36">
-                                                            <label htmlFor="course_name">Year</label>
-                                                            <input name="due" type="text" value={this.state.year}/>
-                                                        </div>
-                                                        <div className="_c5x34 _c5m34">
-                                                            <label htmlFor="course_name">Day</label>
-                                                            <input name="due" type="text" value={this.state.day}/>
-                                                        </div>
-                                                        <div className="_c5x34 _c5m34">
-                                                            <label htmlFor="course_name">Start Time</label>
-                                                            <input name="due" type="text" value={this.state.start_time}/>
-                                                        </div>
-                                                        <div className="_c5x34 _c5m34">
-                                                            <label htmlFor="course_name">End Time</label>
-                                                            <input name="due" type="text" value={this.state.end_time}/>
-                                                        </div>
-                                                        <div className="_c5x312 _c5m312">
-                                                            <label htmlFor="course_name">Status</label>
-                                                            <Select
-                                                                value={this.state.status}
-                                                                onChange={this.handleChange}
-                                                                clearable={false}
-                                                                options={[
-                                                                    { value: 'active', label: 'Active' },
-                                                                    { value: 'inactive', label: 'Inactive' },
-                                                                ]}
-                                                            />
-                                                        </div>
-                                                        <div className="_c5m3o10 _c5x3o9 _c5x33 _c5m32 _pd3l">
-                                                            <button type="submit" className="_bt5m3b">Update</button>
-                                                        </div>
+                                                    </div>
+                                                    <div className="_c5m3o10 _c5x3o9 _c5x33 _c5m32 _pd3l">
+                                                        <button type="submit" className="_bt5m3b">{this.state.schedule_id ? 'Update' : 'Create'}</button>
                                                     </div>
                                                 </form>
                                             )
@@ -217,7 +457,8 @@ const mapStatetoProps = (state) => {
 }
 const mapDispatchtoProps = (dispatch) => {
     return {
-        dispatcherRequest: (is_logged_in, request_status, error_message) => dispatch(actorRequest(is_logged_in, request_status, error_message))
+        dispatcherRequest: (is_logged_in, request_status, error_message) => dispatch(actorRequest(is_logged_in, request_status, error_message)),
+        dispatcherLoading: (loading_progress, is_loading_error) => dispatch(loadingRequest(loading_progress, is_loading_error))
     }
 }
 export default connect(mapStatetoProps, mapDispatchtoProps)(AdminCourseAbout)
