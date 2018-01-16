@@ -81,6 +81,8 @@ export {default as AdminRole}
 from './page/AdminRole'
 export {default as AdminRoleCreate}
 from './page/AdminRoleCreate'
+export {default as AdminRoleUpdate}
+from './page/AdminRoleUpdate'
 export {default as AdminInformation}
 from './page/AdminInformation'
 export {default as AdminCourseAssignment}

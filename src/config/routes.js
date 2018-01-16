@@ -31,6 +31,7 @@ import {
     AdminUserCreate,
     AdminRole,
     AdminRoleCreate,
+    AdminRoleUpdate,
     AdminInformation,
     AdminCourseAssignment,
     AdminAssignmentCreate,
@@ -114,6 +115,10 @@ export const routes = [
     }, {
         path: '/admin/role/add',
         component: AdminRoleCreate,
+        exact: true
+    }, {
+        path: '/admin/role/update/:id',
+        component: AdminRoleUpdate,
         exact: true
     }, {
         path: '/admin/user',
