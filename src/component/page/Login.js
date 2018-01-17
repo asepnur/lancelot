@@ -3,7 +3,7 @@
 ------------------------------------------------------------------*/
 import React, {Component} from 'react'
 import {Link, Redirect} from 'react-router-dom'
-import PropTypes from 'prop-types'
+import {bool, func, string} from 'prop-types'
 import {connect} from 'react-redux'
 import axios from 'axios'
 
@@ -11,14 +11,22 @@ import {actorRequest, loadingRequest, initAction} from '../../action/action'
 import {LayoutGuest, InputContent} from '../index.js'
 
 class Login extends Component {
-   constructor() {
-      super()
-      this.state = {
-         email: '',
-         password: '',
-         is_show_password: false
-      }
-   }
+    constructor() {
+        super()
+        this.state = {
+            email: '',
+            password: '',
+            is_show_password: false
+        }
+    }
+
+    static propTypes = {
+        is_logged_in: bool.isRequired,
+        is_login_failed: bool.isRequired,
+        email: string.isRequired,
+        password: string.isRequired,
+        onSubmitAction: func.isRequired
+    }
 /*----------------------------------------------------------------
                             HANDLER FUNCTION
 ------------------------------------------------------------------*/
@@ -34,19 +42,19 @@ class Login extends Component {
                      <h2 className="_he3m">Sign In
                      </h2>
                   </div>
+                </div>
+                <div className="_ro">
+                    <InputContent
+                        classWraper="_c5m36 _c5m3o5 _c5x312"
+                        type="text"
+                        name="email"
+                        placeholder="Email"
+                        onChangeState={this.onChangeState}/>
                </div>
-               <div className="_ro">
-                  <InputContent
-                     classWraper="_c5m36 _c5m3o5 _c5x312"
-                     type="text"
-                     name="email"
-                     placeholder="Email"
-                     onChangeState={this.onChangeState}/>
-               </div>
-               <div className="_ro">
-                  <div className="_c5m36 _c5m3o5 _c5x312">
-                     <div className="_cn5g">
-                        <input
+                <div className="_ro">
+                    <div className="_c5m36 _c5m3o5 _c5x312">
+                        <div className="_cn5g">
+                            <input
                            id="password"
                            type={!this.state.is_show_password
                            ? 'password'
@@ -155,16 +163,6 @@ class Login extends Component {
          ? this.renderMain()
          : <Redirect to={`/`}/>)
    }
-}
-/*----------------------------------------------------------------
-                            VALIDATION
-------------------------------------------------------------------*/
-Login.PropTypes = {
-   is_logged_in: PropTypes.bool.isRequired,
-   is_login_failed: PropTypes.bool.isRequired,
-   email: PropTypes.string.isRequired,
-   password: PropTypes.string.isRequired,
-   onSubmitAction: PropTypes.func.isRequired
 }
 
 /*----------------------------------------------------------------

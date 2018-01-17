@@ -216,7 +216,7 @@ const ManageCourse = (props) => {
                                     modules_access.courses.indexOf('CREATE') >= 0 ? (
                                         <div className="_c5x36 _c5m36 _pd3n3l">
                                             <div className="_se3lca">
-                                                <Link to={`/admin/role`}>
+                                                <Link to={`/admin/course`}>
                                                     <div>
                                                         <i className="fa fa-plus" aria-hidden="true"></i>
                                                         <p>Create</p>

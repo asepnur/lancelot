@@ -149,6 +149,10 @@ export const routes = [
         component: AdminHome,
         exact: true
     }, {
+        path: '/admin/course/',
+        component: AdminCourseAbout,
+        exact: true
+    }, {
         path: '/admin/course/:id/about',
         component: AdminCourseAbout,
         exact: true

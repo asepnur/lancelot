@@ -8,7 +8,7 @@ import axios from 'axios'
 import moment from 'moment'
 
 import {actorRequest, loadingRequest} from '../../action/action'
-import {Navbar, LayoutUser, AdminNavCourse} from '../index'
+import {Navbar, LayoutUser, AdminNavCourse, LoadingAnim} from '../index'
 import history from '../../history'
 
 class AdminAttendanceCreate extends Component {
@@ -184,6 +184,7 @@ class AdminAttendanceCreate extends Component {
 
     render() {
         const {is_logged_in} = this.props
+        const {atd_loaded, student_loaded} = this.state
         return (is_logged_in
             ? <LayoutUser>
                     <Navbar match={this.props.match} active_navbar={"admin"}/>
@@ -224,67 +225,99 @@ class AdminAttendanceCreate extends Component {
                                 <div className="_c5x312 _c5m310  _pd3l3lr __ass">
                                     <div className="_ca">
                                         <div className="_ca3h">
-                                            <div className="_c5m310 _c5x310">Create Attendance</div>
+                                            <div className="_c5m310 _c5x310">{this.state.meeting_id ? 'Update' : 'Create'} Attendance</div>
                                         </div>
                                         <form onSubmit={this.handleSubmit}>
                                             <div className="_ca" style={{paddingLeft: 0, marginTop: 0}}>
                                                 <div className="_c5m34 _c5x312" style={{paddingLeft: 0}}>
-                                                    <div className="_se">
-                                                        <div className="_c5x312 _c5m312 _pd3m3b">
-                                                            <label htmlFor="number">Meeting Number*</label>
-                                                            <input name="number" placeholder="Insert meeting number" type="text" value={this.state.number} onChange={this.handleChange}/>
-                                                        </div>
-                                                        <div className="_c5x312 _c5m312 _pd3m3b">
-                                                            <label htmlFor="name">Subject*</label>
-                                                            <input name="subject" placeholder="Insert subject" type="text" value={this.state.subject} onChange={this.handleChange}/>
-                                                        </div>
-                                                        <div className="_c5x312 _c5m312">
-                                                            <label htmlFor="description">Description</label>
-                                                            <textarea name="description" placeholder="Insert description" value={this.state.description} onChange={this.handleChange}></textarea>
-                                                        </div>
-                                                        <div className="_c5x312 _c5m312">
-                                                            <label htmlFor="date">Date*</label>
-                                                            <input name="date" type="text" value={this.state.date.format('llll')} onChange={this.handleChange}/>
-                                                        </div>
-                                                    </div>
+                                                    {
+                                                        atd_loaded ? (
+                                                            <div className="_se">
+                                                                <div className="_c5x312 _c5m312 _pd3m3b">
+                                                                    <label htmlFor="number">Meeting Number*</label>
+                                                                    <input name="number" placeholder="Insert meeting number" type="text" value={this.state.number} onChange={this.handleChange}/>
+                                                                </div>
+                                                                <div className="_c5x312 _c5m312 _pd3m3b">
+                                                                    <label htmlFor="name">Subject*</label>
+                                                                    <input name="subject" placeholder="Insert subject" type="text" value={this.state.subject} onChange={this.handleChange}/>
+                                                                </div>
+                                                                <div className="_c5x312 _c5m312">
+                                                                    <label htmlFor="description">Description</label>
+                                                                    <textarea name="description" placeholder="Insert description" value={this.state.description} onChange={this.handleChange}></textarea>
+                                                                </div>
+                                                                <div className="_c5x312 _c5m312">
+                                                                    <label htmlFor="date">Date*</label>
+                                                                    <input name="date" type="text" value={this.state.date.format('llll')} onChange={this.handleChange}/>
+                                                                </div>
+                                                            </div>
+                                                        ) : (
+                                                            <table className="_se3msg">
+                                                                <tbody>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <LoadingAnim color_left="#333" color_right="#333"/>
+                                                                            </td>
+                                                                        </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        )
+                                                    }
                                                 </div>
                                                 <div className="_c5m38 _c5x312">
                                                     <div className="_c5x312 _c5m312">
                                                         <label htmlFor="number" style={{fontSize: '1.2em'}}>User Attendance</label>
                                                     </div>
-                                                    <table className="_se _se3ada _pd3m3b _ma3m3tb" style={{marginLeft: 0, marginRight: 0}}>
-                                                        <thead>
-                                                            <tr>
-                                                                <th>NPM</th>
-                                                                <th>Name</th>
-                                                                <th>Present</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody style={{maxHeight: '320px', overflowY: 'scroll'}}>
-                                                            {
-                                                                this.state.users.map((v, k) => (
-                                                                    <tr key={k}>
-                                                                        <td>{v.id}</td>
-                                                                        <td>{v.name}</td>
-                                                                        <td>
-                                                                            <label className="switch">
-                                                                                <input
-                                                                                    type="checkbox"
-                                                                                    checked={v.present}
-                                                                                    onChange={this.handleChangeStatus.bind(null, v.id)}/>
-                                                                                <span className="slider round"></span>
-                                                                            </label>
-                                                                        </td>
+                                                    {
+                                                        student_loaded ? (
+                                                            <table className="_se _se3ada _pd3m3b _ma3m3tb" style={{marginLeft: 0, marginRight: 0}}>
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>NPM</th>
+                                                                        <th>Name</th>
+                                                                        <th>Present</th>
                                                                     </tr>
-                                                                ))
-                                                            }
-                                                        </tbody>
-                                                    </table>
+                                                                </thead>
+                                                                <tbody style={{maxHeight: '320px', overflowY: 'scroll'}}>
+                                                                    {
+                                                                        this.state.users.map((v, k) => (
+                                                                            <tr key={k}>
+                                                                                <td>{v.id}</td>
+                                                                                <td>{v.name}</td>
+                                                                                <td>
+                                                                                    <label className="switch">
+                                                                                        <input
+                                                                                            type="checkbox"
+                                                                                            checked={v.present}
+                                                                                            onChange={this.handleChangeStatus.bind(null, v.id)}/>
+                                                                                        <span className="slider round"></span>
+                                                                                    </label>
+                                                                                </td>
+                                                                            </tr>
+                                                                        ))
+                                                                    }
+                                                                </tbody>
+                                                            </table>
+                                                        ) : (
+                                                            <table className="_se3msg">
+                                                                <tbody>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <LoadingAnim color_left="#333" color_right="#333"/>
+                                                                            </td>
+                                                                        </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        )
+                                                    }
                                                 </div>
                                             </div>
-                                            <div className="_c5m3o10 _c5x3o9 _c5x33 _c5m32 _pd3l">
-                                                <button type="submit" className="_bt5m3b">Create</button>
-                                            </div>
+                                            {
+                                                student_loaded && atd_loaded ? (
+                                                    <div className="_c5m3o10 _c5x3o9 _c5x33 _c5m32 _pd3l">
+                                                        <button type="submit" className="_bt5m3b">{this.state.meeting_id ? 'Update' : 'Create'}</button>
+                                                    </div>
+                                                ) : null
+                                            }
                                         </form>
                                     </div>
                                 </div>

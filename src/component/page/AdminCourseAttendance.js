@@ -4,8 +4,8 @@ import {connect} from 'react-redux'
 import axios from 'axios'
 import moment from 'moment'
 
-import {actorRequest} from '../../action/action'
-import {Navbar, LayoutUser, AdminNavCourse} from '../index'
+import {actorRequest, loadingRequest} from '../../action/action'
+import {Navbar, LayoutUser, AdminNavCourse, DeleteModal, LoadingAnim} from '../index'
 
 class AdminCourseAttendance extends Component {
     constructor(props) {
@@ -21,6 +21,8 @@ class AdminCourseAttendance extends Component {
             is_allow_create: false,
             is_allow_update: false,
             is_allow_delete: false,
+            modal_active: false,
+            modal_id: 0
         }
     }
 
@@ -38,6 +40,10 @@ class AdminCourseAttendance extends Component {
                 attendances
             }
         } = this.props
+
+        if (!attendances) {
+            return
+        }
 
         this.setState({
             is_allow_read: attendances.indexOf('READ') >= 0 ? true : false,
@@ -71,9 +77,40 @@ class AdminCourseAttendance extends Component {
             console.log(err)
         })
     }
+
+    modalDeleteOn = (id) => {
+        this.setState({modal_active: true, modal_id: id})
+    }
+    
+    modalDeleteOff = () => {
+        this.setState({modal_active: false})
+    }
+
+    handleDelete = () => {
+        const {dispatcherLoading, dispatcherRequest} = this.props
+        dispatcherLoading(10, false)
+        axios.delete(`/api/admin/v1/attendance/${this.state.modal_id}?is_force=true`, {
+            validateStatus: (status) => {
+                return status === 200
+            }
+        }).then((res) => {
+                dispatcherLoading(100, false)
+                dispatcherRequest(true, 200, 'Attendance successfully deleted')
+                this.setState({modal_active: false, modal_id: 0})
+                this.handleGetAttendance(this.state.page)
+        }).catch((err) => {
+            dispatcherLoading(10, true)
+            dispatcherRequest(true, 401, 'Error connection')
+        })
+    }
     
     render() {
         const {is_logged_in} = this.props
+        const modal_handler = {
+            On: this.modalDeleteOn,
+            Off: this.modalDeleteOff,
+            Action: this.handleDelete
+        }
         const {
             page,
             total_page,
@@ -81,7 +118,8 @@ class AdminCourseAttendance extends Component {
             is_allow_read,
             is_allow_create,
             is_allow_update,
-            is_allow_delete
+            is_allow_delete,
+            is_loaded
         } = this.state
         return (is_logged_in
             ? (
@@ -125,67 +163,82 @@ class AdminCourseAttendance extends Component {
                                                     }
                                                 </div>
                                             </div>
-                                            <table className="_se _se3ada">
-                                                <thead>
-                                                    <tr>
-                                                        <th>No</th>
-                                                        <th>Subject</th>
-                                                        <th>Date</th>
-                                                        <th>Total Attendant</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {
-                                                        meetings.map((meet, k) => (
-                                                            <tr key={k}>
-                                                                <td>{meet.number}</td>
-                                                                <td>{meet.subject}</td>
-                                                                <td>{meet.date.format('YYYY-MM-DD')}</td>
-                                                                <td>{meet.total_attendant}</td>
+                                            {
+                                                is_loaded ? (
+                                                    <table className="_se _se3ada">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>No</th>
+                                                                <th>Subject</th>
+                                                                <th>Date</th>
+                                                                <th>Total Attendant</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {
+                                                                meetings.map((meet, k) => (
+                                                                    <tr key={k}>
+                                                                        <td>{meet.number}</td>
+                                                                        <td>{meet.subject}</td>
+                                                                        <td>{meet.date.format('YYYY-MM-DD')}</td>
+                                                                        <td>{meet.total_attendant}</td>
+                                                                        <td>
+                                                                            {
+                                                                                is_allow_update ? (
+                                                                                    <Link to={`/admin/course/${this.state.schedule_id}/attendance/update/${meet.id}`}><i className="fa fa-pencil-square-o _ic3b __wr" aria-hidden="true"></i></Link>
+                                                                                ) : null
+                                                                            }
+                                                                            {
+                                                                                is_allow_delete ? (
+                                                                                    <Link to="#" onClick={modal_handler.On.bind(null, meet.id)}><i className="fa fa-trash _ic3 __wr" aria-hidden="true"></i></Link>
+                                                                                ) : null
+                                                                            }
+                                                                        </td>
+                                                                    </tr>
+                                                                ))
+                                                            }
+                                                        </tbody>
+                                                        <tfoot>
+                                                            <tr className="_pg">
                                                                 <td>
-                                                                    {
-                                                                        is_allow_update ? (
-                                                                            <Link to={`/admin/course/${this.state.schedule_id}/attendance/update/${meet.id}`}><i className="fa fa-pencil-square-o _ic3b __wr" aria-hidden="true"></i></Link>
-                                                                        ) : null
-                                                                    }
-                                                                    {
-                                                                        is_allow_delete ? (
-                                                                            <Link to="#"><i className="fa fa-trash _ic3 __wr" aria-hidden="true"></i></Link>
-                                                                        ) : null
-                                                                    }
+                                                                    <button
+                                                                    disabled={page <= 1 ? true : false}
+                                                                    onClick={() => {
+                                                                        this.handleGetAttendance(page - 1)
+                                                                    }}>&laquo; Prev</button>
+                                                                </td>
+                                                                <td>
+                                                                    <button className="_active">{page} of {total_page}</button>
+                                                                </td>
+                                                                <td>
+                                                                    <button
+                                                                    disabled={page >= total_page ? true : false}
+                                                                    onClick={() => {
+                                                                        this.handleGetAttendance(page + 1)
+                                                                    }}>Next &raquo;</button>
                                                                 </td>
                                                             </tr>
-                                                        ))
-                                                    }
-                                                </tbody>
-                                                <tfoot>
-                                                    <tr className="_pg">
-                                                        <td>
-                                                            <button
-                                                            disabled={page <= 1 ? true : false}
-                                                            onClick={() => {
-                                                                this.handleGetAttendance(page - 1)
-                                                            }}>&laquo; Prev</button>
-                                                        </td>
-                                                        <td>
-                                                            <button className="_active">{page} of {total_page}</button>
-                                                        </td>
-                                                        <td>
-                                                            <button
-                                                            disabled={page >= total_page ? true : false}
-                                                            onClick={() => {
-                                                                this.handleGetAttendance(page + 1)
-                                                            }}>Next &raquo;</button>
-                                                        </td>
-                                                    </tr>
-                                                </tfoot>
-                                            </table>
+                                                        </tfoot>
+                                                    </table>
+                                                ) : (
+                                                    <table className="_se3msg">
+                                                        <tbody>
+                                                                <tr>
+                                                                    <td>
+                                                                            <LoadingAnim color_left="#333" color_right="#333"/>
+                                                                    </td>
+                                                                </tr>
+                                                        </tbody>
+                                                    </table>
+                                                )
+                                            }
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <DeleteModal handle={modal_handler} is_active={this.state.modal_active} />
                     </LayoutUser>
                 ) : <Redirect to="/admin"/>
             ) : <Redirect to="/login"/>
@@ -198,6 +251,7 @@ const mapStatetoProps = (state) => {
 }
 const mapDispatchtoProps = (dispatch) => {
     return {
+        dispatcherLoading: (loading_progress, is_loading_error) => dispatch(loadingRequest(loading_progress, is_loading_error)),
         dispatcherRequest: (is_logged_in, request_status, error_message) => dispatch(actorRequest(is_logged_in, request_status, error_message))
     }
 }

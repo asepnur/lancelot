@@ -1,42 +1,42 @@
 {
-  "name": "lancelot",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "dateformat": "^3.0.2",
-    "moment": "^2.20.1",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
-    "react-input-moment": "^1.7.5",
-    "react-scripts": "1.0.14"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
-  },
-  "description": "This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).",
-  "main": "index.js",
-  "devDependencies": {
-    "axios": "^0.17.1",
-    "google-charts": "^1.0.0",
-    "prop-types": "^15.6.0",
-    "react-redux": "^5.0.6",
-    "react-router": "^4.2.0",
-    "react-router-dom": "^4.2.2",
-    "react-select": "^1.2.1",
-    "redux": "^3.7.2"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/asepnur/lancelot.git"
-  },
-  "author": "Asepnur",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/asepnur/lancelot/issues"
-  },
-  "homepage": "https://github.com/asepnur/lancelot#readme",
-  "proxy": "http://localhost:9000"
+    "name": "lancelot",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "dateformat": "^3.0.2",
+        "moment": "^2.20.1",
+        "react": "^16.2.0",
+        "react-dom": "^16.0.0",
+        "react-input-moment": "^1.7.5",
+        "react-scripts": "1.0.14",
+        "react-select": "^1.2.1"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test --env=jsdom",
+        "eject": "react-scripts eject"
+    },
+    "description": "This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).",
+    "main": "index.js",
+    "devDependencies": {
+        "axios": "^0.17.1",
+        "google-charts": "^1.0.0",
+        "prop-types": "^15.6.0",
+        "react-redux": "^5.0.6",
+        "react-router": "^4.2.0",
+        "react-router-dom": "^4.2.2",
+        "redux": "^3.7.2"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/asepnur/lancelot.git"
+    },
+    "author": "Asepnur",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/asepnur/lancelot/issues"
+    },
+    "homepage": "https://github.com/asepnur/lancelot#readme",
+    "proxy": "http://localhost:9000"
 }
