@@ -99,14 +99,22 @@ class AdminGradeDetail extends Component {
                                     <div className="_pd3n3lr _ta">
                                         <ul className="_ta5p">
                                             <li>
-                                                <Link to={`/admin`}>Admin</Link>
+                                                <Link to="/">
+                                                    <i className="fa fa-home"></i>
+                                                </Link>
                                             </li>
-                                            <li >
-                                                <Link to={`/admin/course/${this.state.schedule_id}/grade`}>Mobile Computing</Link>
+                                            <li>
+                                                <Link to="/admin">Admin</Link>
+                                            </li>
+                                            <li>
+                                                <Link to={`/admin/course/${this.state.schedule_id}`}>Mobile Computing</Link>
+                                            </li>
+                                            <li>
+                                                <Link to={`/admin/course/${this.state.schedule_id}/grade`}>Grade</Link>
                                             </li>
                                             <li className="_active">
                                                 <Link
-                                                    to={`/admin/course/${this.state.schedule_id}/grade/${this.state.assignment_id}`}>{this.state.assignment_name}</Link>
+                                                    to={`/admin/course/${this.state.schedule_id}/grade/${this.state.assignment_id}`}>Update</Link>
                                             </li>
                                         </ul>
                                     </div>

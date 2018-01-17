@@ -296,16 +296,19 @@ class AdminAssignmentCreate extends Component {
                                 <div className="_c5x312 _c5m312 _pd3n3lr  _pd3l3b">
                                     <div className="_pd3n3lr _ta">
                                         <ul className="_ta5p">
-                                            <li>
-                                                <Link to={`/admin`}>Admin</Link>
-                                            </li>
-                                            <li >
-                                                <Link to={`/admin/course/${this.state.schedule_id}`}>Mobile Computing</Link>
-                                            </li>
-                                            <li className="_active">
-                                                <Link to={`/admin/course/${this.state.schedule_id}/create-assignment}`}>Create</Link>
-                                            </li>
-                                        </ul>
+                                                <li>
+                                                    <Link to="/"><i className="fa fa-home"></i></Link>
+                                                </li>
+                                                <li>
+                                                    <Link to="/admin">Admin</Link>
+                                                </li>
+                                                <li>
+                                                    <Link to={`/admin/course/${this.state.schedule_id}`}>Mobile Computing</Link>
+                                                </li>
+                                                <li className="_active">
+                                                    <Link to={`/admin/course/${this.state.schedule_id}/create-assignment`}>Create</Link>
+                                                </li>
+                                            </ul>
                                     </div>
                                 </div>
                                 <AdminNavCourse

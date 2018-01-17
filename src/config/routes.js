@@ -31,11 +31,13 @@ import {
     AdminUserCreate,
     AdminRole,
     AdminRoleCreate,
+    AdminRoleUpdate,
     AdminInformation,
     AdminCourseAssignment,
     AdminAssignmentCreate,
     AdminAssignmentUpdate,
     AdminGradeDetail,
+    AdminUserUpdate
 } from '../component/index.js'
 export const routes = [
     {
@@ -115,12 +117,20 @@ export const routes = [
         component: AdminRoleCreate,
         exact: true
     }, {
+        path: '/admin/role/update/:id',
+        component: AdminRoleUpdate,
+        exact: true
+    }, {
         path: '/admin/user',
         component: AdminUser,
         exact: true
     }, {
         path: '/admin/user/add',
         component: AdminUserCreate,
+        exact: true
+    }, {
+        path: '/admin/user/update/:id',
+        component: AdminUserUpdate,
         exact: true
     }, {
         path: '/admin/course/:id',

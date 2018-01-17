@@ -238,8 +238,8 @@ const ManageInformation = (props) => {
     const {information, is_loaded, handleGetInformation, handle} = props
     if (props.modules_access.informations !== undefined) {
         return (
-            <div className="_c5m38 _c5x312 _pd3cr">
-                <Link to={`/admin/information`} className="_he3b">My Post</Link>
+            <div className="_c5m38 _c5x312 _pd3cr" style={{marginTop:'15px'}}>
+                <Link to={`/admin/information`} className="_he3b">My Information</Link>
                 {!is_loaded
                     ? <table className="_se3msg">
                             <tbody>
