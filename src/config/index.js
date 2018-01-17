@@ -3,7 +3,7 @@
 //--------------------------------------------;
 import React from 'react'
 import {connect} from 'react-redux'
-import PropTypes from 'prop-types'
+import {bool, func} from 'prop-types'
 import {createStore} from 'redux'
 import axios from 'axios'
 
@@ -12,11 +12,18 @@ import Reducers from '../reducer/index'
 import {Loading} from '../component/index.js'
 
 class Init extends React.Component {
+    
     constructor() {
         super()
         this.state = {
             time_now: 0
         }
+    }
+
+    static propTypes = {
+        is_loading: bool.isRequired,
+        is_logged_in: bool.isRequired,
+        onInitialize: func.isRequired
     }
 
     componentWillMount() {
@@ -63,12 +70,6 @@ class Init extends React.Component {
             ? <Loading />
             : this.props.children)
     }
-}
-
-Init.PropTypes = {
-    is_loading: PropTypes.bool.isRequired,
-    logged_in: PropTypes.bool.isRequired,
-    onInitialize: PropTypes.func.isRequired
 }
 
 const mapStatetoProps = (state) => {

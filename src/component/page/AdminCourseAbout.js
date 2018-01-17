@@ -15,7 +15,8 @@ class AdminCourseAbout extends Component {
         super(props)
         this.state = {
             active_menu: 'btn_about',
-            is_loaded: false,
+            course_loaded: false,
+            parameter_loaded: false,
             schedule_id: this.props.match.params.id,
             id: '',
             name: null,
@@ -31,14 +32,12 @@ class AdminCourseAbout extends Component {
             status: '',
             day: { value: 'monday', label: 'Monday'},
             place: null,
-            grade_parameters: []
+            grade_parameters: [],
         }
     }
     componentDidMount() {
-        if (this.state.schedule_id) {
-            this.handleGetAbout()
-            this.handleGetParameter()
-        }
+        this.handleGetAbout()
+        this.handleGetParameter()
     }
     handleSubmit = (e) => {
         e.preventDefault()
@@ -55,8 +54,8 @@ class AdminCourseAbout extends Component {
         const start_time = this.state.start_time
         const end_time = this.state.end_time
         const is_update = this.state.is_update
-        const schedule_id = this.state.schedule_id
         const status = this.state.status
+        let schedule_id = this.state.schedule_id
 
         const parameters = JSON.stringify(this.state.grade_parameters.map(value => ({
             type: value.name,
@@ -96,10 +95,11 @@ class AdminCourseAbout extends Component {
             }
         }).then((res) => {
             if (res.status === 200) {
+                if (!schedule_id) {
+                    schedule_id = res.data.data
+                    console.log(schedule_id)
+                }
                 dispatcherLoading(100, false)
-                this.setState({
-                    change_image: !this.state.change_image
-                })
                 dispatcherRequest(true, 200, message)
                 history.push(`/admin/course/${schedule_id}/about/`)
             } else {
@@ -112,6 +112,11 @@ class AdminCourseAbout extends Component {
         })
     }
     handleGetAbout = () => {
+        if (!this.state.schedule_id) {
+            this.setState({course_loaded: true})
+            return
+        }
+
         axios.get(`/api/admin/v1/course/${this.state.schedule_id}`, {
             validateStatus: (status) => {
                return status === 200
@@ -132,13 +137,18 @@ class AdminCourseAbout extends Component {
                 status: data.status,
                 day: {value: data.day, label: data.day},
                 place: {value: data.place_id, label: data.place_id},
-                is_loaded: true
+                course_loaded: true
             })
         }).catch((err) => {
             console.log(err)
         })
     }
     handleGetParameter = () => {
+        if (!this.state.schedule_id) {
+            this.setState({parameter_loaded: true})
+            return
+        }
+
         axios.get(`/api/admin/v1/course/${this.state.schedule_id}/parameter`, {
             validateStatus: (status) => {
                 return status === 200
@@ -150,7 +160,8 @@ class AdminCourseAbout extends Component {
                 percentage: parameter.percentage
             }))
             this.setState({
-                grade_parameters: parameters
+                grade_parameters: parameters,
+                parameter_loaded: true
             })
         }).catch((err) => {
             console.log(err)
@@ -165,7 +176,11 @@ class AdminCourseAbout extends Component {
                return status === 200
             }
         }).then((res) => {
-            let options = res.data.data.map( course => ({ value: course.id, label: course.name }))
+            let options = res.data.data.map( course => ({
+                value: course.id,
+                label: course.name,
+                description: course.description,
+                ucu: course.ucu }))
             return { options }
         }).catch((err) => {
             console.log(err)
@@ -212,7 +227,7 @@ class AdminCourseAbout extends Component {
     }
     render() {
         const {is_logged_in} = this.props
-        const {is_loaded} = this.state
+        const {course_loaded, parameter_loaded} = this.state
         return (is_logged_in
             ? <LayoutUser>
                     <Navbar match={this.props.match} active_navbar={"admin"}/>
@@ -230,7 +245,7 @@ class AdminCourseAbout extends Component {
                                                 <Link to={`/admin`}>Admin</Link>
                                             </li>
                                             {
-                                                is_loaded ? (
+                                                course_loaded ? (
                                                     <li className="_active">
                                                         <Link to={`/admin/course/${this.state.schedule_id}/about`}>{this.state.name}</Link>
                                                     </li>
@@ -243,23 +258,13 @@ class AdminCourseAbout extends Component {
                                 <div className="_c5x312 _c5m310  _pd3l3lr">
                                     <div className="_ca">
                                         <div className="_ca3h">
-                                            <div className="_c5m310 _c5x310">About</div>
+                                            <div className="_c5m310 _c5x310">{this.state.schedule_id ? 'About' : 'Create Course'}</div>
                                         </div>
-                                        {
-                                            !is_loaded ? (
-                                                <table className="_se3msg">
-                                                    <tbody>
-                                                        <tr>
-                                                        <td>
-                                                            <LoadingAnim color_left="#333" color_right="#333"/>
-                                                        </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            ) : (
-                                                <form onSubmit={this.handleSubmit}>
-                                                    <div className="_ca" style={{padding: 0, margin: 0}}>
-                                                        <div className="_c5m38 _c5x312" style={{padding: 0, marginBottom: "20px"}}>
+                                        <form onSubmit={this.handleSubmit}>
+                                            <div className="_ca" style={{padding: 0, margin: 0}}>
+                                                <div className="_c5m38 _c5x312" style={{padding: 0, marginBottom: "20px"}}>
+                                                    {
+                                                        course_loaded ? (
                                                             <div className="_se">
                                                                 <div className="_c5x312 _c5m312 _pd3m3b">
                                                                     <label htmlFor="name">Course Name*</label>
@@ -267,7 +272,11 @@ class AdminCourseAbout extends Component {
                                                                         name="name"
                                                                         multi={false}
                                                                         value={this.state.select_name}
-                                                                        onChange={e => this.setState({select_name: e})}
+                                                                        onChange={e => this.setState({
+                                                                            select_name: e,
+                                                                            description: e.description,
+                                                                            ucu: e.ucu
+                                                                        })}
                                                                         loadOptions={this.handleSearchCourse}
                                                                         placeholder="Insert course"
                                                                         style={{margin: '10px 0', height: '40px'}}
@@ -343,42 +352,89 @@ class AdminCourseAbout extends Component {
                                                                         style={{margin: '10px 0', height: '40px'}}
                                                                     />
                                                                 </div>
-                                                                <div className="_c5x36 _c5m36">
-                                                                    <label htmlFor="start_time">Start Time*</label>
-                                                                    <input
-                                                                        name="start_time"
-                                                                        type="text"
-                                                                        onChange={this.handleChange}
-                                                                        value={this.state.start_time}/>
-                                                                </div>
-                                                                <div className="_c5x36 _c5m36">
-                                                                    <label htmlFor="end_time">End Time*</label>
-                                                                    <input
-                                                                        name="end_time"
-                                                                        type="text"
-                                                                        onChange={this.handleChange}
-                                                                        value={this.state.end_time}/>
-                                                                </div>
-                                                                <div className="_c5x36 _c5m36">
-                                                                    <label htmlFor="status">Status</label>
-                                                                    <select name="status" value={this.state.status} onChange={this.handleChange}>
-                                                                        <option value="active">Active</option>
-                                                                        <option value="inactive">Inactive</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div className="_c5x36 _c5m36">
-                                                                    <label htmlFor="desc_update">Update Description</label>
-                                                                    <select name="is_update" value={this.state.is_update} onChange={this.handleChange}>
-                                                                        <option value="true">Yes</option>
-                                                                        <option value="false">No</option>
-                                                                    </select>
-                                                                </div>
+                                                                {
+                                                                    this.state.schedule_id ? (
+                                                                        <React.Fragment>
+                                                                            <div className="_c5x36 _c5m36">
+                                                                                <label htmlFor="start_time">Start Time*</label>
+                                                                                <input
+                                                                                    name="start_time"
+                                                                                    type="text"
+                                                                                    onChange={this.handleChange}
+                                                                                    value={this.state.start_time}/>
+                                                                            </div>
+                                                                            <div className="_c5x36 _c5m36">
+                                                                                <label htmlFor="end_time">End Time*</label>
+                                                                                <input
+                                                                                    name="end_time"
+                                                                                    type="text"
+                                                                                    onChange={this.handleChange}
+                                                                                    value={this.state.end_time}/>
+                                                                            </div>
+                                                                            <div className="_c5x36 _c5m36">
+                                                                                <label htmlFor="status">Status</label>
+                                                                                <select name="status" value={this.state.status} onChange={this.handleChange}>
+                                                                                    <option value="active">Active</option>
+                                                                                    <option value="inactive">Inactive</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div className="_c5x36 _c5m36">
+                                                                                <label htmlFor="desc_update">Update Description</label>
+                                                                                <select name="is_update" value={this.state.is_update} onChange={this.handleChange}>
+                                                                                    <option value="true">Yes</option>
+                                                                                    <option value="false">No</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </React.Fragment>
+                                                                    ) : (
+                                                                        <React.Fragment>
+                                                                        <div className="_c5x36 _c5m34">
+                                                                            <label htmlFor="start_time">Start Time*</label>
+                                                                            <input
+                                                                                name="start_time"
+                                                                                type="text"
+                                                                                onChange={this.handleChange}
+                                                                                value={this.state.start_time}/>
+                                                                        </div>
+                                                                        <div className="_c5x36 _c5m34">
+                                                                            <label htmlFor="end_time">End Time*</label>
+                                                                            <input
+                                                                                name="end_time"
+                                                                                type="text"
+                                                                                onChange={this.handleChange}
+                                                                                value={this.state.end_time}/>
+                                                                        </div>
+                                                                        <div className="_c5x312 _c5m34">
+                                                                            <label htmlFor="desc_update">Update Description</label>
+                                                                            <select name="is_update" value={this.state.is_update} onChange={this.handleChange}>
+                                                                                <option value="true">Yes</option>
+                                                                                <option value="false">No</option>
+                                                                            </select>
+                                                                        </div>
+                                                                        </React.Fragment>
+                                                                    )
+                                                                }
+                                                                
                                                             </div>
-                                                        </div>
-                                                        <div className="_c5m34 _c5x312" style={{padding: 0}}>
-                                                            <div className="_c5x312 _c5m312">
-                                                                <label htmlFor="grade_parameter" style={{fontSize: '1.2em'}}>Grade Parameter</label>
-                                                            </div>
+                                                        ) : (
+                                                            <table className="_se3msg">
+                                                                <tbody>
+                                                                    <tr>
+                                                                    <td>
+                                                                        <LoadingAnim color_left="#333" color_right="#333"/>
+                                                                    </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        )
+                                                    }
+                                                </div>
+                                                <div className="_c5m34 _c5x312" style={{padding: 0}}>
+                                                    <div className="_c5x312 _c5m312">
+                                                        <label htmlFor="grade_parameter" style={{fontSize: '1.2em'}}>Grade Parameter</label>
+                                                    </div>
+                                                    {
+                                                        parameter_loaded ? (
                                                             <table className="_se _se3ada _pd3m3b _ma3m3tb" style={{marginLeft: 0, marginRight: 0}}>
                                                                 <thead>
                                                                     <tr>
@@ -434,14 +490,28 @@ class AdminCourseAbout extends Component {
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
-                                                        </div>
-                                                    </div>
+                                                        ) : (
+                                                            <table className="_se3msg">
+                                                                <tbody>
+                                                                    <tr>
+                                                                    <td>
+                                                                        <LoadingAnim color_left="#333" color_right="#333"/>
+                                                                    </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        )
+                                                    }
+                                                </div>
+                                            </div>
+                                            {
+                                                course_loaded && parameter_loaded ? (
                                                     <div className="_c5m3o10 _c5x3o9 _c5x33 _c5m32 _pd3l">
                                                         <button type="submit" className="_bt5m3b">{this.state.schedule_id ? 'Update' : 'Create'}</button>
                                                     </div>
-                                                </form>
-                                            )
-                                        }
+                                                ) : null
+                                            }
+                                        </form>
                                     </div>
                                 </div>
                             </div>

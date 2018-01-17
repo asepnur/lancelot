@@ -83,7 +83,7 @@ class AdminCourseUser extends Component {
         if (value.length < 3) {
 			return Promise.resolve({ options: [] })
         }
-        return axios.get(`/api/admin/v1/user?q=${value}`, {
+        return axios.get(`/api/admin/v1/course/${this.state.schedule_id}/search?q=${value}`, {
             validateStatus: (status) => {
                return status === 200
             }

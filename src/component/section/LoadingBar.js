@@ -1,5 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+import {string, number, func, bool} from 'prop-types'
 import {connect} from 'react-redux'
 
 import {loadingRequest} from '../../action/action'
@@ -26,6 +26,24 @@ class LoadingBar extends React.Component {
             // Error State
             myError: false
         }
+    }
+
+    // The Props
+    static propTypes = {
+        id: string,
+        className: string,
+        progress: number,
+        direction: string,
+        error: bool,
+        onErrorDone: func,
+        onProgressDone: func
+    }
+
+    static defaultProps = {
+        progress: 0,
+        direction: 'right',
+        onErrorDone: () => {},
+        onProgressDone: () => {}
     }
 
     render() {
@@ -137,24 +155,6 @@ class LoadingBar extends React.Component {
         }
     }
 
-}
-
-// The Props
-LoadingBar.propTypes = {
-    id: PropTypes.string,
-    className: PropTypes.string,
-    progress: PropTypes.number,
-    direction: PropTypes.string,
-    error: PropTypes.bool,
-    onErrorDone: PropTypes.func,
-    onProgressDone: PropTypes.func
-}
-
-LoadingBar.defaultProps = {
-    progress: 0,
-    direction: 'right',
-    onErrorDone: () => {},
-    onProgressDone: () => {}
 }
 
 const mapStatetoProps = (state) => {
