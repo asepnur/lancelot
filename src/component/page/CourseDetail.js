@@ -6,7 +6,7 @@ import {Link} from 'react-router-dom'
 import ReactDOM from 'react-dom'
 import {connect} from 'react-redux'
 import axios from 'axios'
-import {GoogleCharts} from 'google-charts';
+import {GoogleCharts} from './google-charts';
 
 import {Assignment} from './Home'
 import {actorRequest, loadingRequest} from '../../action/action'

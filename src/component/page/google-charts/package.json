@@ -1,0 +1,95 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "google-charts",
+        "scope": null,
+        "escapedName": "google-charts",
+        "name": "google-charts",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "/Users/asepnur/go/src/github.com/asepnur/lancelot"
+    ]
+  ],
+  "_from": "google-charts@latest",
+  "_id": "google-charts@1.0.0",
+  "_inCache": true,
+  "_location": "/google-charts",
+  "_nodeVersion": "7.10.0",
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/google-charts-1.0.0.tgz_1504629120394_0.6172475868370384"
+  },
+  "_npmUser": {
+    "name": "mmathias01",
+    "email": "mmathias01@gmail.com"
+  },
+  "_npmVersion": "5.3.0",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "google-charts",
+    "scope": null,
+    "escapedName": "google-charts",
+    "name": "google-charts",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#DEV:/",
+    "#USER"
+  ],
+  "_resolved": "https://registry.npmjs.org/google-charts/-/google-charts-1.0.0.tgz",
+  "_shasum": "a7c49ae8940f35ad21182757e6552c99a5e44632",
+  "_shrinkwrap": null,
+  "_spec": "google-charts",
+  "_where": "/Users/asepnur/go/src/github.com/asepnur/lancelot",
+  "author": {
+    "name": "Matthew Mathias",
+    "email": "mmathias01@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/mmathias01/google-charts/issues"
+  },
+  "dependencies": {},
+  "description": "ES6 Google Charts Module that allows asynchronous loading",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "integrity": "sha512-izw7IA5laY2s/nWkuvhftdrRDu9A5k55jrPXxWe2XLiUL4P0jvHUuMBX3QSv5mV9OQWB9HRBtdxLEA1ZMs7d1Q==",
+    "shasum": "a7c49ae8940f35ad21182757e6552c99a5e44632",
+    "tarball": "https://registry.npmjs.org/google-charts/-/google-charts-1.0.0.tgz"
+  },
+  "gitHead": "15c818dbd17056b65852c6564dd2d5ec8f3d5414",
+  "homepage": "https://github.com/mmathias01/google-charts#readme",
+  "keywords": [
+    "ES6",
+    "google",
+    "charts",
+    "react",
+    "vuejs",
+    "vue",
+    "preact"
+  ],
+  "license": "MIT",
+  "main": "googleCharts.js",
+  "maintainers": [
+    {
+      "name": "mmathias01",
+      "email": "mmathias01@gmail.com"
+    }
+  ],
+  "name": "google-charts",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mmathias01/google-charts.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.0.0"
+}
