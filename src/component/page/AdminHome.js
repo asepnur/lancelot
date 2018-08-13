@@ -14,6 +14,7 @@ class AdminHome extends Component {
     constructor() {
         super()
         this.state = {
+            start_load: false,
             information_loaded: false,
             course_loaded: false,
             information: [],
@@ -72,18 +73,23 @@ class AdminHome extends Component {
         })
     }
     handleGetInformation = (page) => {
+        this.setState({start_load: true})
         axios.get(`/api/admin/v1/information?ttl=10&pg=` + page, {
             validateStatus: (status) => {
                 return status === 200
             }
         }).then((res) => {
+            this.setState({start_load: false})
             if (res.data.code === 200) {
                 this.setState({information: res.data.data, information_loaded: true})
             } else {
                 this.setState({information: [], information_loaded: true})
             }
         }).catch((err) => {
+            this.setState({start_load: false})
             console.log(err)
+            // TODO: Handle error
+            this.setState({information_loaded: false})
         })
     }
     handleGetCourse = () => {
@@ -129,7 +135,8 @@ class AdminHome extends Component {
                                         modules_access={modules_access}
                                         information={this.state.information}
                                         is_loaded={this.state.information_loaded}
-                                        handleGetInformation={this.handleGetInformation}/>
+                                        handleGetInformation={this.handleGetInformation}
+                                        start_load={this.start_load}/>
                                 </div>
                             </div>
                         </div>
@@ -235,115 +242,115 @@ const ManageCourse = (props) => {
     )
 }
 const ManageInformation = (props) => {
-    const {information, is_loaded, handleGetInformation, handle} = props
+    const {information, is_loaded, handleGetInformation, handle, start_load} = props
     if (props.modules_access.informations !== undefined) {
         return (
             <div className="_c5m38 _c5x312 _pd3cr" style={{marginTop:'15px'}}>
                 <Link to={`/admin/information`} className="_he3b">My Information</Link>
-                {!is_loaded
-                    ? <table className="_se3msg">
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <LoadingAnim color_left="#333" color_right="#333"/>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                    : props
-                        .modules_access
-                        .informations
-                        .map((info, k) => (info === "READ"
-                            ? <div key={k}>
-                                    <table className="_se3ainf">
-                                        <tbody>
-                                            <tr>
-                                                <td>Title</td>
-                                                <td>Created At</td>
-                                                <td>For Course</td>
-                                                <td>Action</td>
-                                            </tr>
-                                            {information.data.length !== 0
-                                                ? information
-                                                    .data
-                                                    .map((data, i) => (
-                                                        <tr key={i}>
-                                                            <td>{data.title}</td>
-                                                            <td>{data.updated_at}</td>
-                                                            <td>{data.course_name}</td>
-                                                            <td>
-                                                                {props
-                                                                    .modules_access
-                                                                    .informations
-                                                                    .map((info, i) => (info === "UPDATE"
-                                                                        ? <a
-                                                                                key={i}
-                                                                                onClick={(e) => {
-                                                                                e.preventDefault()
-                                                                                const state = {
-                                                                                    id: data.id
-                                                                                }
-                                                                                history.push('/admin/information', state)
-                                                                            }}>
-                                                                                <i className="fa fa-pencil-square-o _ic3xb __wr" aria-hidden="true"></i>
-                                                                            </a>
-                                                                        : null))}
-                                                                {props
-                                                                    .modules_access
-                                                                    .informations
-                                                                    .map((info, i) => (info === "DELETE"
-                                                                        ? <a
-                                                                                key={i}
-                                                                                onClick={() => {
-                                                                                handle.On(data.id)
-                                                                            }}>
-                                                                                <i className="fa fa-trash-o _ic3xr __wr" aria-hidden="true"></i>
-                                                                            </a>
-                                                                        : null))
-}
-                                                            </td>
-                                                        </tr>
-                                                    ))
-                                                : null
-}
-                                        </tbody>
-                                    </table>
-                                    <table>
-                                        <tfoot>
-                                            <tr className="_pg">
-                                                <td>
-                                                    <button
-                                                        disabled={information.links.prev === 0
-                                                        ? true
-                                                        : false}
-                                                        onClick={() => {
-                                                        handleGetInformation(information.links.prev)
-                                                    }}>&laquo; Prev</button>
-                                                </td>
-                                                <td>
-                                                    <a
-                                                        className="_active"
-                                                        onClick={() => {
-                                                        handleGetInformation(information.links.self)
-                                                    }}>{information.links.self}
-                                                        of {information.meta.total_page}</a>
-                                                </td>
-                                                <td>
-                                                    <button
-                                                        disabled={(information.links.next - 1) === information.meta.total_page
-                                                        ? true
-                                                        : false}
-                                                        onClick={(e) => {
-                                                        handleGetInformation(information.links.next)
-                                                    }}>Next &raquo;</button>
-                                                </td>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-                            : null))
-}
+                {start_load ? 
+                    <table className="_se3msg">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <LoadingAnim color_left="#333" color_right="#333"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                :!is_loaded ? <p><i>No Information</i></p> 
+                :props
+                    .modules_access
+                    .informations
+                    .map((info, k) => (info === "READ"
+                        ? <div key={k}>
+                                <table className="_se3ainf">
+                                    <tbody>
+                                        <tr>
+                                            <td>Title</td>
+                                            <td>Created At</td>
+                                            <td>For Course</td>
+                                            <td>Action</td>
+                                        </tr>
+                                        {information.data.length !== 0
+                                            ? information
+                                                .data
+                                                .map((data, i) => (
+                                                    <tr key={i}>
+                                                        <td>{data.title}</td>
+                                                        <td>{data.updated_at}</td>
+                                                        <td>{data.course_name}</td>
+                                                        <td>
+                                                            {props
+                                                                .modules_access
+                                                                .informations
+                                                                .map((info, i) => (info === "UPDATE"
+                                                                    ? <a
+                                                                            key={i}
+                                                                            onClick={(e) => {
+                                                                            e.preventDefault()
+                                                                            const state = {
+                                                                                id: data.id
+                                                                            }
+                                                                            history.push('/admin/information', state)
+                                                                        }}>
+                                                                            <i className="fa fa-pencil-square-o _ic3xb __wr" aria-hidden="true"></i>
+                                                                        </a>
+                                                                    : null))}
+                                                            {props
+                                                                .modules_access
+                                                                .informations
+                                                                .map((info, i) => (info === "DELETE"
+                                                                    ? <a
+                                                                            key={i}
+                                                                            onClick={() => {
+                                                                            handle.On(data.id)
+                                                                        }}>
+                                                                            <i className="fa fa-trash-o _ic3xr __wr" aria-hidden="true"></i>
+                                                                        </a>
+                                                                    : null))
+                                                            }
+                                                        </td>
+                                                    </tr>
+                                                ))
+                                            : null
+                                }
+                                    </tbody>
+                                </table>
+                                <table>
+                                    <tfoot>
+                                        <tr className="_pg">
+                                            <td>
+                                                <button
+                                                    disabled={information.links.prev === 0
+                                                    ? true
+                                                    : false}
+                                                    onClick={() => {
+                                                    handleGetInformation(information.links.prev)
+                                                }}>&laquo; Prev</button>
+                                            </td>
+                                            <td>
+                                                <a
+                                                    className="_active"
+                                                    onClick={() => {
+                                                    handleGetInformation(information.links.self)
+                                                }}>{information.links.self}
+                                                    of {information.meta.total_page}</a>
+                                            </td>
+                                            <td>
+                                                <button
+                                                    disabled={(information.links.next - 1) === information.meta.total_page
+                                                    ? true
+                                                    : false}
+                                                    onClick={(e) => {
+                                                    handleGetInformation(information.links.next)
+                                                }}>Next &raquo;</button>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        : null))
+                }
             </div>
         )
     } else {
